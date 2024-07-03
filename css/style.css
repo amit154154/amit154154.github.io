@@ -194,3 +194,7 @@ a:hover .icon {
 .experience-details p {
     margin: 5px 0;
 }
+
+body {
+    cursor: url('../assets/cursor.png'), auto;
+}
