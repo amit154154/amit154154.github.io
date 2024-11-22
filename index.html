@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amit Israeli - Research Engineer</title>
+    <link rel="icon" type="image/x-icon" href="icon.png">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat+Alternates:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: #fff;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin: 0;
+            text-align: center;
+            color: #333;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 28px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 50px;
+            height: 3px;
+            background: #77b300;
+            display: block;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Experience Section */
+        .experience-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .experience-item .company-logo {
+            width: 100px;
+            height: 100px;
+            margin-right: 30px;
+            object-fit: contain;
+        }
+
+        .experience-details {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .experience-details h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .experience-details h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #77b300;
+        }
+
+        .experience-details .dates {
+            font-size: 16px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .experience-details p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Projects Section */
+        .project-item {
+            margin-bottom: 50px;
+        }
+
+        .project-item h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+            font-family: 'Montserrat Alternates', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* GitHub Button Styles */
+        /* Base styles for all social buttons */
+        .github-button,
+        .huggingface-button,
+        .wandb-button {
+            display: inline-flex;
+            align-items: center;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            margin-left: 8px; /* Space between buttons */
+        }
+
+        /* GitHub Button Styles */
+        .github-button {
+            background-color: #24292e;
+        }
+
+        .github-button:hover {
+            background-color: #444c56;
+        }
+
+        /* Hugging Face Button Styles */
+        .huggingface-button {
+            background-color: #FF6562; /* Hugging Face brand color */
+        }
+
+        .huggingface-button:hover {
+            background-color: #e04e50;
+        }
+
+        /* Weights & Biases Button Styles */
+        .wandb-button {
+            background-color: #4C9AFF; /* Weights & Biases brand color */
+        }
+
+        .wandb-button:hover {
+            background-color: #3b8ae0;
+        }
+
+        /* SVG Icon Styles for all buttons */
+        .github-button svg,
+        .huggingface-button svg,
+        .wandb-button svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            fill: currentColor;
+        }
+
+        /* Project Content Layout */
+        .project-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        /* Project Description (Left Side) */
+        .project-description {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        /* Bullet Points Styling */
+        .project-points {
+            list-style-type: disc;
+            padding-left: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .project-points li {
+            margin-bottom: 10px;
+        }
+
+        /* Right Side: Options and Image */
+        .project-options-image {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Options Styling */
+        #options {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .option-group {
+            margin-bottom: 15px;
+        }
+
+        .option-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .option-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .option-group select:hover {
+            border-color: #77b300;
+        }
+
+        .option-group select:focus {
+            outline: none;
+            border-color: #77b300;
+            box-shadow: 0 0 5px rgba(119, 179, 0, 0.5);
+        }
+
+        /* Image Styling */
+        #image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Project Images/Videos under Text */
+        .project-images {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .project-images img,
+        .project-images iframe {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Project Video (Right Side) */
+        .project-video {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .project-video video {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Project Gallery */
+        .project-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .project-gallery img,
+        .project-gallery video,
+        .project-gallery iframe {
+            width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Contact Section */
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .contact-item img {
+            width: 24px;
+            margin-right: 8px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background: #fff;
+            border-top: 2px solid #e0e0e0;
+            color: #777;
+            margin-top: 40px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .experience-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .experience-item .company-logo {
+                margin-bottom: 20px;
+                margin-right: 0;
+            }
+
+            .project-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .project-description,
+            .project-video,
+            .project-options-image {
+                min-width: 100%;
+            }
+
+            .project-images img,
+            .project-images iframe,
+            .project-video video {
+                max-width: 100%;
+            }
+
+            .project-gallery img,
+            .project-gallery video,
+            .project-gallery iframe {
+                max-width: 100%;
+            }
+        }
+
+        /* Specific Styling for Enlarged Image in CelebrityLook */
+        .project-description img.enlarged {
+            max-width: 600px;
+        }
+        /* Styled Sentence */
+        #customization-sentence {
+            font-family: "Poppins", sans-serif; /* Cool font */
+            font-size: 20px;
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #customization-sentence select {
+            display: inline-block;
+            width: auto;
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: "Poppins", sans-serif;
+        }
+
+        #customization-sentence select:hover {
+            border-color: #13efe7;
+        }
+
+        #customization-sentence select:focus {
+            outline: none;
+            border-color: #77b300;
+            box-shadow: 0 0 5px rgba(119, 179, 0, 0.5);
+        }
+
+        /* Cool Image Generator Section */
+        #image-container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px dashed #00ffea;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f0f0f0, rgba(110, 255, 255, 0.34));
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: "Poppins", sans-serif;
+        }
+
+        .funko-image {
+            max-width: 300px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        /* Fade-out Animation */
+        .funko-image.fade-out {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Amit Israeli - Research Engineer</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Experience Section -->
+        <section id="experience">
+            <h2 class="section-title">Experience</h2>
+
+            <div class="experience-item">
+                <img src="assets/experience/nlpearl_logo.jpeg" alt="NLPearl Logo" class="company-logo">
+                <div class="experience-details">
+                    <h3>NLPearl</h3>
+                    <h4>Deep Learning Research Engineer</h4>
+                    <p class="dates">Jul 2024 - Present</p>
+                        <ul>
+                            <li>Developed real-time systems to detect conversational pauses and suggest optimal starter sentences for AI agents using fine-tuned LLMs, with specialized prediction heads..</li>
+                            <li>Experimented with various architectures, including encoder-based and decoder-pretrained models, applying LoRA and multi-stage training to enhance prediction accuracy.</li>
+                            <li>Designed a small language model (SLM) to generate task-specific tokens, enabling multi-task outputs from a single fine-tuned model for efficient real-time inference.</li>
+                            <li>Design solutions using pre-trained SOTA audio tokenization models and large language models (LLMs) tailored for audio-specific objectives..</li>
+                        </ul>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <img src="assets/experience/pashoot_robotics_logo.jpeg" alt="Pashoot Robotics Logo" class="company-logo">
+                <div class="experience-details">
+                    <h3>Pashoot Robotics</h3>
+                    <h4>Computer Vision and Deep Learning Research Engineer</h4>
+                    <p class="dates">May 2023 - Jul 2024</p>
+                    <p>
+                        As a pivotal member of the Algorithms team at Pashoot Robotics, my role focused on enhancing and innovating vision solutions critical to manufacturing automation. I applied deep learning methods to practical applications, including research in 3D reconstruction, object detection, segmentation (few-shot, zero-shot), tracking, 6DOF estimation, and simulation expertise (specifically using Blender).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <h2 class="section-title">Projects</h2>
+
+            <!-- Project 1: PopYou2 -->
+           <div class="project-item">
+                <h3>
+                    PopYou2 - VAR Text
+                    <!-- GitHub Button -->
+                    <a href="https://github.com/amit154154/PopYou2" class="github-button" target="_blank" aria-label="View GitHub Repository">
+                        <!-- GitHub SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47
+                            7.59.4.07.55-.17.55-.38
+                            0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                            -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                            0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                            0 0 .67-.21 2.2.82a7.65 7.65
+                            0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
+                            2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
+                            3.75-3.65 3.95.29.25.54.73.54 1.48
+                            0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
+                            8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                    <!-- Hugging Face Button -->
+                    <a href="https://huggingface.co/spaces/AmitIsraeli/PopYou" class="huggingface-button" target="_blank" aria-label="View Hugging Face Repository">
+                        <!-- Hugging Face SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                            <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm0 29C8.268 29 3 23.732 3 16S8.268 3 16 3s13 5.268 13 13-5.268 13-13 13z"/>
+                            <path d="M22 14H10v4h12v-4z"/>
+                        </svg>
+                        Hugging Face🤗
+                    </a>
+                    <!-- Weights & Biases Button -->
+                    <a href="https://api.wandb.ai/links/amit154154/cqccmfsl" class="wandb-button" target="_blank" aria-label="View Weights & Biases Report">
+                        <!-- Weights & Biases SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path d="M256 0C114.836 0 0 114.836 0 256s114.836 256 256 256 256-114.836 256-256S397.164 0 256 0zm0 482C132.288 482 30 379.712 30 256S132.288 30 256 30s226 102.288 226 226-102.288 226-226 226z"/>
+                            <path d="M352 224H160v64h192v-64z"/>
+                        </svg>
+                        wandb
+                    </a>
+                </h3>
+                <div class="project-content">
+                    <!-- Left side: Bullet points -->
+                    <div class="project-description">
+                        <ul class="project-points">
+                            <li>
+                                Generated a comprehensive dataset of approximately 100,000 Funko Pop! images with detailed prompts using
+                                <a href="https://huggingface.co/stabilityai/sdxl-turbo" target="_blank">SDXL Turbo</a> for high-quality data creation.
+                            </li>
+                            <li>
+                                Fine-tuned the
+                                <a href="https://arxiv.org/abs/2404.02905" target="_blank">Visual AutoRegressive (VAR)</a> model, pretrained on ImageNet,
+                                to adapt it for Funko Pop! generation by injecting a custom embedding representing the "doll" class.
+                            </li>
+                            <li>
+                                Trained an adapter with the frozen
+                                <a href="https://github.com/FoundationVision/VAR" target="_blank">SigLIP image encoder</a> and a lightweight LoRA module to map image embeddings to text representation in a large language model.
+                            </li>
+                            <li>
+                                Enabled text-to-image generation by replacing the SigLIP image encoder with its text encoder, retaining frozen components such as the VAE and generator for efficiency and quality.
+                            </li>
+                        </ul>
+                        <div style="text-align: center; margin-top: 20px;">
+                            <img src="assets/projects_images/PopYou2/VAR_explained.png" style="width: 100%; max-width: 600px;">
+                        </div>
+                    </div>
+
+                    <!-- Right side: Styled Sentence and Cool Image Section -->
+                    <div class="project-options-image">
+                        <!-- Styled Sentence with Embedded Selects -->
+                        <div id="customization-sentence">
+                            A Funko Pop figure of
+                            <select id="famous_name" onchange="updateImage()">
+                                <option value="none">None</option>
+                                <option value="donald_trump">Donald Trump</option>
+                                <option value="johnny_depp">Johnny Depp</option>
+                                <option value="oprah_winfrey">Oprah Winfrey</option>
+                            </select>,
+                            styled as a
+                            <select id="character" onchange="updateImage()">
+                                <option value="none">None</option>
+                                <option value="alien">Alien</option>
+                                <option value="robot">Robot</option>
+                            </select>,
+                            performing
+                            <select id="action" onchange="updateImage()">
+                                <option value="none">None</option>
+                                <option value="playing_the_guitar">Playing the Guitar</option>
+                                <option value="holding_the_sword">Holding the Sword</option>
+                            </select>.
+                        </div>
+
+                        <!-- Cool Image Generator Section -->
+                        <div id="image-container">
+                            <img id="funko_image" class="funko-image" src="assets/projects_images/PopYou2/generated_images/none_none_none.png" alt="Funko Pop Image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 1: Few-Shot Segmentation with SAM and LoRA -->
+            <div class="project-item">
+                <h3>
+                    Few-Shot Segmentation with SAM and LoRA
+                    <a href="https://github.com/amit154154/SAM_LORA" class="github-button" target="_blank" aria-label="View GitHub Repository">
+                        <!-- GitHub SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                            0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                            -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89
+                            -3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.65 7.65
+                            0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82
+                            2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01
+                            2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </h3>
+                <div class="project-content">
+                    <!-- Left side: Bullet points -->
+                    <div class="project-description">
+                        <ul class="project-points">
+                            <li>Employs LoRA to adapt SAM for few-shot segmentation with minimal images.</li>
+                            <li>Eliminates reliance on external prompts or detection models like Grounding SAM or YOLO.</li>
+                            <li>Outperforms prior methods (e.g., <a href="https://arxiv.org/abs/2305.03048" target="_blank">PerSAM</a>) in class-specific segmentation quality and flexibility.</li>
+                            <li>Trained on diverse datasets, including COCO, Soccer, and Cityscapes, with varying sample sizes and class distributions.</li>
+                            <li>Explored methods to enhance the approach by leveraging other foundation models with prior class-oriented knowledge (e.g., CLIP, SigLIP).</li>
+                        </ul>
+                    </div>
+                    <!-- Right side: Images -->
+                    <div class="project-images">
+                        <img src="assets/projects_images/few_shot_sam_lora/cityscapes.png" alt="Cityscapes">
+                        <img src="assets/projects_images/few_shot_sam_lora/coco.png" alt="COCO">
+                        <img src="assets/projects_images/few_shot_sam_lora/soccer.png" alt="Soccer">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2: CelebrityLook -->
+            <div class="project-item">
+                <h3>
+                    CelebrityLook
+                    <a href="https://github.com/amit154154/CelebrityLook" class="github-button" target="_blank" aria-label="View GitHub Repository">
+                        <!-- GitHub SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47
+                            7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                            -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                            0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                            0 0 .67-.21 2.2.82a7.65 7.65
+                            0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
+                            2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
+                            3.75-3.65 3.95.29.25.54.73.54 1.48
+                            0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
+                            8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </h3>
+                <div class="project-content">
+                    <!-- Left side: Bullet points and images/videos -->
+                    <div class="project-description">
+                        <ul class="project-points">
+                            <li>Developed a mobile app for real-time face transformation.</li>
+                            <li>Utilized advanced GAN technologies on-device.</li>
+                            <li>Achieved 30fps on mobile devices with optimized CoreML models.</li>
+                            <li>Won the MobileXGenAI hackathon hosted by Samsung Next.</li>
+                            <li>Combined multiple losses from foundation models and facial feature extractors to ensure high-quality transformations.</li>
+                            <li>
+                                Implemented the paper
+                                <a href="https://arxiv.org/abs/2210.04506" target="_blank">
+                                    <strong>"Bridging CLIP and StyleGAN through Latent Alignment for Image Editing"</strong>
+                                </a>
+                               Conducted research to enhance the approach by experimenting with different loss functions, latent spaces, and mapper architectures, leveraging a custom StyleGAN variant. Additionally, explored the method’s limitations and stability, introducing a fine-tuning process to improve model robustness and performance.
+                            </li>
+                        </ul>
+                        <!-- Images/Videos under the text -->
+                        <div class="project-images">
+                            <img src="assets/projects_images/CelebryLook/mapper_training.png" alt="Mapper Training" class="enlarged">
+                        </div>
+                    </div>
+                    <!-- Right side: Video demo -->
+                    <div class="project-video">
+                        <video controls>
+                            <source src="assets/projects_images/CelebryLook/celebrityLook_demo.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3: Funko Pop! Generator -->
+            <div class="project-item">
+                <h3>
+                    Funko Pop! Generator
+                    <a href="https://github.com/amit154154/PopYou" class="github-button" target="_blank" aria-label="View GitHub Repository">
+                        <!-- GitHub SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47
+                            7.59.4.07.55-.17.55-.38
+                            0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                            -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                            0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                            0 0 .67-.21 2.2.82a7.65 7.65
+                            0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
+                            2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
+                            3.75-3.65 3.95.29.25.54.73.54 1.48
+                            0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
+                            8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </h3>
+                <div class="project-content">
+                    <!-- Left side: Bullet points -->
+                    <div class="project-description">
+                        <ul class="project-points">
+                            <li>Utilized an image upscaling model and Deci Diffusion to create a semi-synthetic dataset of Funko Pop figures.</li>
+                            <li>Trained a GAN model on the dataset using FastGAN to generate high-quality Funko Pop designs.</li>
+                            <li>Developed an inversion model based on a frozen CLIP backbone, enabling image generation from both text and real-life images, leveraging techniques from the CelebrityLook project.</li>
+                            <li>Explored 3D generation of Funko Pop figures, including mesh creation and multi-view rendering, using cutting-edge diffusion models and textual inversion.</li>
+                            <li>Benchmarked the PopYou! model against Deci Diffusion, evaluating performance through CLIP similarity and FID scores.</li>
+                        </ul>
+                    </div>
+                    <!-- Right side: Images -->
+                    <div class="project-images">
+                        <img src="assets/projects_images/PopYou!/Barack_Obama_fastgan.png" alt="Barack Obama FastGAN">
+                        <img src="assets/projects_images/PopYou!/ras_dreamgaussian.gif" alt="RAS DreamGaussian">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4: KoalaReadingAI -->
+            <div class="project-item">
+                <h3>
+                    KoalaReadingAI
+                    <a href="#" class="github-button" target="_blank" aria-label="View GitHub Repository">
+                        <!-- GitHub SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47
+                            7.59.4.07.55-.17.55-.38
+                            0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                            -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                            0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                            0 0 .67-.21 2.2.82a7.65 7.65
+                            0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
+                            2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
+                            3.75-3.65 3.95.29.25.54.73.54 1.48
+                            0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
+                            8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </h3>
+                <div class="project-content">
+                    <!-- Left side: Bullet points -->
+                    <div class="project-description">
+                        <ul class="project-points">
+                            <li>Founded an AI podcast that automatically summarizes the latest AI research papers.</li>
+                            <li>Utilizes ElevenLabs text-to-speech and ChatPDF APIs for summarization and speech synthesis.</li>
+                            <li>Automated downloading of latest papers from Hugging Face daily papers.</li>
+                            <li>Implemented free TTS option using Tortoise-TTS; working on summaries using Llama 2.</li>
+                            <li>Available on <a href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1" target="_blank">Spotify</a> and <a href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA" target="_blank">YouTube</a>.</li>
+                        </ul>
+                    </div>
+                    <!-- Right side: Video demo -->
+                    <div class="project-video">
+                        <video controls>
+                            <source src="assets/projects_images/koala_reading_ai/koala_reading_ai_gif.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2 class="section-title">Contact</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <img src="assets/contact_icons/email-icon.png" alt="Email Icon">
+                    <a href="mailto:amit1541541@gmail.com">amit1541541@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <img src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn Icon">
+                    <a href="https://www.linkedin.com/in/amit-israeli-aa4a30242/" target="_blank">LinkedIn</a>
+                </div>
+                <div class="contact-item">
+                    <img src="assets/contact_icons/github-icon.png" alt="GitHub Icon">
+                    <a href="https://github.com/amit154154" target="_blank">GitHub</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        &copy; 2024 Amit Israeli. All rights reserved.
+    </footer>
+    <script>
+        function updateImage() {
+            const famousName = document.getElementById("famous_name").value;
+            const character = document.getElementById("character").value;
+            const action = document.getElementById("action").value;
+
+            const filename = `${famousName}_${character}_${action}.png`;
+            const imagePath = `assets/projects_images/PopYou2/generated_images/${filename}`;
+
+            const funkoImage = document.getElementById("funko_image");
+            funkoImage.classList.add("fade-out"); // Add fade-out animation
+            setTimeout(() => {
+                funkoImage.src = imagePath;
+                funkoImage.classList.remove("fade-out"); // Remove fade-out after updating
+            }, 150); // Match animation duration
+        }
+    </script>
+</body>
+</html>
