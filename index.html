@@ -27,19 +27,71 @@
             padding: 20px;
         }
 
-        /* Header */
+        /* Enhanced Header */
         header {
-            background: #fff;
-            border-bottom: 2px solid #e0e0e0;
+            background: linear-gradient(135deg, #77b300, #13efe7); /* Gradient background */
+            color: white;
             padding: 20px 0;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         header h1 {
-            font-size: 32px;
+            font-size: 36px; /* Larger font */
+            font-weight: bold;
             margin: 0;
-            text-align: center;
-            color: #333;
+            color: #fff;
+            font-family: 'Montserrat Alternates', sans-serif; /* Cool font */
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
+            animation: fadeInDown 1s ease-out; /* Cool animation */
         }
+
+        /* Header Decorations */
+        header::before,
+        header::after {
+            content: '';
+            position: absolute;
+            height: 100px;
+            width: 100px;
+            background: rgba(255, 255, 255, 0.1); /* Decorative elements */
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        header::before {
+            top: 10%;
+            left: 5%;
+        }
+
+        header::after {
+            top: 30%;
+            right: 10%;
+        }
+
+        /* Keyframes for Animation */
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
 
         /* Section Titles */
         .section-title {
