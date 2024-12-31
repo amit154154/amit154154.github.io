@@ -667,6 +667,8 @@
 
                     <input type="checkbox" id="tag-nlp" value="NLP" onchange="filterProjects()">
                     <label for="tag-nlp">NLP</label>
+                    <input type="checkbox" id="tag-VLM" value="VLM" onchange="filterProjects()">
+                    <label for="tag-VLM">VLM</label>
 
                     <input type="checkbox" id="tag-computer-vision" value="Computer Vision" onchange="filterProjects()">
                     <label for="tag-computer-vision">Computer Vision</label>
@@ -677,7 +679,62 @@
                     <!-- Add more tags as needed -->
                 </div>
             </div>
-
+            <!-- Project: Token-Budget-Aware LLM Reasoning (VLM Implementation) -->
+            <div class="project-item">
+                <h3>
+                    Token-Budget-Aware LLM Reasoning (VLM Implementation)
+                    <!-- GitHub Button -->
+                    <a href="https://github.com/amit154154/Token_Budget_cot_VLM" class="github-button" target="_blank" aria-label="View GitHub Repository">
+                        <!-- GitHub SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+                            0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                            -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                            0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                            0 0 .67-.21 2.2.82a7.65 7.65
+                            0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
+                            3.75-3.65 3.95.29.25.54.73.54 1.48
+                            0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
+                            8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                    <!-- Weights & Biases Button -->
+                    <a href="https://api.wandb.ai/links/amit154154/9sa4u3th" class="wandb-button" target="_blank" aria-label="View Weights & Biases Report">
+                        <!-- Weights & Biases SVG Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path d="M256 0C114.836 0 0 114.836 0 256s114.836 256 256 256 256-114.836 256-256S397.164 0 256 0zm0 482C132.288 482 30 379.712 30 256S132.288 30 256 30s226 102.288 226 226-102.288 226-226 226z"/>
+                            <path d="M352 224H160v64h192v-64z"/>
+                        </svg>
+                        wandb
+                    </a>
+                </h3>
+                <!-- Tags for this project -->
+                <div class="project-tags">
+                    <span class="tag">NLP</span>
+                    <span class="tag">VLM</span>
+                </div>
+                <div class="project-content">
+                    <!-- Left side: Bullet points -->
+                    <div class="project-description">
+                        <ul class="project-points">
+                            <li>
+                                Implemented the paper
+                                <a href="https://huggingface.co/papers/2412.18547" target="_blank">
+                                    <strong>Token-Budget-Aware LLM Reasoning</strong>
+                                </a> for visual-language model (VLM) chain-of-thought tasks.
+                            </li>
+                            <li>
+                                Implemented a token-budget-aware method from the Token-Budget-Aware LLM Reasoning paper for multimodal environments (VLM), which the paper does not address. Fine-tuned an LLM with LoRA and integrated a frozen SigLIP image encoder. Designed a head combining the SigLIP CLS token and LLM hidden states to predict token budgets. Evaluated performance using both text-only and multimodal inputs.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="project-images">
+                        <img src="assets/projects_images/token_budget_cot/token_budget_example.png" alt="Token Budget Reasoning - Example 1">
+                        <img src="assets/projects_images/token_budget_cot/token_budget_predictor.png" alt="Token Budget Reasoning - Example 2">
+                    </div>
+                </div>
+            </div>
             <!-- Project 1: PopYou2 -->
            <div class="project-item">
                 <h3>
