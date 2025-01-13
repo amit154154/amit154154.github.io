@@ -659,7 +659,7 @@
                     <h4>Computer Vision Research Engineer</h4>
                     <p class="dates">Dec 2024 - Present</p>
                     <ul>
-                        <li>Collaborated with <a href="https://il.linkedin.com/company/luckylab?trk=ppro_cprof" target="_blank" rel="noopener noreferrer">LuckyLab</a> to develop and deploy cutting-edge deep learning solutions for computer vision challenges on edge devices.</li>
+                        <li>Collaborated with <a href="https://www.luckylab.org/" target="_blank" rel="noopener noreferrer">LuckyLab</a> to develop and deploy cutting-edge deep learning solutions for computer vision challenges on edge devices.</li>
                         <li>Focused on real-time segmentation, object detection, and optimization techniques for resource-constrained environments.</li>
                     </ul>
                 </div>
@@ -720,6 +720,9 @@
 
                     <input type="checkbox" id="tag-mobile-app" value="Mobile App" onchange="filterProjects()">
                     <label for="tag-mobile-app">Mobile App</label>
+
+                    <input type="checkbox" id="Audio-Generation" value="Audio Generation" onchange="filterProjects()">
+                    <label for="Audio-Generation">Audio-Generation</label>
                 </div>
             </div>
 
@@ -770,8 +773,8 @@
                         </ul>
                     </div>
                     <div class="project-images">
-                        <img src="assets/projects_images/token_budget_cot/token_budget_example.png" alt="Token Budget Reasoning - Example 1">
-                        <img src="assets/projects_images/token_budget_cot/token_budget_predictor.png" alt="Token Budget Reasoning - Example 2">
+                        <img src="assets/projects_assets/token_budget_cot/token_budget_example.png" alt="Token Budget Reasoning - Example 1">
+                        <img src="assets/projects_assets/token_budget_cot/token_budget_predictor.png" alt="Token Budget Reasoning - Example 2">
                     </div>
                 </div>
             </div>
@@ -837,7 +840,7 @@
                             </li>
                         </ul>
                         <div style="text-align: center; margin-top: 20px;">
-                            <img src="assets/projects_images/PopYou2/VAR_explained.png" style="width: 100%; max-width: 600px;" alt="VAR Explained">
+                            <img src="assets/projects_assets/PopYou2/VAR_explained.png" style="width: 100%; max-width: 600px;" alt="VAR Explained">
                         </div>
                     </div>
                     <div class="project-options-image">
@@ -863,7 +866,7 @@
                             </select>.
                         </div>
                         <div id="image-container">
-                            <img id="funko_image" class="funko-image" src="assets/projects_images/PopYou2/generated_images/none_none_none.png" alt="Funko Pop Image">
+                            <img id="funko_image" class="funko-image" src="assets/projects_assets/PopYou2/generated_images/none_none_none.png" alt="Funko Pop Image">
                         </div>
                     </div>
                 </div>
@@ -905,13 +908,70 @@
                         </ul>
                         <!-- Insert the image here -->
                         <div style="text-align: center; margin-top: 20px;">
-                            <img src="assets/projects_images/few_shot_sam_lora/sam_lora_figure.png" style="width: 300%; max-width: 650px;" alt="SAM LoRA Explained">
+                            <img src="assets/projects_assets/few_shot_sam_lora/sam_lora_figure.png" style="width: 300%; max-width: 650px;" alt="SAM LoRA Explained">
                         </div>
                     </div>
                     <div class="project-images">
-                        <img src="assets/projects_images/few_shot_sam_lora/cityscapes.png" alt="Cityscapes">
-                        <img src="assets/projects_images/few_shot_sam_lora/coco.png" alt="COCO">
-                        <img src="assets/projects_images/few_shot_sam_lora/soccer.png" alt="Soccer">
+                        <img src="assets/projects_assets/few_shot_sam_lora/cityscapes.png" alt="Cityscapes">
+                        <img src="assets/projects_assets/few_shot_sam_lora/coco.png" alt="COCO">
+                        <img src="assets/projects_assets/few_shot_sam_lora/soccer.png" alt="Soccer">
+                    </div>
+                </div>
+            </div>
+            <!-- Add this new project block inside the #projects section -->
+            <div class="project-item">
+                <h3>
+                    MusicGen Genre Fine-Tuning with LoRA
+                    <!-- GitHub Button -->
+                    <a href="https://github.com/amit154154/musicgen_finetune" class="github-button" target="_blank" aria-label="View GitHub Repository">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47
+                                    7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                                    -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                                    0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                                    0 0 .67-.21 2.2.82a7.65 7.65
+                                    0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
+                                    2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
+                                    3.75-3.65 3.95.29.25.54.73.54 1.48
+                                    0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
+                                    8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        GitHub
+                    </a>
+                </h3>
+                <div class="project-tags">
+                    <span class="tag">Audio Generation</span>
+                </div>
+                <div class="project-content">
+                    <div class="project-description">
+                        <ul class="project-points">
+                            <li>Fine-tune Meta's <strong>MusicGen</strong> model using LoRA to generate genre-specific music.</li>
+                            <li>Preserves the original controllable generation capabilities of MusicGen.</li>
+                            <li>Evaluated with MapleStory-like background music to achieve distinct style adaptation.</li>
+                        </ul>
+                        <!-- Two sample .wav files -->
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: center; margin-top: 20px;">
+                            <audio controls
+                                   style="
+                                       width: 250px;
+                                       max-width: 100%;
+                                       border-radius: 10px;
+                                       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                                   ">
+                                <source src="assets/projects_assets/musicgen_finetune/example_1.wav" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                            <audio controls
+                                   style="
+                                       width: 250px;
+                                       max-width: 100%;
+                                       border-radius: 10px;
+                                       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                                   ">
+                                <source src="assets/projects_assets/musicgen_finetune/example_2.wav" type="audio/wav">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -959,12 +1019,12 @@
                             </li>
                         </ul>
                         <div class="project-images">
-                            <img src="assets/projects_images/CelebryLook/mapper_training.png" alt="Mapper Training" class="enlarged">
+                            <img src="assets/projects_assets/CelebryLook/mapper_training.png" alt="Mapper Training" class="enlarged">
                         </div>
                     </div>
                     <div class="project-video">
                         <video controls autoplay muted>
-                            <source src="assets/projects_images/CelebryLook/celebrityLook_demo.mp4" type="video/mp4">
+                            <source src="assets/projects_assets/CelebryLook/celebrityLook_demo.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </div>
@@ -1008,8 +1068,8 @@
                         </ul>
                     </div>
                     <div class="project-images">
-                        <img src="assets/projects_images/PopYou!/Barack_Obama_fastgan.png" alt="Barack Obama FastGAN">
-                        <img src="assets/projects_images/PopYou!/ras_dreamgaussian.gif" alt="RAS DreamGaussian">
+                        <img src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.png" alt="Barack Obama FastGAN">
+                        <img src="assets/projects_assets/PopYou!/ras_dreamgaussian.gif" alt="RAS DreamGaussian">
                     </div>
                 </div>
             </div>
@@ -1077,7 +1137,7 @@
                     </div>
                     <div class="project-video">
                         <video controls autoplay muted>
-                            <source src="assets/projects_images/koala_reading_ai/koala_reading_ai_gif.mp4" type="video/mp4">
+                            <source src="assets/projects_assets/koala_reading_ai/koala_reading_ai_gif.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </div>
@@ -1117,7 +1177,7 @@
             const action = document.getElementById("action").value;
 
             const filename = `${famousName}_${character}_${action}.png`;
-            const imagePath = `assets/projects_images/PopYou2/generated_images/${filename}`;
+            const imagePath = `assets/projects_assets/PopYou2/generated_images/${filename}`;
 
             const funkoImage = document.getElementById("funko_image");
             funkoImage.classList.add("fade-out"); // Add fade-out animation
