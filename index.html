@@ -638,6 +638,47 @@
             background-color: #77b300;
             color: #fff;
         }
+       .cv-button {
+        display: inline-flex;
+        align-items: center;
+        background-color: #77b300; /* Matches your existing color scheme */
+        color: #fff;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-weight: bold;
+        font-family: 'Montserrat Alternates', sans-serif; /* Same font as your header */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+      }
+       .download-button {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(135deg, #77b300, #13efe7);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .download-button svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    .download-button:hover {
+      background: linear-gradient(135deg, #13efe7, #77b300);
+      transform: scale(1.05);
+    }
+
+    .download-button:hover svg {
+      transform: translateX(4px);}
 
     </style>
 </head>
@@ -646,6 +687,20 @@
         <div class="container">
             <h1>Amit Israeli - Research Engineer</h1>
         </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+        <div class="cv-download" style="text-align: center; margin: 20px 0;">
+          <a href="assets/Amit-Israeli-CV.pdf" download class="download-button"
+             style="display: inline-flex; align-items: center; background: linear-gradient(135deg, #77b300, #13efe7); color: #fff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-family: 'Poppins', sans-serif; font-size: 16px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: background 0.3s ease;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
+                   style="width: 20px; height: 20px; margin-right: 8px;">
+                  <path d="M.5 9.9a.5.5 0 0 1 .5-.4h4a.5.5 0 0 1 0 1H2.207l1.147 1.146a.5.5 0 1 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L2.207 9.5H5a.5.5 0 0 1 .5-.5h-4a.5.5 0 0 1-.5-.5zm6 5a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H7a.5.5 0 0 1-.5-.5z"/>
+                  <path d="M4 1.5A1.5 1.5 0 0 1 5.5 0h5A1.5 1.5 0 0 1 12 1.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 0 11.5 1h-5A.5.5 0 0 0 6 1.5v2a.5.5 0 0 1-1 0v-2z"/>
+              </svg>
+              Download My CV
+          </a>
+        </div>
+
     </header>
 
     <div class="container">
