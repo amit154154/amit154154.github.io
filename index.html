@@ -7,7 +7,8 @@
     <title>Amit Israeli - Research Engineer</title>
     <link rel="icon" type="image/x-icon" href="icon.png">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat+Alternates:wght@700&family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat+Alternates:wght@700&family=Poppins&display=swap"
+          rel="stylesheet">
     <style>
         /* Base Styles */
         body {
@@ -29,49 +30,34 @@
 
         /* Enhanced Header */
         header {
-            background: linear-gradient(135deg, #77b300, #13efe7); /* Gradient background */
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+            url('assets/header_siliconValley_image.png') center center no-repeat;
+            background-size: cover; /* Fill entire area, may crop */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #000;
             color: white;
-            padding: 20px 0;
             text-align: center;
             position: relative;
+            width: 100%;
+            height: 300px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         header h1 {
-            font-size: 36px; /* Larger font */
+            font-size: 36px;
             font-weight: bold;
             margin: 0;
             color: #fff;
-            font-family: 'Montserrat Alternates', sans-serif; /* Cool font */
+            font-family: 'Montserrat Alternates', sans-serif;
             letter-spacing: 1px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
-            animation: fadeInDown 1s ease-out; /* Cool animation */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeInDown 1s ease-out;
         }
 
-        /* Header Decorations */
-        header::before,
-        header::after {
-            content: '';
-            position: absolute;
-            height: 100px;
-            width: 100px;
-            background: rgba(255, 255, 255, 0.1); /* Decorative elements */
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-            z-index: 0;
-        }
-
-        header::before {
-            top: 10%;
-            left: 5%;
-        }
-
-        header::after {
-            top: 30%;
-            right: 10%;
-        }
-
-        /* Keyframes for Animation */
         @keyframes fadeInDown {
             0% {
                 opacity: 0;
@@ -100,6 +86,7 @@
             color: #333;
             text-align: center;
             position: relative;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .section-title::after {
@@ -112,37 +99,72 @@
             border-radius: 2px;
         }
 
-        /* Experience Section */
-        .experience-item {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
-            margin-bottom: 40px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* ADDED */
+        /* Timeline styling for Experience */
+        .timeline {
+            position: relative;
+            margin: 40px 0;
+            padding-left: 40px;
         }
 
-        .experience-item .company-logo {
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #77b300;
+        }
+
+        .experience-item {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 20px 20px 20px 40px;
+            margin-bottom: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .experience-item:hover {
+            transform: scale(1.02);
+            background-color: #fff;
+        }
+
+        .experience-item::before {
+            content: "";
+            position: absolute;
+            left: -31px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            background: #13efe7;
+            border: 3px solid #77b300;
+            border-radius: 50%;
+        }
+
+        .company-logo {
             width: 100px;
             height: 100px;
             margin-right: 30px;
             object-fit: contain;
         }
 
-        .experience-details {
-            flex: 1;
-            min-width: 250px;
-        }
-
         .experience-details h3 {
             font-size: 24px;
             margin-bottom: 5px;
             color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .experience-details h4 {
             font-size: 20px;
             margin-bottom: 10px;
             color: #77b300;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .experience-details .dates {
@@ -151,28 +173,24 @@
             margin-bottom: 15px;
         }
 
-        .experience-details p {
+        .experience-details p,
+        .experience-details ul {
             font-size: 16px;
             color: #555;
             line-height: 1.6;
         }
 
-        /* HOVER ANIMATION FOR EXPERIENCE ITEMS - ADDED */
-        .experience-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: scale(1.02);
-            background-color: #fff;
-            border-radius: 8px;
+        .experience-details a:hover {
+            color: #13efe7;
         }
 
         /* Projects Section */
         .project-item {
             margin-bottom: 50px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* ADDED */
-            border-radius: 8px; /* ADDED */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 8px;
         }
 
-        /* HOVER ANIMATION FOR PROJECT ITEMS - ADDED */
         .project-item:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transform: scale(1.02);
@@ -192,7 +210,7 @@
             flex-wrap: wrap;
         }
 
-        /* GitHub Button Styles */
+        /* Button Styles */
         .github-button,
         .huggingface-button,
         .wandb-button,
@@ -217,14 +235,6 @@
             background-color: #444c56;
         }
 
-        .github-button svg {
-            fill: #ffffff;
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-        }
-
-        /* Hugging Face Button Styles */
         .huggingface-button {
             background-color: #FF6562;
         }
@@ -233,14 +243,6 @@
             background-color: #e04e50;
         }
 
-        .huggingface-button svg {
-            fill: white;
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-        }
-
-        /* Weights & Biases Button Styles */
         .wandb-button {
             background-color: #4C9AFF;
         }
@@ -249,14 +251,6 @@
             background-color: #3b8ae0;
         }
 
-        .wandb-button svg {
-            fill: white;
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-        }
-
-        /* Spotify Button Styles */
         .spotify-button {
             background-color: #1DB954;
             color: white;
@@ -266,14 +260,6 @@
             background-color: #1aa34a;
         }
 
-        .spotify-button svg {
-            fill: white;
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-        }
-
-        /* YouTube Button Styles */
         .youtube-button {
             background-color: #FF0000;
             color: white;
@@ -283,8 +269,8 @@
             background-color: #cc0000;
         }
 
-        .youtube-button svg {
-            fill: white;
+        /* Replace SVG icons with PNG icons in buttons */
+        .button-icon {
             width: 20px;
             height: 20px;
             margin-right: 5px;
@@ -298,13 +284,11 @@
             gap: 20px;
         }
 
-        /* Project Description (Left Side) */
         .project-description {
             flex: 1;
             min-width: 250px;
         }
 
-        /* Bullet Points Styling */
         .project-points {
             list-style-type: disc;
             padding-left: 20px;
@@ -316,7 +300,6 @@
             margin-bottom: 10px;
         }
 
-        /* Right Side: Options and Image */
         .project-options-image {
             flex: 1;
             min-width: 250px;
@@ -369,10 +352,9 @@
         #image-container img {
             max-width: 100%;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Project Images/Videos under Text */
         .project-images {
             margin-top: 20px;
             display: flex;
@@ -386,10 +368,9 @@
             max-width: 300px;
             margin-bottom: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Project Video (Right Side) */
         .project-video {
             flex: 1;
             min-width: 250px;
@@ -401,10 +382,9 @@
             width: 100%;
             max-width: 500px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Project Gallery */
         .project-gallery {
             display: flex;
             flex-wrap: wrap;
@@ -418,12 +398,11 @@
         .project-gallery iframe {
             width: 300px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         /* Contact Section */
         .contact-info {
-            /* REVISED STYLING FOR BETTER LAYOUT */
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -431,7 +410,6 @@
             margin-top: 30px;
         }
 
-        /* ADDED: Create a card-like style for each contact item */
         .contact-item {
             display: flex;
             align-items: center;
@@ -442,7 +420,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             font-size: 16px;
             color: #555;
-            text-decoration: none; /* ensure text is not underlined */
+            text-decoration: none;
         }
 
         .contact-item:hover {
@@ -450,14 +428,12 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        /* ADJUST ICON SIZE */
         .contact-item img {
             width: 28px;
             height: 28px;
             margin-right: 8px;
         }
 
-        /* Style for the link inside contact item if needed */
         .contact-item a {
             color: #333;
             text-decoration: none;
@@ -486,7 +462,7 @@
                 text-align: center;
             }
 
-            .experience-item .company-logo {
+            .company-logo {
                 margin-bottom: 20px;
                 margin-right: 0;
             }
@@ -522,7 +498,7 @@
 
         /* Styled Sentence */
         #customization-sentence {
-            font-family: "Poppins", sans-serif; /* Cool font */
+            font-family: "Poppins", sans-serif;
             font-size: 20px;
             font-weight: bold;
             color: #444;
@@ -571,7 +547,6 @@
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
-        /* Fade-out Animation */
         .funko-image.fade-out {
             opacity: 0;
             transform: scale(0.9);
@@ -638,126 +613,254 @@
             background-color: #77b300;
             color: #fff;
         }
-       .cv-button {
-        display: inline-flex;
-        align-items: center;
-        background-color: #77b300; /* Matches your existing color scheme */
-        color: #fff;
-        text-decoration: none;
-        padding: 12px 20px;
-        border-radius: 25px;
-        font-weight: bold;
-        font-family: 'Montserrat Alternates', sans-serif; /* Same font as your header */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: background-color 0.3s ease;
-      }
-       .download-button {
-      display: inline-flex;
-      align-items: center;
-      background: linear-gradient(135deg, #77b300, #13efe7);
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-family: 'Poppins', sans-serif;
-      font-size: 16px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease, background 0.3s ease;
+
+        .cv-button {
+            display: inline-flex;
+            align-items: center;
+            background-color: #77b300;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-family: 'Montserrat Alternates', sans-serif;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #77b300, #13efe7);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+
+        .download-button img {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+
+        .download-button:hover {
+            background: linear-gradient(135deg, #13efe7, #77b300);
+            transform: scale(1.05);
+        }
+
+        .download-button:hover img {
+            transform: translateX(4px);
+        }
+
+        /* Profile Section */
+        #profile {
+            margin: 40px 0;
+            padding: 20px 0;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-text {
+            flex: 1;
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .profile-text p {
+            margin-bottom: 15px;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+            padding-bottom: 20px;
+            gap: 20px;
+            z-index: 1; /* ensure it's above animated bubbles */
+            position: relative;
+        }
+        /* Updated Timeline Styles with Alternating Sides */
+.timeline {
+    position: relative;
+    padding: 40px 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #77b300;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.experience-item {
+    width: 50%;
+    position: relative;
+    margin: 40px 0;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 2;
+}
+
+.experience-item:hover {
+    transform: scale(1.02);
+}
+
+.experience-item::before {
+    content: "";
+    position: absolute;
+    top: 30px;
+    width: 20px;
+    height: 20px;
+    background: #13efe7;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px #77b300;
+    z-index: 3;
+}
+
+/* Left side items */
+.experience-item:nth-child(odd) {
+    left: 0;
+}
+
+.experience-item:nth-child(odd)::before {
+    right: -10px;
+}
+
+/* Right side items */
+.experience-item:nth-child(even) {
+    left: 50%;
+}
+
+.experience-item:nth-child(even)::before {
+    left: -10px;
+}
+
+/* Adjust inner layout */
+.experience-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.company-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.experience-details .dates {
+    font-style: italic;
+    color: #777;
+}
+
+/* Mobile Responsive Fix */
+@media screen and (max-width: 768px) {
+    .timeline::before {
+        left: 8px;
     }
 
-    .download-button svg {
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-      transition: transform 0.2s ease;
+    .experience-item,
+    .experience-item:nth-child(even),
+    .experience-item:nth-child(odd) {
+        width: 100%;
+        left: 0 !important;
+        padding-left: 40px;
     }
 
-    .download-button:hover {
-      background: linear-gradient(135deg, #13efe7, #77b300);
-      transform: scale(1.05);
+    .experience-item::before {
+        left: 0;
     }
-
-    .download-button:hover svg {
-      transform: translateX(4px);}
-    /* Profile Section */
-    #profile {
-        margin: 40px 0;
-        padding: 20px 0;
-        background-color: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .profile-content {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-
-    .profile-picture {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .profile-text {
-        flex: 1;
-        font-size: 16px;
-        color: #555;
-        line-height: 1.6;
-    }
-
-    .profile-text p {
-        margin-bottom: 15px;
-    }
-
-
+}
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Amit Israeli - Research Engineer</h1>
-        </div>
+<header>
+    <div class="container header-content">
+        <h1>Amit Israeli - Research Engineer</h1>
+        <a href="assets/Amit-Israeli-CV.pdf" download class="download-button">
+            <img src="assets/koala_looking.png" alt="Download Icon">
+            Download My CV
+        </a>
+    </div>
+</header>
 
-        <div style="text-align: center; margin-top: 40px;">
-        <div class="cv-download" style="text-align: center; margin: 20px 0;">
-          <a href="assets/Amit-Israeli-CV.pdf" download class="download-button"
-             style="display: inline-flex; align-items: center; background: linear-gradient(135deg, #77b300, #13efe7); color: #fff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-family: 'Poppins', sans-serif; font-size: 16px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: background 0.3s ease;">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
-                   style="width: 20px; height: 20px; margin-right: 8px;">
-                  <path d="M.5 9.9a.5.5 0 0 1 .5-.4h4a.5.5 0 0 1 0 1H2.207l1.147 1.146a.5.5 0 1 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L2.207 9.5H5a.5.5 0 0 1 .5-.5h-4a.5.5 0 0 1-.5-.5zm6 5a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H7a.5.5 0 0 1-.5-.5z"/>
-                  <path d="M4 1.5A1.5 1.5 0 0 1 5.5 0h5A1.5 1.5 0 0 1 12 1.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 0 11.5 1h-5A.5.5 0 0 0 6 1.5v2a.5.5 0 0 1-1 0v-2z"/>
-              </svg>
-              Download My CV
-          </a>
-            </div>
-        </div>
-
-    </header>
-    <section id="profile">
+<!-- Profile Section -->
+<section id="profile">
     <div class="container">
         <h2 class="section-title">Profile</h2>
         <div class="profile-content">
-            <img src="assets/linkdin_profile_image.jpeg" alt="Amit Israeli" class="profile-picture">
+            <img src="assets/linkdin_profile_image_ghibli.png" alt="Amit Israeli" class="profile-picture">
             <div class="profile-text">
                 <p>
-                    I am Amit Israeli, a dedicated Computer Vision Research Engineer with a passion for creating innovative solutions in deep learning and AI. As a self-learner, I have cultivated a strong foundation in computer vision and artificial intelligence, continuously expanding my knowledge to stay ahead in this rapidly evolving field. My expertise lies in developing and deploying state-of-the-art models for edge devices, addressing challenges in real-time vision applications, segmentation, and optimization.
+                    I am Amit Israeli, a dedicated Computer Vision Research Engineer with a passion for creating
+                    innovative solutions in deep learning and AI. As a self-learner, I have cultivated a strong
+                    foundation in computer vision and artificial intelligence, continuously expanding my knowledge to
+                    stay ahead in this rapidly evolving field. My expertise lies in developing and deploying
+                    state-of-the-art models for edge devices, addressing challenges in real-time vision applications,
+                    segmentation, and optimization.
                 </p>
             </div>
         </div>
     </div>
-    </section>
+</section>
 
-
-    <div class="container">
-        <!-- Experience Section -->
-        <section id="experience">
-            <h2 class="section-title">Experience</h2>
+<div class="container">
+    <!-- Experience Section with Timeline -->
+    <section id="experience">
+        <h2 class="section-title">Experience</h2>
+        <div class="timeline">
+            <div class="experience-item">
+                <a href="https://www.realitydefender.com" target="_blank">
+                    <img src="assets/experience/reality_defender_logo.png" alt="Reality Defender Logo"
+                         class="company-logo">
+                </a>
+                <div class="experience-details">
+                    <h3>Reality Defender</h3>
+                    <h4>Computer Vision Research Engineer</h4>
+                    <p class="dates">Jan 2025 - Present</p>
+                    <ul>
+                        <li>Developing and optimizing AI-driven security solutions to detect deepfakes and fraudulent
+                            media.
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div class="experience-item">
                 <img src="assets/experience/luckylab_logo.jpeg" alt="Freelance Work Logo" class="company-logo">
                 <div class="experience-details">
@@ -765,8 +868,13 @@
                     <h4>Computer Vision Research Engineer</h4>
                     <p class="dates">Dec 2024 - Present</p>
                     <ul>
-                        <li>Collaborated with <a href="https://www.luckylab.org/" target="_blank" rel="noopener noreferrer">LuckyLab</a> to develop and deploy cutting-edge deep learning solutions for computer vision challenges on edge devices.</li>
-                        <li>Focused on real-time segmentation, object detection, and optimization techniques for resource-constrained environments.</li>
+                        <li>Collaborated with <a href="https://www.luckylab.org/" target="_blank"
+                                                 rel="noopener noreferrer">LuckyLab</a> to develop and deploy
+                            cutting-edge deep learning solutions for computer vision challenges on edge devices.
+                        </li>
+                        <li>Focused on real-time segmentation, object detection, and optimization techniques for
+                            resource-constrained environments.
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -777,541 +885,450 @@
                 <div class="experience-details">
                     <h3>NLPearl</h3>
                     <h4>Deep Learning Research Engineer</h4>
-                    <p class="dates">Jul 2024 - Present</p>
+                    <p class="dates">Jul 2024 - Jan 2025</p>
                     <ul>
-                        <li>Developed real-time systems to detect conversational pauses and suggest optimal starter sentences for AI agents using fine-tuned LLMs, with specialized prediction heads.</li>
-                        <li>Experimented with various architectures, including encoder-based and decoder-pretrained models, applying LoRA and multi-stage training to enhance prediction accuracy.</li>
-                        <li>Designed a small language model (SLM) to generate task-specific tokens, enabling multi-task outputs from a single fine-tuned model for efficient real-time inference.</li>
-                        <li>Design solutions using pre-trained SOTA audio tokenization models and large language models (LLMs) tailored for audio-specific objectives.</li>
+                        <li>Developed real-time systems to detect conversational pauses and suggest optimal starter
+                            sentences for AI agents using fine-tuned LLMs, with specialized prediction heads.
+                        </li>
+                        <li>Experimented with various architectures, including encoder-based and decoder-pretrained
+                            models, applying LoRA and multi-stage training to enhance prediction accuracy.
+                        </li>
+                        <li>Designed a small language model (SLM) to generate task-specific tokens, enabling multi-task
+                            outputs from a single fine-tuned model for efficient real-time inference.
+                        </li>
+                        <li>Designed solutions using pre-trained SOTA audio tokenization models and large language
+                            models (LLMs) tailored for audio-specific objectives.
+                        </li>
                     </ul>
                 </div>
             </div>
-
             <div class="experience-item">
                 <a href="https://www.linkedin.com/company/pashoot-robotics/">
-                    <img src="assets/experience/pashoot_robotics_logo.jpeg" alt="Pashoot Robotics Logo" class="company-logo">
+                    <img src="assets/experience/pashoot_robotics_logo.jpeg" alt="Pashoot Robotics Logo"
+                         class="company-logo">
                 </a>
                 <div class="experience-details">
                     <h3>Pashoot Robotics</h3>
                     <h4>Computer Vision and Deep Learning Research Engineer</h4>
                     <p class="dates">May 2023 - Jul 2024</p>
-                    <p>
-                        As a pivotal member of the Algorithms team at Pashoot Robotics, my role focused on enhancing and innovating vision solutions critical to manufacturing automation. I applied deep learning methods to practical applications, including research in 3D reconstruction, object detection, segmentation (few-shot, zero-shot), tracking, 6DOF estimation, and simulation expertise (specifically using Blender).
-                    </p>
+                    <p>As a pivotal member of the Algorithms team at Pashoot Robotics, my role focused on enhancing and
+                        innovating vision solutions critical to manufacturing automation. I applied deep learning
+                        methods to practical applications, including research in 3D reconstruction, object detection,
+                        segmentation (few-shot, zero-shot), tracking, 6DOF estimation, and simulation expertise
+                        (specifically using Blender).</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Projects Section -->
-        <section id="projects">
-            <h2 class="section-title">Projects</h2>
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 class="section-title">Projects</h2>
 
-            <!-- Tag Filter -->
-            <div class="tag-filter">
-                <div class="tag-list">
-                    <input type="checkbox" id="tag-image-generation" value="Image Generation" onchange="filterProjects()">
-                    <label for="tag-image-generation">Image Generation</label>
-
-                    <input type="checkbox" id="tag-segmentation" value="Segmentation" onchange="filterProjects()">
-                    <label for="tag-segmentation">Segmentation</label>
-
-                    <input type="checkbox" id="tag-nlp" value="NLP" onchange="filterProjects()">
-                    <label for="tag-nlp">NLP</label>
-
-                    <input type="checkbox" id="tag-VLM" value="VLM" onchange="filterProjects()">
-                    <label for="tag-VLM">VLM</label>
-
-                    <input type="checkbox" id="tag-computer-vision" value="Computer Vision" onchange="filterProjects()">
-                    <label for="tag-computer-vision">Computer Vision</label>
-
-                    <input type="checkbox" id="tag-mobile-app" value="Mobile App" onchange="filterProjects()">
-                    <label for="tag-mobile-app">Mobile App</label>
-
-                    <input type="checkbox" id="Audio-Generation" value="Audio Generation" onchange="filterProjects()">
-                    <label for="Audio-Generation">Audio-Generation</label>
-                </div>
+        <!-- Tag Filter -->
+        <div class="tag-filter">
+            <div class="tag-list">
+                <input type="checkbox" id="tag-image-generation" value="Image Generation" onchange="filterProjects()">
+                <label for="tag-image-generation">Image Generation</label>
+                <input type="checkbox" id="tag-segmentation" value="Segmentation" onchange="filterProjects()">
+                <label for="tag-segmentation">Segmentation</label>
+                <input type="checkbox" id="tag-nlp" value="NLP" onchange="filterProjects()">
+                <label for="tag-nlp">NLP</label>
+                <input type="checkbox" id="tag-VLM" value="VLM" onchange="filterProjects()">
+                <label for="tag-VLM">VLM</label>
+                <input type="checkbox" id="tag-computer-vision" value="Computer Vision" onchange="filterProjects()">
+                <label for="tag-computer-vision">Computer Vision</label>
+                <input type="checkbox" id="tag-mobile-app" value="Mobile App" onchange="filterProjects()">
+                <label for="tag-mobile-app">Mobile App</label>
+                <input type="checkbox" id="Audio-Generation" value="Audio Generation" onchange="filterProjects()">
+                <label for="Audio-Generation">Audio-Generation</label>
             </div>
+        </div>
 
-            <!-- Project: Token-Budget-Aware LLM Reasoning (VLM Implementation) -->
-            <div class="project-item">
-                <h3>
-                    Token-Budget-Aware LLM Reasoning (VLM Implementation)
-                    <!-- GitHub Button -->
-                    <a href="https://github.com/amit154154/Token_Budget_cot_VLM" class="github-button" target="_blank" aria-label="View GitHub Repository">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-                                    0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                                    -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                                    0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
-                                    0 0 .67-.21 2.2.82a7.65 7.65
-                                    0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
-                                    3.75-3.65 3.95.29.25.54.73.54 1.48
-                                    0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
-                                    8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                        GitHub
-                    </a>
-                    <!-- Weights & Biases Button -->
-                    <a href="https://api.wandb.ai/links/amit154154/9sa4u3th" class="wandb-button" target="_blank" aria-label="View Weights & Biases Report">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path d="M256 0C114.836 0 0 114.836 0 256s114.836 256 256 256 256-114.836 256-256S397.164 0 256 0zm0 482C132.288 482 30 379.712 30 256S132.288 30 256 30s226 102.288 226 226-102.288 226-226 226z"/>
-                            <path d="M352 224H160v64h192v-64z"/>
-                        </svg>
-                        wandb
-                    </a>
-                </h3>
-                <div class="project-tags">
-                    <span class="tag">NLP</span>
-                    <span class="tag">VLM</span>
-                </div>
-                <div class="project-content">
-                    <div class="project-description">
-                        <ul class="project-points">
-                            <li>
-                                Implemented the paper
-                                <a href="https://huggingface.co/papers/2412.18547" target="_blank">
-                                    <strong>Token-Budget-Aware LLM Reasoning</strong>
-                                </a> for visual-language model (VLM) chain-of-thought tasks.
-                            </li>
-                            <li>
-                                Implemented a token-budget-aware method from the Token-Budget-Aware LLM Reasoning paper for multimodal environments (VLM), which the paper does not address. Fine-tuned an LLM with LoRA and integrated a frozen SigLIP image encoder. Designed a head combining the SigLIP CLS token and LLM hidden states to predict token budgets. Evaluated performance using both text-only and multimodal inputs.
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="project-images">
-                        <img src="assets/projects_assets/token_budget_cot/token_budget_example.png" alt="Token Budget Reasoning - Example 1">
-                        <img src="assets/projects_assets/token_budget_cot/token_budget_predictor.png" alt="Token Budget Reasoning - Example 2">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 1: PopYou2 -->
-            <div class="project-item">
-                <h3>
-                    PopYou2 - VAR Text
-                    <!-- GitHub Button -->
-                    <a href="https://github.com/amit154154/VAR_clip" class="github-button" target="_blank" aria-label="View GitHub Repository">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-                                    0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                                    -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                                    0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
-                                    0 0 .67-.21 2.2.82a7.65 7.65
-                                    0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
-                                    3.75-3.65 3.95.29.25.54.73.54 1.48
-                                    0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
-                                    8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                        GitHub
-                    </a>
-                    <!-- Hugging Face Button -->
-                    <a href="https://huggingface.co/spaces/AmitIsraeli/PopYou" class="huggingface-button" target="_blank" aria-label="View Hugging Face Repository">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-                            <path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm0 29C8.268 29 3 23.732 3 16S8.268 3 16 3s13 5.268 13 13-5.268 13-13 13z"/>
-                            <path d="M22 14H10v4h12v-4z"/>
-                        </svg>
-                        Hugging Face🤗
-                    </a>
-                    <!-- Weights & Biases Button -->
-                    <a href="https://api.wandb.ai/links/amit154154/cqccmfsl" class="wandb-button" target="_blank" aria-label="View Weights & Biases Report">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path d="M256 0C114.836 0 0 114.836 0 256s114.836 256 256 256 256-114.836 256-256S397.164 0 256 0zm0 482C132.288 482 30 379.712 30 256S132.288 30 256 30s226 102.288 226 226-102.288 226-226 226z"/>
-                            <path d="M352 224H160v64h192v-64z"/>
-                        </svg>
-                        wandb
-                    </a>
-                </h3>
-                <div class="project-tags">
-                    <span class="tag">Image Generation</span>
-                    <span class="tag">Computer Vision</span>
-                </div>
-                <div class="project-content">
-                    <div class="project-description">
-                        <ul class="project-points">
-                            <li>
-                                Generated a comprehensive dataset of approximately 100,000 Funko Pop! images with detailed prompts using
-                                <a href="https://huggingface.co/stabilityai/sdxl-turbo" target="_blank">SDXL Turbo</a> for high-quality data creation.
-                            </li>
-                            <li>
-                                Fine-tuned the
-                                <a href="https://arxiv.org/abs/2404.02905" target="_blank">Visual AutoRegressive (VAR)</a> model, pretrained on ImageNet,
-                                to adapt it for Funko Pop! generation by injecting a custom embedding representing the "doll" class.
-                            </li>
-                            <li>
-                                Trained an adapter with the frozen
-                                <a href="https://arxiv.org/abs/2303.15343" target="_blank">SigLIP image encoder</a> and a lightweight LoRA module to map image embeddings to text representation in a large language model.
-                            </li>
-                            <li>
-                                Enabled text-to-image generation by replacing the SigLIP image encoder with its text encoder, retaining frozen components such as the VAE and generator for efficiency and quality.
-                            </li>
-                        </ul>
-                        <div style="text-align: center; margin-top: 20px;">
-                            <img src="assets/projects_assets/PopYou2/VAR_explained.png" style="width: 100%; max-width: 600px;" alt="VAR Explained">
-                        </div>
-                    </div>
-                    <div class="project-options-image">
-                        <div id="customization-sentence">
-                            A Funko Pop figure of
-                            <select id="famous_name" onchange="updateImage()">
-                                <option value="none">None</option>
-                                <option value="donald_trump">Donald Trump</option>
-                                <option value="johnny_depp">Johnny Depp</option>
-                                <option value="oprah_winfrey">Oprah Winfrey</option>
-                            </select>,
-                            styled as a
-                            <select id="character" onchange="updateImage()">
-                                <option value="none">None</option>
-                                <option value="alien">Alien</option>
-                                <option value="robot">Robot</option>
-                            </select>,
-                            performing
-                            <select id="action" onchange="updateImage()">
-                                <option value="none">None</option>
-                                <option value="playing_the_guitar">Playing the Guitar</option>
-                                <option value="holding_the_sword">Holding the Sword</option>
-                            </select>.
-                        </div>
-                        <div id="image-container">
-                            <img id="funko_image" class="funko-image" src="assets/projects_assets/PopYou2/generated_images/none_none_none.png" alt="Funko Pop Image">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 2: Few-Shot Segmentation with SAM and LoRA -->
-            <div class="project-item">
-                <h3>
-                    Few-Shot Segmentation with SAM and LoRA
-                    <!-- GitHub Button -->
-                    <a href="https://github.com/amit154154/SAM_LORA" class="github-button" target="_blank" aria-label="View GitHub Repository">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47
-                                    7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                                    -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                                    0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
-                                    0 0 .67-.21 2.2.82a7.65 7.65
-                                    0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
-                                    2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
-                                    3.75-3.65 3.95.29.25.54.73.54 1.48
-                                    0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
-                                    8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                        GitHub
-                    </a>
-                </h3>
-                <div class="project-tags">
-                    <span class="tag">Segmentation</span>
-                    <span class="tag">Computer Vision</span>
-                </div>
-                <div class="project-content">
-                    <div class="project-description">
-                        <ul class="project-points">
-                            <li>Employs LoRA to adapt SAM for few-shot segmentation with minimal images.</li>
-                            <li>Eliminates reliance on external prompts or detection models like Grounding SAM or YOLO.</li>
-                            <li>Outperforms prior methods (e.g., <a href="https://arxiv.org/abs/2305.03048" target="_blank">PerSAM</a>) in class-specific segmentation quality and flexibility.</li>
-                            <li>Trained on diverse datasets, including COCO, Soccer, and Cityscapes, with varying sample sizes and class distributions.</li>
-                            <li>Explored methods to enhance the approach by leveraging other foundation models with prior class-oriented knowledge (e.g., CLIP, SigLIP).</li>
-                        </ul>
-                        <!-- Insert the image here -->
-                        <div style="text-align: center; margin-top: 20px;">
-                            <img src="assets/projects_assets/few_shot_sam_lora/sam_lora_figure.png" style="width: 300%; max-width: 650px;" alt="SAM LoRA Explained">
-                        </div>
-                    </div>
-                    <div class="project-images">
-                        <img src="assets/projects_assets/few_shot_sam_lora/cityscapes.png" alt="Cityscapes">
-                        <img src="assets/projects_assets/few_shot_sam_lora/coco.png" alt="COCO">
-                        <img src="assets/projects_assets/few_shot_sam_lora/soccer.png" alt="Soccer">
-                    </div>
-                </div>
-            </div>
-            <!-- Add this new project block inside the #projects section -->
-            <div class="project-item">
-                <h3>
-                    MusicGen Genre Fine-Tuning with LoRA
-                    <!-- GitHub Button -->
-                    <a href="https://github.com/amit154154/musicgen_finetune" class="github-button" target="_blank" aria-label="View GitHub Repository">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47
-                                    7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                                    -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                                    0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
-                                    0 0 .67-.21 2.2.82a7.65 7.65
-                                    0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
-                                    2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
-                                    3.75-3.65 3.95.29.25.54.73.54 1.48
-                                    0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
-                                    8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                        GitHub
-                    </a>
-                </h3>
-                <div class="project-tags">
-                    <span class="tag">Audio Generation</span>
-                </div>
-                <div class="project-content">
-                    <div class="project-description">
-                        <ul class="project-points">
-                            <li>Fine-tune Meta's <strong>MusicGen</strong> model using LoRA to generate genre-specific music.</li>
-                            <li>Preserves the original controllable generation capabilities of MusicGen.</li>
-                            <li>Evaluated with MapleStory-like background music to achieve distinct style adaptation.</li>
-                        </ul>
-                        <!-- Two sample .wav files -->
-                        <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: center; margin-top: 20px;">
-                            <audio controls
-                                   style="
-                                       width: 250px;
-                                       max-width: 100%;
-                                       border-radius: 10px;
-                                       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-                                   ">
-                                <source src="assets/projects_assets/musicgen_finetune/example_1.wav" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                            <audio controls
-                                   style="
-                                       width: 250px;
-                                       max-width: 100%;
-                                       border-radius: 10px;
-                                       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-                                   ">
-                                <source src="assets/projects_assets/musicgen_finetune/example_2.wav" type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 3: CelebrityLook -->
-            <div class="project-item">
-                <h3>
-                    CelebrityLook
-                    <!-- GitHub Button -->
-                    <a href="https://github.com/amit154154/CelebrityLook" class="github-button" target="_blank" aria-label="View GitHub Repository">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47
-                                    7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                                    -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                                    0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
-                                    0 0 .67-.21 2.2.82a7.65 7.65
-                                    0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
-                                    2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
-                                    3.75-3.65 3.95.29.25.54.73.54 1.48
-                                    0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
-                                    8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                        GitHub
-                    </a>
-                </h3>
-                <div class="project-tags">
-                    <span class="tag">Image Generation</span>
-                    <span class="tag">Mobile App</span>
-                    <span class="tag">Computer Vision</span>
-                </div>
-                <div class="project-content">
-                    <div class="project-description">
-                        <ul class="project-points">
-                            <li>Developed a mobile app for real-time face transformation.</li>
-                            <li>Utilized advanced GAN technologies on-device.</li>
-                            <li>Achieved 30fps on mobile devices with optimized CoreML models.</li>
-                            <li>Won the MobileXGenAI hackathon hosted by Samsung Next.</li>
-                            <li>Combined multiple losses from foundation models and facial feature extractors to ensure high-quality transformations.</li>
-                            <li>
-                                Implemented the paper
-                                <a href="https://arxiv.org/abs/2210.04506" target="_blank">
-                                    <strong>"Bridging CLIP and StyleGAN through Latent Alignment for Image Editing"</strong>
-                                </a>
-                                Conducted research to enhance the approach by experimenting with different loss functions, latent spaces, and mapper architectures, leveraging a custom StyleGAN variant. Additionally, explored the method’s limitations and stability, introducing a fine-tuning process to improve model robustness and performance.
-                            </li>
-                        </ul>
-                        <div class="project-images">
-                            <img src="assets/projects_assets/CelebryLook/mapper_training.png" alt="Mapper Training" class="enlarged">
-                        </div>
-                    </div>
-                    <div class="project-video">
-                        <video controls autoplay muted>
-                            <source src="assets/projects_assets/CelebryLook/celebrityLook_demo.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 4: PopYou - fastgan clip -->
-            <div class="project-item">
-                <h3>
-                    PopYou - fastgan clip
-                    <!-- GitHub Button -->
-                    <a href="https://github.com/amit154154/PopYou" class="github-button" target="_blank" aria-label="View GitHub Repository">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47
-                                    7.59.4.07.55-.17.55-.38
-                                    0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                                    -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                                    0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
-                                    0 0 .67-.21 2.2.82a7.65 7.65
-                                    0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
-                                    2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
-                                    3.75-3.65 3.95.29.25.54.73.54 1.48
-                                    0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
-                                    8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                        GitHub
-                    </a>
-                </h3>
-                <div class="project-tags">
-                    <span class="tag">Image Generation</span>
-                    <span class="tag">Computer Vision</span>
-                </div>
-                <div class="project-content">
-                    <div class="project-description">
-                        <ul class="project-points">
-                            <li>Utilized an image upscaling model and Deci Diffusion to create a semi-synthetic dataset of Funko Pop figures.</li>
-                            <li>Trained a GAN model on the dataset using FastGAN to generate high-quality Funko Pop designs.</li>
-                            <li>Developed an inversion model based on a frozen CLIP backbone, enabling image generation from both text and real-life images, leveraging techniques from the CelebrityLook project.</li>
-                            <li>Explored 3D generation of Funko Pop figures, including mesh creation and multi-view rendering, using cutting-edge diffusion models and textual inversion.</li>
-                            <li>Benchmarked the PopYou! model against Deci Diffusion, evaluating performance through CLIP similarity and FID scores.</li>
-                        </ul>
-                    </div>
-                    <div class="project-images">
-                        <img src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.png" alt="Barack Obama FastGAN">
-                        <img src="assets/projects_assets/PopYou!/ras_dreamgaussian.gif" alt="RAS DreamGaussian">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 5: KoalaReadingAI -->
-            <div class="project-item">
-                <h3>
-                    KoalaReadingAI
-                    <!-- GitHub Button -->
-                    <a href="https://github.com/amit154154/KoalaReadingPapers" class="github-button" target="_blank" aria-label="View GitHub Repository">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47
-                                    7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                                    -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-                                    0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
-                                    0 0 .67-.21 2.2.82a7.65 7.65
-                                    0 012 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
-                                    2.12.51.56.82 1.27.82 2.15 0 3.07-1.87
-                                    3.75-3.65 3.95.29.25.54.73.54 1.48
-                                    0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013
-                                    8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                        GitHub
-                    </a>
-                    <!-- Spotify Button -->
-                    <a href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1" class="spotify-button" target="_blank" aria-label="Listen on Spotify">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 168">
-                            <path d="M84,0C37.548,0,0,37.548,0,84s37.548,84,84,84s84-37.548,84-84S130.452,0,84,0z M122.429,122.429
-                                    c-2.095,3.428-6.561,4.518-9.988,2.429c-27.286-16.639-61.722-20.431-102.318-11.376c-3.854,0.849-7.67-1.634-8.519-5.488
-                                    c-0.849-3.854,1.634-7.67,5.488-8.519c43.361-9.618,81.101-5.297,111.408,13.097
-                                    C123.142,114.338,124.523,118.903,122.429,122.429z M135.275,96.423c-2.659,4.355-8.33,5.753-12.685,3.094
-                                    c-31.23-19.086-78.961-24.672-115.651-13.742c-4.528,1.388-9.35-1.174-10.738-5.702c-1.388-4.528,1.174-9.35,5.702-10.738
-                                    c41.44-12.697,94.311-6.496,130.602,15.202
-                                    C136.025,87.203,137.933,92.068,135.275,96.423z M142.587,68.698
-                                    c-2.66,4.355-8.331,5.753-12.686,3.094c-35.063-21.411-88.59-23.318-123.811-13.611c-4.528,1.388-9.35-1.174-10.738-5.702
-                                    c-1.388-4.528,1.174-9.35,5.702-10.738c39.578-12.136,97.026-9.778,136.433,15.473
-                                    C143.337,59.478,145.246,64.343,142.587,68.698z"/>
-                        </svg>
-                        Spotify
-                    </a>
-                    <!-- YouTube Button -->
-                    <a href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA" class="youtube-button" target="_blank" aria-label="Watch on YouTube">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M10,15l5.19-3L10,9V15z M23,7c0,0-0.22-1.61-0.9-2.32C21.36,4.11,20.43,4,19.74,4C17.52,3.91,12,3.91,12,3.91h0
-                                    c0,0-5.52,0-7.74,0.09C3.57,4,2.64,4.11,2,4.68C1.32,5.39,1.1,7,1.1,7S1,8.7,1,10.4v1.2C1,13.3,1.22,15,1.22,15
-                                    c0,0,0.22,1.61,0.9,2.32C2.64,18.89,3.57,19,4.26,19C6.48,19.09,12,19.09,12,19.09h0c0,0,5.52,0,7.74-0.09
-                                    c0.69-0.07,1.62-0.18,2.36-0.76c0.68-0.71,0.9-2.32,0.9-2.32S23,13.3,23,11.6v-1.2C23,8.7,23,7,23,7z"/>
-                        </svg>
-                        YouTube
-                    </a>
-                </h3>
-                <div class="project-tags">
-                    <span class="tag">NLP</span>
-                    <span class="tag">Text-to-Speech</span>
-                    <span class="tag">Automation</span>
-                </div>
-                <div class="project-content">
-                    <div class="project-description">
-                        <ul class="project-points">
-                            <li>Founded an AI podcast that automatically summarizes the latest AI research papers.</li>
-                            <li>Utilizes ElevenLabs text-to-speech and ChatPDF APIs for summarization and speech synthesis.</li>
-                            <li>Automated downloading of latest papers from Hugging Face daily papers.</li>
-                            <li>Implemented free TTS option using Tortoise-TTS; working on summaries using Llama 2.</li>
-                        </ul>
-                    </div>
-                    <div class="project-video">
-                        <video controls autoplay muted>
-                            <source src="assets/projects_assets/koala_reading_ai/koala_reading_ai_gif.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact">
-            <h2 class="section-title">Contact</h2>
-            <div class="contact-info">
-                <!-- Example of wrapping your link in the same "contact-item" style to make it clickable as a card -->
-                <a href="mailto:amit1541541@gmail.com" class="contact-item">
-                    <img src="assets/contact_icons/email-icon.png" alt="Email Icon">
-                    <span>amit1541541@gmail.com</span>
+        <!-- Project: Token-Budget-Aware LLM Reasoning (VLM Implementation) -->
+        <div class="project-item">
+            <h3>
+                Token-Budget-Aware LLM Reasoning (VLM Implementation)
+                <a href="https://github.com/amit154154/Token_Budget_cot_VLM" class="github-button" target="_blank"
+                   aria-label="View GitHub Repository">
+                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
+                    GitHub
                 </a>
-                <a href="https://www.linkedin.com/in/amit-israeli-aa4a30242/" target="_blank" class="contact-item">
-                    <img src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn Icon">
-                    <span>LinkedIn</span>
+                <a href="https://api.wandb.ai/links/amit154154/9sa4u3th" class="wandb-button" target="_blank"
+                   aria-label="View Weights & Biases Report">
+                    <img src="assets/contact_icons/wandb-icon.png" alt="Weights & Biases" class="button-icon">
+                    wandb
                 </a>
-                <a href="https://github.com/amit154154" target="_blank" class="contact-item">
-                    <img src="assets/contact_icons/github-icon.png" alt="GitHub Icon">
-                    <span>GitHub</span>
-                </a>
+            </h3>
+            <div class="project-tags">
+                <span class="tag">NLP</span>
+                <span class="tag">VLM</span>
             </div>
-        </section>
-    </div>
+            <div class="project-content">
+                <div class="project-description">
+                    <ul class="project-points">
+                        <li>Implemented the paper <a href="https://huggingface.co/papers/2412.18547"
+                                                     target="_blank"><strong>Token-Budget-Aware LLM
+                            Reasoning</strong></a> for visual-language model (VLM) chain-of-thought tasks.
+                        </li>
+                        <li>Implemented a token-budget-aware method for multimodal environments by fine-tuning an LLM
+                            with LoRA and integrating a frozen SigLIP image encoder. Designed a head combining the
+                            SigLIP CLS token and LLM hidden states to predict token budgets, evaluated with text-only
+                            and multimodal inputs.
+                        </li>
+                    </ul>
+                </div>
+                <div class="project-images">
+                    <img src="assets/projects_assets/token_budget_cot/token_budget_example.png"
+                         alt="Token Budget Reasoning - Example 1">
+                    <img src="assets/projects_assets/token_budget_cot/token_budget_predictor.png"
+                         alt="Token Budget Reasoning - Example 2">
+                </div>
+            </div>
+        </div>
 
-    <footer>
-        &copy; 2024 Amit Israeli. All rights reserved.
-    </footer>
+        <!-- Project 1: PopYou2 -->
+        <div class="project-item">
+            <h3>
+                PopYou2 - VAR Text
+                <a href="https://github.com/amit154154/VAR_clip" class="github-button" target="_blank"
+                   aria-label="View GitHub Repository">
+                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
+                    GitHub
+                </a>
+                <a href="https://huggingface.co/spaces/AmitIsraeli/PopYou" class="huggingface-button" target="_blank"
+                   aria-label="View Hugging Face Repository">
+                    <img src="assets/contact_icons/huggingface-icon.png" alt="Hugging Face" class="button-icon">
+                    Hugging Face🤗
+                </a>
+                <a href="https://api.wandb.ai/links/amit154154/cqccmfsl" class="wandb-button" target="_blank"
+                   aria-label="View Weights & Biases Report">
+                    <img src="assets/contact_icons/wandb-icon.png" alt="Weights & Biases" class="button-icon">
+                    wandb
+                </a>
+            </h3>
+            <div class="project-tags">
+                <span class="tag">Image Generation</span>
+                <span class="tag">Computer Vision</span>
+            </div>
+            <div class="project-content">
+                <div class="project-description">
+                    <ul class="project-points">
+                        <li>Generated a comprehensive dataset of approximately 100,000 Funko Pop! images with detailed
+                            prompts using <a href="https://huggingface.co/stabilityai/sdxl-turbo" target="_blank">SDXL
+                                Turbo</a> for high-quality data creation.
+                        </li>
+                        <li>Fine-tuned the <a href="https://arxiv.org/abs/2404.02905" target="_blank">Visual
+                            AutoRegressive (VAR)</a> model, pretrained on ImageNet, adapting it for Funko Pop!
+                            generation by injecting a custom embedding representing the "doll" class.
+                        </li>
+                        <li>Trained an adapter with the frozen <a href="https://arxiv.org/abs/2303.15343"
+                                                                  target="_blank">SigLIP image encoder</a> and a
+                            lightweight LoRA module to map image embeddings to text representations.
+                        </li>
+                        <li>Enabled text-to-image generation by replacing the SigLIP image encoder with its text
+                            encoder, retaining frozen components like the VAE and generator for efficiency and quality.
+                        </li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <img src="assets/projects_assets/PopYou2/VAR_explained.png"
+                             style="width: 100%; max-width: 600px;" alt="VAR Explained">
+                    </div>
+                </div>
+                <div class="project-options-image">
+                    <div id="customization-sentence">
+                        A Funko Pop figure of
+                        <select id="famous_name" onchange="updateImage()">
+                            <option value="none">None</option>
+                            <option value="donald_trump">Donald Trump</option>
+                            <option value="johnny_depp">Johnny Depp</option>
+                            <option value="oprah_winfrey">Oprah Winfrey</option>
+                        </select>,
+                        styled as a
+                        <select id="character" onchange="updateImage()">
+                            <option value="none">None</option>
+                            <option value="alien">Alien</option>
+                            <option value="robot">Robot</option>
+                        </select>,
+                        performing
+                        <select id="action" onchange="updateImage()">
+                            <option value="none">None</option>
+                            <option value="playing_the_guitar">Playing the Guitar</option>
+                            <option value="holding_the_sword">Holding the Sword</option>
+                        </select>.
+                    </div>
+                    <div id="image-container">
+                        <img id="funko_image" class="funko-image"
+                             src="assets/projects_assets/PopYou2/generated_images/none_none_none.png"
+                             alt="Funko Pop Image">
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <script>
-        function updateImage() {
-            const famousName = document.getElementById("famous_name").value;
-            const character = document.getElementById("character").value;
-            const action = document.getElementById("action").value;
+        <!-- Project 2: Few-Shot Segmentation with SAM and LoRA -->
+        <div class="project-item">
+            <h3>
+                Few-Shot Segmentation with SAM and LoRA
+                <a href="https://github.com/amit154154/SAM_LORA" class="github-button" target="_blank"
+                   aria-label="View GitHub Repository">
+                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
+                    GitHub
+                </a>
+            </h3>
+            <div class="project-tags">
+                <span class="tag">Segmentation</span>
+                <span class="tag">Computer Vision</span>
+            </div>
+            <div class="project-content">
+                <div class="project-description">
+                    <ul class="project-points">
+                        <li>Employs LoRA to adapt SAM for few-shot segmentation with minimal images.</li>
+                        <li>Eliminates reliance on external prompts or detection models like Grounding SAM or YOLO.</li>
+                        <li>Outperforms prior methods (e.g., <a href="https://arxiv.org/abs/2305.03048" target="_blank">PerSAM</a>)
+                            in class-specific segmentation quality and flexibility.
+                        </li>
+                        <li>Trained on diverse datasets, including COCO, Soccer, and Cityscapes, with varying sample
+                            sizes and class distributions.
+                        </li>
+                        <li>Explored enhancements by leveraging other foundation models with prior class-oriented
+                            knowledge (e.g., CLIP, SigLIP).
+                        </li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <img src="assets/projects_assets/few_shot_sam_lora/sam_lora_figure.png"
+                             style="width: 300%; max-width: 650px;" alt="SAM LoRA Explained">
+                    </div>
+                </div>
+                <div class="project-images">
+                    <img src="assets/projects_assets/few_shot_sam_lora/cityscapes.png" alt="Cityscapes">
+                    <img src="assets/projects_assets/few_shot_sam_lora/coco.png" alt="COCO">
+                    <img src="assets/projects_assets/few_shot_sam_lora/soccer.png" alt="Soccer">
+                </div>
+            </div>
+        </div>
 
-            const filename = `${famousName}_${character}_${action}.png`;
-            const imagePath = `assets/projects_assets/PopYou2/generated_images/${filename}`;
+        <!-- Project: MusicGen Genre Fine-Tuning with LoRA -->
+        <div class="project-item">
+            <h3>
+                MusicGen Genre Fine-Tuning with LoRA
+                <a href="https://github.com/amit154154/musicgen_finetune" class="github-button" target="_blank"
+                   aria-label="View GitHub Repository">
+                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
+                    GitHub
+                </a>
+            </h3>
+            <div class="project-tags">
+                <span class="tag">Audio Generation</span>
+            </div>
+            <div class="project-content">
+                <div class="project-description">
+                    <ul class="project-points">
+                        <li>Fine-tune Meta's <strong>MusicGen</strong> model using LoRA to generate genre-specific
+                            music.
+                        </li>
+                        <li>Preserves the original controllable generation capabilities of MusicGen.</li>
+                        <li>Evaluated with MapleStory-like background music to achieve distinct style adaptation.</li>
+                    </ul>
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: center; margin-top: 20px;">
+                        <audio controls
+                               style="width: 250px; max-width: 100%; border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);">
+                            <source src="assets/projects_assets/musicgen_finetune/example_1.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <audio controls
+                               style="width: 250px; max-width: 100%; border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);">
+                            <source src="assets/projects_assets/musicgen_finetune/example_2.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            const funkoImage = document.getElementById("funko_image");
-            funkoImage.classList.add("fade-out"); // Add fade-out animation
-            setTimeout(() => {
-                funkoImage.src = imagePath;
-                funkoImage.classList.remove("fade-out"); // Remove fade-out after updating
-            }, 150); // Match animation duration
-        }
+        <!-- Project 3: CelebrityLook -->
+        <div class="project-item">
+            <h3>
+                CelebrityLook
+                <a href="https://github.com/amit154154/CelebrityLook" class="github-button" target="_blank"
+                   aria-label="View GitHub Repository">
+                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
+                    GitHub
+                </a>
+            </h3>
+            <div class="project-tags">
+                <span class="tag">Image Generation</span>
+                <span class="tag">Mobile App</span>
+                <span class="tag">Computer Vision</span>
+            </div>
+            <div class="project-content">
+                <div class="project-description">
+                    <ul class="project-points">
+                        <li>Developed a mobile app for real-time face transformation.</li>
+                        <li>Utilized advanced GAN technologies on-device.</li>
+                        <li>Achieved 30fps on mobile devices with optimized CoreML models.</li>
+                        <li>Won the MobileXGenAI hackathon hosted by Samsung Next.</li>
+                        <li>Combined multiple losses from foundation models and facial feature extractors to ensure
+                            high-quality transformations.
+                        </li>
+                        <li>Implemented the paper <a href="https://arxiv.org/abs/2210.04506" target="_blank"><strong>"Bridging
+                            CLIP and StyleGAN through Latent Alignment for Image Editing"</strong></a> while researching
+                            enhancements through varied loss functions, latent spaces, and mapper architectures.
+                        </li>
+                    </ul>
+                    <div class="project-images">
+                        <img src="assets/projects_assets/CelebryLook/mapper_training.png" alt="Mapper Training"
+                             class="enlarged">
+                    </div>
+                </div>
+                <div class="project-video">
+                    <video controls autoplay muted>
+                        <source src="assets/projects_assets/CelebryLook/celebrityLook_demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
 
-        function filterProjects() {
-            // Get all selected tags
-            const selectedTags = Array.from(document.querySelectorAll('.tag-filter input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+        <!-- Project 4: PopYou - fastgan clip -->
+        <div class="project-item">
+            <h3>
+                PopYou - fastgan clip
+                <a href="https://github.com/amit154154/PopYou" class="github-button" target="_blank"
+                   aria-label="View GitHub Repository">
+                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
+                    GitHub
+                </a>
+            </h3>
+            <div class="project-tags">
+                <span class="tag">Image Generation</span>
+                <span class="tag">Computer Vision</span>
+            </div>
+            <div class="project-content">
+                <div class="project-description">
+                    <ul class="project-points">
+                        <li>Utilized an image upscaling model and Deci Diffusion to create a semi-synthetic dataset of
+                            Funko Pop figures.
+                        </li>
+                        <li>Trained a GAN model on the dataset using FastGAN to generate high-quality Funko Pop
+                            designs.
+                        </li>
+                        <li>Developed an inversion model based on a frozen CLIP backbone, enabling image generation from
+                            both text and real images, leveraging techniques from CelebrityLook.
+                        </li>
+                        <li>Explored 3D generation of Funko Pop figures—including mesh creation and multi-view
+                            rendering—using diffusion models and textual inversion.
+                        </li>
+                        <li>Benchmarked the PopYou! model against Deci Diffusion using CLIP similarity and FID scores.
+                        </li>
+                    </ul>
+                </div>
+                <div class="project-images">
+                    <img src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.png" alt="Barack Obama FastGAN">
+                    <img src="assets/projects_assets/PopYou!/ras_dreamgaussian.gif" alt="RAS DreamGaussian">
+                </div>
+            </div>
+        </div>
 
-            // Get all project items
-            const projects = document.querySelectorAll('.project-item');
+        <!-- Project 5: KoalaReadingAI -->
+        <div class="project-item">
+            <h3>
+                KoalaReadingAI
+                <a href="https://github.com/amit154154/KoalaReadingPapers" class="github-button" target="_blank"
+                   aria-label="View GitHub Repository">
+                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
+                    GitHub
+                </a>
+                <a href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1" class="spotify-button" target="_blank"
+                   aria-label="Listen on Spotify">
+                    <img src="assets/contact_icons/Spotify-icon.png" alt="Spotify" class="button-icon">
+                    Spotify
+                </a>
+                <a href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA" class="youtube-button"
+                   target="_blank" aria-label="Watch on YouTube">
+                    <img src="assets/contact_icons/youtube-icon.png" alt="YouTube" class="button-icon">
+                    YouTube
+                </a>
+            </h3>
+            <div class="project-tags">
+                <span class="tag">Image Generation</span>
+                <span class="tag">Audio Generation</span>
+                <span class="tag">Computer Vision</span>
+            </div>
+            <div class="project-content">
+                <div class="project-description">
+                    <ul class="project-points">
+                        <li>Founded an AI podcast that automatically summarizes the latest AI research papers.</li>
+                        <li>Utilizes ElevenLabs text-to-speech and ChatPDF APIs for summarization and speech
+                            synthesis.
+                        </li>
+                        <li>Automated downloading of the latest papers from Hugging Face daily papers.</li>
+                        <li>Implemented a free TTS option using Tortoise-TTS; currently working on summaries using Llama
+                            2.
+                        </li>
+                    </ul>
+                </div>
+                <div class="project-video">
+                    <video controls autoplay muted>
+                        <source src="assets/projects_assets/koala_reading_ai/koala_reading_ai_gif.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            projects.forEach(project => {
-                // Get tags for the project
-                const projectTags = Array.from(project.querySelectorAll('.project-tags .tag')).map(tag => tag.textContent);
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-info">
+            <a href="mailto:amit1541541@gmail.com" class="contact-item">
+                <img src="assets/contact_icons/email-icon.png" alt="Email Icon">
+                <span>amit1541541@gmail.com</span>
+            </a>
+            <a href="https://www.linkedin.com/in/amit-israeli-aa4a30242/" target="_blank" class="contact-item">
+                <img src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn Icon">
+                <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com/amit154154" target="_blank" class="contact-item">
+                <img src="assets/contact_icons/github-icon.png" alt="GitHub Icon">
+                <span>GitHub</span>
+            </a>
+        </div>
+    </section>
+</div>
 
-                // Check if project should be displayed
-                if (selectedTags.length === 0 || selectedTags.some(tag => projectTags.includes(tag))) {
-                    project.style.display = '';
-                } else {
-                    project.style.display = 'none';
-                }
-            });
-        }
-    </script>
+<footer>
+    &copy; 2024 Amit Israeli. All rights reserved.
+</footer>
+
+<script>
+    function updateImage() {
+        const famousName = document.getElementById("famous_name").value;
+        const character = document.getElementById("character").value;
+        const action = document.getElementById("action").value;
+        const filename = `${famousName}_${character}_${action}.png`;
+        const imagePath = `assets/projects_assets/PopYou2/generated_images/${filename}`;
+        const funkoImage = document.getElementById("funko_image");
+        funkoImage.classList.add("fade-out");
+        setTimeout(() => {
+            funkoImage.src = imagePath;
+            funkoImage.classList.remove("fade-out");
+        }, 150);
+    }
+
+    function filterProjects() {
+        const selectedTags = Array.from(document.querySelectorAll('.tag-filter input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+        const projects = document.querySelectorAll('.project-item');
+        projects.forEach(project => {
+            const projectTags = Array.from(project.querySelectorAll('.project-tags .tag')).map(tag => tag.textContent);
+            if (selectedTags.length === 0 || selectedTags.some(tag => projectTags.includes(tag))) {
+                project.style.display = '';
+            } else {
+                project.style.display = 'none';
+            }
+        });
+    }
+</script>
 </body>
 </html>
