@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GBD6XTE35X"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-GBD6XTE35X');
+    </script>
     <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -704,109 +715,110 @@
             z-index: 1; /* ensure it's above animated bubbles */
             position: relative;
         }
+
         /* Updated Timeline Styles with Alternating Sides */
-.timeline {
-    position: relative;
-    padding: 40px 0;
-}
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
 
-.timeline::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: #77b300;
-    transform: translateX(-50%);
-    z-index: 1;
-}
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #77b300;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
 
-.experience-item {
-    width: 50%;
-    position: relative;
-    margin: 40px 0;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    z-index: 2;
-}
+        .experience-item {
+            width: 50%;
+            position: relative;
+            margin: 40px 0;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 2;
+        }
 
-.experience-item:hover {
-    transform: scale(1.02);
-}
+        .experience-item:hover {
+            transform: scale(1.02);
+        }
 
-.experience-item::before {
-    content: "";
-    position: absolute;
-    top: 30px;
-    width: 20px;
-    height: 20px;
-    background: #13efe7;
-    border: 4px solid #fff;
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px #77b300;
-    z-index: 3;
-}
+        .experience-item::before {
+            content: "";
+            position: absolute;
+            top: 30px;
+            width: 20px;
+            height: 20px;
+            background: #13efe7;
+            border: 4px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px #77b300;
+            z-index: 3;
+        }
 
-/* Left side items */
-.experience-item:nth-child(odd) {
-    left: 0;
-}
+        /* Left side items */
+        .experience-item:nth-child(odd) {
+            left: 0;
+        }
 
-.experience-item:nth-child(odd)::before {
-    right: -10px;
-}
+        .experience-item:nth-child(odd)::before {
+            right: -10px;
+        }
 
-/* Right side items */
-.experience-item:nth-child(even) {
-    left: 50%;
-}
+        /* Right side items */
+        .experience-item:nth-child(even) {
+            left: 50%;
+        }
 
-.experience-item:nth-child(even)::before {
-    left: -10px;
-}
+        .experience-item:nth-child(even)::before {
+            left: -10px;
+        }
 
-/* Adjust inner layout */
-.experience-details {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+        /* Adjust inner layout */
+        .experience-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-.company-logo {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
 
-.experience-details .dates {
-    font-style: italic;
-    color: #777;
-}
+        .experience-details .dates {
+            font-style: italic;
+            color: #777;
+        }
 
-/* Mobile Responsive Fix */
-@media screen and (max-width: 768px) {
-    .timeline::before {
-        left: 8px;
-    }
+        /* Mobile Responsive Fix */
+        @media screen and (max-width: 768px) {
+            .timeline::before {
+                left: 8px;
+            }
 
-    .experience-item,
-    .experience-item:nth-child(even),
-    .experience-item:nth-child(odd) {
-        width: 100%;
-        left: 0 !important;
-        padding-left: 40px;
-    }
+            .experience-item,
+            .experience-item:nth-child(even),
+            .experience-item:nth-child(odd) {
+                width: 100%;
+                left: 0 !important;
+                padding-left: 40px;
+            }
 
-    .experience-item::before {
-        left: 0;
-    }
-}
+            .experience-item::before {
+                left: 0;
+            }
+        }
     </style>
 </head>
 <body>
