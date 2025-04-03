@@ -17,6 +17,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amit Israeli - Research Engineer</title>
     <link rel="icon" type="image/x-icon" href="icon.png">
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat+Alternates:wght@700&family=Poppins&display=swap"
           rel="stylesheet">
@@ -43,7 +46,7 @@
         header {
             background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
             url('assets/header_siliconValley_image.png') center center no-repeat;
-            background-size: cover; /* Fill entire area, may crop */
+            background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
             background-color: #000;
@@ -51,22 +54,25 @@
             text-align: center;
             position: relative;
             width: 100%;
-            height: 300px;
+            height: 400px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
         }
 
         header h1 {
-            font-size: 36px;
+            font-size: 48px;
             font-weight: bold;
-            margin: 0;
+            margin: 0 0 20px 0;
             color: #fff;
             font-family: 'Montserrat Alternates', sans-serif;
             letter-spacing: 1px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
             animation: fadeInDown 1s ease-out;
+            max-width: 800px;
+            line-height: 1.2;
         }
 
         @keyframes fadeInDown {
@@ -110,89 +116,116 @@
             border-radius: 2px;
         }
 
-        /* Timeline styling for Experience */
+        /* Apple-style Timeline */
         .timeline {
             position: relative;
-            margin: 40px 0;
-            padding-left: 40px;
+            padding: 40px 0;
+            overflow: hidden;
         }
 
         .timeline::before {
-            content: "";
+            content: '';
             position: absolute;
-            left: 20px;
+            left: 50%;
             top: 0;
             bottom: 0;
             width: 2px;
-            background: #77b300;
+            background: linear-gradient(to bottom, 
+                rgba(119, 179, 0, 0.2),
+                rgba(19, 239, 231, 0.2),
+                rgba(119, 179, 0, 0.2)
+            );
+            transform: translateX(-50%);
+            z-index: 1;
         }
 
         .experience-item {
+            width: 50%;
             position: relative;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            padding: 20px 20px 20px 40px;
-            margin-bottom: 30px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 60px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(50px);
+            backdrop-filter: blur(10px);
+        }
+
+        .experience-item.revealed {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .experience-item:hover {
-            transform: scale(1.02);
-            background-color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
         }
 
-        .experience-item::before {
-            content: "";
+        .timeline-dot {
             position: absolute;
-            left: -31px;
-            top: 20px;
-            width: 12px;
-            height: 12px;
+            width: 16px;
+            height: 16px;
             background: #13efe7;
-            border: 3px solid #77b300;
+            border: 3px solid #fff;
             border-radius: 50%;
+            box-shadow: 0 0 0 3px #77b300;
+            z-index: 3;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
         }
 
-        .company-logo {
-            width: 100px;
-            height: 100px;
-            margin-right: 30px;
-            object-fit: contain;
+        .timeline-dot.revealed {
+            transform: translateY(-50%) scale(1.2);
+            background: #77b300;
         }
 
-        .experience-details h3 {
-            font-size: 24px;
-            margin-bottom: 5px;
-            color: #333;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        /* Left side items */
+        .experience-item:nth-child(odd) {
+            left: 0;
+            padding-right: 60px;
         }
 
-        .experience-details h4 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #77b300;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        .experience-item:nth-child(odd) .timeline-dot {
+            right: -8px;
         }
 
-        .experience-details .dates {
-            font-size: 16px;
-            color: #999;
-            margin-bottom: 15px;
+        /* Right side items */
+        .experience-item:nth-child(even) {
+            left: 50%;
+            padding-left: 60px;
         }
 
-        .experience-details p,
-        .experience-details ul {
-            font-size: 16px;
-            color: #555;
-            line-height: 1.6;
+        .experience-item:nth-child(even) .timeline-dot {
+            left: -8px;
         }
 
-        .experience-details a:hover {
-            color: #13efe7;
+        /* Mobile Responsive Fix */
+        @media screen and (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+
+            .experience-item,
+            .experience-item:nth-child(even),
+            .experience-item:nth-child(odd) {
+                width: 100%;
+                left: 0 !important;
+                padding: 20px 20px 20px 60px;
+                margin: 40px 0;
+            }
+
+            .experience-item .timeline-dot {
+                left: 30px;
+                transform: translateX(-50%);
+            }
+
+            .experience-item.revealed .timeline-dot {
+                transform: translateX(-50%) scale(1.2);
+            }
         }
 
         /* Projects Section */
@@ -465,43 +498,6 @@
             margin-top: 40px;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .experience-item {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .company-logo {
-                margin-bottom: 20px;
-                margin-right: 0;
-            }
-
-            .project-content {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .project-description,
-            .project-video,
-            .project-options-image {
-                min-width: 100%;
-            }
-
-            .project-images img,
-            .project-images iframe,
-            .project-video video {
-                max-width: 100%;
-            }
-
-            .project-gallery img,
-            .project-gallery video,
-            .project-gallery iframe {
-                max-width: 100%;
-            }
-        }
-
         /* Specific Styling for Enlarged Image in CelebrityLook */
         .project-description img.enlarged {
             max-width: 600px;
@@ -563,109 +559,159 @@
             transform: scale(0.9);
         }
 
-        /* Styles for project tags */
+        /* Enhanced Project Tags */
         .project-tags {
-            margin: 10px 0;
+            margin: 15px 0;
             text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
         }
 
         .project-tags .tag {
-            display: inline-block;
-            background-color: #e0e0e0;
-            color: #333;
-            padding: 5px 10px;
-            margin: 3px;
-            border-radius: 15px;
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: default;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Styles for tag filter */
+        /* Tag Colors */
+        .project-tags .tag[data-tag="Image Generation"] {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+            color: white;
+        }
+
+        .project-tags .tag[data-tag="Segmentation"] {
+            background: linear-gradient(135deg, #4ECDC4, #45B7AF);
+            color: white;
+        }
+
+        .project-tags .tag[data-tag="NLP"] {
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            color: white;
+        }
+
+        .project-tags .tag[data-tag="VLM"] {
+            background: linear-gradient(135deg, #00B894, #00D8A0);
+            color: white;
+        }
+
+        .project-tags .tag[data-tag="Computer Vision"] {
+            background: linear-gradient(135deg, #FDCB6E, #FFEAA7);
+            color: #2D3436;
+        }
+
+        .project-tags .tag[data-tag="Mobile App"] {
+            background: linear-gradient(135deg, #74B9FF, #A8D5FF);
+            color: white;
+        }
+
+        .project-tags .tag[data-tag="Audio Generation"] {
+            background: linear-gradient(135deg, #E84393, #FD79A8);
+            color: white;
+        }
+
+        /* Tag Hover Effects */
+        .project-tags .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-tags .tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .project-tags .tag:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Tag Filter Styling */
         .tag-filter {
             text-align: center;
-            margin-bottom: 20px;
+            margin: 20px 0 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
 
         .tag-filter p {
             font-size: 18px;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 500;
         }
 
         .tag-filter .tag-list {
-            display: inline-flex;
+            display: flex;
             flex-wrap: wrap;
             gap: 10px;
             justify-content: center;
+            align-items: center;
         }
 
         .tag-filter label {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            font-size: 16px;
-            color: #555;
-            background-color: #f0f0f0;
-            padding: 5px 10px;
+            padding: 8px 16px;
             border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            background: #f0f0f0;
+            color: #555;
         }
 
         .tag-filter label:hover {
-            background-color: #e0e0e0;
+            background: #e0e0e0;
         }
 
         .tag-filter input[type="checkbox"] {
-            margin-right: 5px;
-            cursor: pointer;
+            display: none;
         }
 
         .tag-filter input[type="checkbox"]:checked + label {
-            background-color: #77b300;
-            color: #fff;
-        }
-
-        .cv-button {
-            display: inline-flex;
-            align-items: center;
-            background-color: #77b300;
-            color: #fff;
-            text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-family: 'Montserrat Alternates', sans-serif;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease;
-        }
-
-        .download-button {
-            display: inline-flex;
-            align-items: center;
-            background: linear-gradient(135deg, #77b300, #13efe7);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, background 0.3s ease;
-        }
-
-        .download-button img {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
-        }
-
-        .download-button:hover {
-            background: linear-gradient(135deg, #13efe7, #77b300);
+            background: #77b300;
+            color: white;
             transform: scale(1.05);
         }
 
-        .download-button:hover img {
-            transform: translateX(4px);
+        /* Mobile Responsive Fix for Tags */
+        @media screen and (max-width: 768px) {
+            .project-tags {
+                gap: 6px;
+            }
+
+            .project-tags .tag {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+
+            .tag-filter {
+                padding: 10px;
+            }
+
+            .tag-filter label {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
         }
 
         /* Profile Section */
@@ -708,115 +754,85 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: center;
             height: 100%;
-            padding-bottom: 20px;
-            gap: 20px;
-            z-index: 1; /* ensure it's above animated bubbles */
+            padding: 40px;
+            gap: 30px;
+            z-index: 1;
             position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Updated Timeline Styles with Alternating Sides */
-        .timeline {
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #77b300, #13efe7);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
             position: relative;
-            padding: 40px 0;
+            overflow: hidden;
         }
 
-        .timeline::before {
+        .download-button::before {
             content: '';
             position: absolute;
-            left: 50%;
             top: 0;
-            bottom: 0;
-            width: 4px;
-            background: #77b300;
-            transform: translateX(-50%);
-            z-index: 1;
-        }
-
-        .experience-item {
-            width: 50%;
-            position: relative;
-            margin: 40px 0;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            z-index: 2;
-        }
-
-        .experience-item:hover {
-            transform: scale(1.02);
-        }
-
-        .experience-item::before {
-            content: "";
-            position: absolute;
-            top: 30px;
-            width: 20px;
-            height: 20px;
-            background: #13efe7;
-            border: 4px solid #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 0 4px #77b300;
-            z-index: 3;
-        }
-
-        /* Left side items */
-        .experience-item:nth-child(odd) {
             left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
         }
 
-        .experience-item:nth-child(odd)::before {
-            right: -10px;
+        .download-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
-        /* Right side items */
-        .experience-item:nth-child(even) {
-            left: 50%;
+        .download-button:hover::before {
+            transform: translateX(100%);
         }
 
-        .experience-item:nth-child(even)::before {
-            left: -10px;
+        .download-button img {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            transition: transform 0.3s ease;
         }
 
-        /* Adjust inner layout */
-        .experience-details {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .download-button:hover img {
+            transform: translateX(4px);
         }
 
-        .company-logo {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .experience-details .dates {
-            font-style: italic;
-            color: #777;
-        }
-
-        /* Mobile Responsive Fix */
         @media screen and (max-width: 768px) {
-            .timeline::before {
-                left: 8px;
+            header {
+                height: 300px;
             }
 
-            .experience-item,
-            .experience-item:nth-child(even),
-            .experience-item:nth-child(odd) {
-                width: 100%;
-                left: 0 !important;
-                padding-left: 40px;
+            header h1 {
+                font-size: 32px;
+                padding: 0 20px;
             }
 
-            .experience-item::before {
-                left: 0;
+            .download-button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+
+            .download-button img {
+                width: 20px;
+                height: 20px;
             }
         }
     </style>
@@ -858,6 +874,7 @@
         <h2 class="section-title">Experience</h2>
         <div class="timeline">
             <div class="experience-item">
+                <div class="timeline-dot"></div>
                 <a href="https://www.realitydefender.com" target="_blank">
                     <img src="assets/experience/reality_defender_logo.png" alt="Reality Defender Logo"
                          class="company-logo">
@@ -874,6 +891,7 @@
                 </div>
             </div>
             <div class="experience-item">
+                <div class="timeline-dot"></div>
                 <img src="assets/experience/luckylab_logo.jpeg" alt="Freelance Work Logo" class="company-logo">
                 <div class="experience-details">
                     <h3>Freelance</h3>
@@ -891,6 +909,7 @@
                 </div>
             </div>
             <div class="experience-item">
+                <div class="timeline-dot"></div>
                 <a href="https://nlpearl.ai/">
                     <img src="assets/experience/nlpearl_logo.jpeg" alt="NLPearl Logo" class="company-logo">
                 </a>
@@ -915,6 +934,7 @@
                 </div>
             </div>
             <div class="experience-item">
+                <div class="timeline-dot"></div>
                 <a href="https://www.linkedin.com/company/pashoot-robotics/">
                     <img src="assets/experience/pashoot_robotics_logo.jpeg" alt="Pashoot Robotics Logo"
                          class="company-logo">
@@ -973,8 +993,8 @@
                 </a>
             </h3>
             <div class="project-tags">
-                <span class="tag">NLP</span>
-                <span class="tag">VLM</span>
+                <span class="tag" data-tag="NLP">NLP</span>
+                <span class="tag" data-tag="VLM">VLM</span>
             </div>
             <div class="project-content">
                 <div class="project-description">
@@ -1020,8 +1040,8 @@
                 </a>
             </h3>
             <div class="project-tags">
-                <span class="tag">Image Generation</span>
-                <span class="tag">Computer Vision</span>
+                <span class="tag" data-tag="Image Generation">Image Generation</span>
+                <span class="tag" data-tag="Computer Vision">Computer Vision</span>
             </div>
             <div class="project-content">
                 <div class="project-description">
@@ -1089,8 +1109,8 @@
                 </a>
             </h3>
             <div class="project-tags">
-                <span class="tag">Segmentation</span>
-                <span class="tag">Computer Vision</span>
+                <span class="tag" data-tag="Segmentation">Segmentation</span>
+                <span class="tag" data-tag="Computer Vision">Computer Vision</span>
             </div>
             <div class="project-content">
                 <div class="project-description">
@@ -1131,7 +1151,7 @@
                 </a>
             </h3>
             <div class="project-tags">
-                <span class="tag">Audio Generation</span>
+                <span class="tag" data-tag="Audio Generation">Audio Generation</span>
             </div>
             <div class="project-content">
                 <div class="project-description">
@@ -1169,9 +1189,9 @@
                 </a>
             </h3>
             <div class="project-tags">
-                <span class="tag">Image Generation</span>
-                <span class="tag">Mobile App</span>
-                <span class="tag">Computer Vision</span>
+                <span class="tag" data-tag="Image Generation">Image Generation</span>
+                <span class="tag" data-tag="Mobile App">Mobile App</span>
+                <span class="tag" data-tag="Computer Vision">Computer Vision</span>
             </div>
             <div class="project-content">
                 <div class="project-description">
@@ -1213,8 +1233,8 @@
                 </a>
             </h3>
             <div class="project-tags">
-                <span class="tag">Image Generation</span>
-                <span class="tag">Computer Vision</span>
+                <span class="tag" data-tag="Image Generation">Image Generation</span>
+                <span class="tag" data-tag="Computer Vision">Computer Vision</span>
             </div>
             <div class="project-content">
                 <div class="project-description">
@@ -1263,9 +1283,9 @@
                 </a>
             </h3>
             <div class="project-tags">
-                <span class="tag">Image Generation</span>
-                <span class="tag">Audio Generation</span>
-                <span class="tag">Computer Vision</span>
+                <span class="tag" data-tag="Image Generation">Image Generation</span>
+                <span class="tag" data-tag="Audio Generation">Audio Generation</span>
+                <span class="tag" data-tag="Computer Vision">Computer Vision</span>
             </div>
             <div class="project-content">
                 <div class="project-description">
@@ -1315,6 +1335,43 @@
 </footer>
 
 <script>
+    // Initialize GSAP ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Timeline animations
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select all experience items
+        const experienceItems = document.querySelectorAll('.experience-item');
+        const timelineDots = document.querySelectorAll('.timeline-dot');
+        
+        // Create animations for each experience item
+        experienceItems.forEach((item, index) => {
+            // Create scroll trigger for each item
+            ScrollTrigger.create({
+                trigger: item,
+                start: "top 80%",
+                onEnter: () => {
+                    item.classList.add('revealed');
+                    timelineDots[index].classList.add('revealed');
+                },
+                onLeaveBack: () => {
+                    item.classList.remove('revealed');
+                    timelineDots[index].classList.remove('revealed');
+                }
+            });
+        });
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    });
+
     function updateImage() {
         const famousName = document.getElementById("famous_name").value;
         const character = document.getElementById("character").value;
@@ -1327,7 +1384,44 @@
             funkoImage.src = imagePath;
             funkoImage.classList.remove("fade-out");
         }, 150);
+
+        // Track the selection in Google Analytics
+        if (famousName !== 'none' && character !== 'none' && action !== 'none') {
+            gtag('event', 'funko_pop_selection', {
+                'event_category': 'PopYou2',
+                'event_label': `${famousName}_${character}_${action}`,
+                'value': 1
+            });
+        }
     }
+
+    // Track initial page load
+    document.addEventListener('DOMContentLoaded', function() {
+        gtag('event', 'page_view', {
+            'page_title': 'PopYou2',
+            'page_location': window.location.href,
+            'page_path': window.location.pathname
+        });
+
+        // Track when PopYou2 section comes into view
+        const popYouSection = document.querySelector('.project-item:nth-child(2)');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    gtag('event', 'section_view', {
+                        'event_category': 'PopYou2',
+                        'event_label': 'section_visible',
+                        'value': 1
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        if (popYouSection) {
+            observer.observe(popYouSection);
+        }
+    });
 
     function filterProjects() {
         const selectedTags = Array.from(document.querySelectorAll('.tag-filter input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
