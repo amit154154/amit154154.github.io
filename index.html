@@ -32,6 +32,7 @@
             background-color: #f9f9f9;
             color: #333;
             line-height: 1.6;
+            cursor: url('assets/cursor.png'), auto;
         }
 
         /* Container */
@@ -834,6 +835,13 @@
                 width: 20px;
                 height: 20px;
             }
+        }
+
+        /* Add cursor styling for clickable elements */
+        a, button, select, input[type="checkbox"] + label, 
+        .experience-item:hover, .project-item:hover, .contact-item:hover,
+        .tag:hover, .download-button, .funko-image {
+            cursor: url('assets/cursor.png'), pointer !important;
         }
     </style>
 </head>
