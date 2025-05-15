@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GBD6XTE35X"></script>
+
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -904,7 +906,7 @@
                 <div class="experience-details">
                     <h3>Freelance</h3>
                     <h4>Computer Vision Research Engineer</h4>
-                    <p class="dates">Dec 2024 - Present</p>
+                    <p class="dates">Dec 2024 - Mar 2025</p>
                     <ul>
                         <li>Collaborated with <a href="https://www.luckylab.org/" target="_blank"
                                                  rel="noopener noreferrer">LuckyLab</a> to develop and deploy
@@ -1387,14 +1389,29 @@
         const filename = `${famousName}_${character}_${action}.png`;
         const imagePath = `assets/projects_assets/PopYou2/generated_images/${filename}`;
         const funkoImage = document.getElementById("funko_image");
+
+        const isRealSelection = true;
+
         funkoImage.classList.add("fade-out");
         setTimeout(() => {
             funkoImage.src = imagePath;
             funkoImage.classList.remove("fade-out");
+
+            if (isRealSelection) {
+                const rect = funkoImage.getBoundingClientRect();
+                const x = (rect.left + rect.width / 2) / window.innerWidth;
+                const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+                confetti({
+                    particleCount: 100,
+                    spread: 80,
+                    startVelocity: 35,
+                    origin: { x: x, y: y }
+                });
+            }
         }, 150);
 
-        // Track the selection in Google Analytics
-        if (famousName !== 'none' && character !== 'none' && action !== 'none') {
+        if (isRealSelection) {
             gtag('event', 'funko_pop_selection', {
                 'event_category': 'PopYou2',
                 'event_label': `${famousName}_${character}_${action}`,
@@ -1402,34 +1419,6 @@
             });
         }
     }
-
-    // Track initial page load
-    document.addEventListener('DOMContentLoaded', function() {
-        gtag('event', 'page_view', {
-            'page_title': 'PopYou2',
-            'page_location': window.location.href,
-            'page_path': window.location.pathname
-        });
-
-        // Track when PopYou2 section comes into view
-        const popYouSection = document.querySelector('.project-item:nth-child(2)');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    gtag('event', 'section_view', {
-                        'event_category': 'PopYou2',
-                        'event_label': 'section_visible',
-                        'value': 1
-                    });
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        if (popYouSection) {
-            observer.observe(popYouSection);
-        }
-    });
 
     function filterProjects() {
         const selectedTags = Array.from(document.querySelectorAll('.tag-filter input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
