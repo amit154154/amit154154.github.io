@@ -772,11 +772,12 @@
             align-items: center;
             background: linear-gradient(135deg, #77b300, #13efe7);
             color: #fff;
-            padding: 15px 30px;
+            padding: 18px 36px;
             border-radius: 30px;
             text-decoration: none;
             font-family: 'Poppins', sans-serif;
-            font-size: 18px;
+            font-size: 20px;
+            letter-spacing: .5px;
             font-weight: 600;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -808,8 +809,8 @@
         }
 
         .download-button img {
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             margin-right: 12px;
             transition: transform 0.3s ease;
         }
@@ -829,18 +830,66 @@
             }
 
             .download-button {
-                padding: 12px 24px;
-                font-size: 16px;
+                padding: 14px 26px;
+                font-size: 18px;
             }
 
             .download-button img {
-                width: 20px;
-                height: 20px;
+                width: 26px;
+                height: 26px;
             }
         }
 
+        /* ===== Dark‑/Light theme toggle button (revamped) ===== */
+        #theme-toggle{
+            position:absolute;
+            top:20px;
+            right:20px;
+            width:80px;
+            height:80px;
+            padding:10px;          /* keep koala centred at larger size */
+            background:rgba(255,255,255,0.85);          /* neutral background */
+            border:2px solid #13efe7;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow:0 2px 6px rgba(0,0,0,0.25);
+            transition:transform .3s ease, background-color .3s ease;
+            cursor:pointer;
+            z-index:5;
+        }
+        #theme-toggle:hover{
+            transform:scale(1.1);
+            background:rgba(255,255,255,1);
+        }
+
+        /* Harmonise button colours in dark mode */
+        body.dark-mode #theme-toggle{
+            background:rgba(0,0,0,0.75);
+            border-color:#77b300;
+        }
+
+        /* ===== Simple dark‑mode palette ===== */
+        body.dark-mode{
+            background-color:#121212;
+            color:#e0e0e0;
+        }
+        body.dark-mode header{
+            background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+                       url('assets/header_siliconValley_image.png') center/cover no-repeat;
+        }
+        body.dark-mode .experience-item,
+        body.dark-mode .project-item,
+        body.dark-mode #profile{
+            background:rgba(50,50,50,.9);
+        }
+        body.dark-mode .project-item:hover{
+            background-color:#222;
+        }
+
         /* Add cursor styling for clickable elements */
-        a, button, select, input[type="checkbox"] + label, 
+        a, button, select, input[type="checkbox"] + label,
         .experience-item:hover, .project-item:hover, .contact-item:hover,
         .tag:hover, .download-button, .funko-image {
             cursor: url('assets/cursor.png'), pointer !important;
@@ -855,6 +904,9 @@
             <img src="assets/koala_looking.png" alt="Download Icon">
             Download My CV
         </a>
+        <button id="theme-toggle" aria-label="Toggle dark / light theme">
+            <img src="assets/theme_toggle_icon.png" alt="Toggle Theme Icon" style="width:55px;height:55px;">
+        </button>
     </div>
 </header>
 
@@ -906,7 +958,7 @@
                 <div class="experience-details">
                     <h3>Freelance</h3>
                     <h4>Computer Vision Research Engineer</h4>
-                    <p class="dates">Dec 2024 - Mar 2025</p>
+                    <p class="dates">Dec 2024 – Apr 2025</p>
                     <ul>
                         <li>Collaborated with <a href="https://www.luckylab.org/" target="_blank"
                                                  rel="noopener noreferrer">LuckyLab</a> to develop and deploy
@@ -1353,7 +1405,7 @@
         // Select all experience items
         const experienceItems = document.querySelectorAll('.experience-item');
         const timelineDots = document.querySelectorAll('.timeline-dot');
-        
+
         // Create animations for each experience item
         experienceItems.forEach((item, index) => {
             // Create scroll trigger for each item
@@ -1381,6 +1433,38 @@
             });
         });
     });
+
+    /* ----   Dark‑/Light theme toggle  ---- */
+    const themeToggle = document.getElementById('theme-toggle');
+    if(themeToggle){
+        // restore previous choice
+        if(localStorage.getItem('theme')==='dark'){
+            document.body.classList.add('dark-mode');
+        }
+        themeToggle.addEventListener('click', ()=>{
+            document.body.classList.toggle('dark-mode');
+            if(document.body.classList.contains('dark-mode')){
+                localStorage.setItem('theme','dark');
+            }else{
+                localStorage.removeItem('theme');
+            }
+        });
+    }
+
+    /* ----   Confetti burst on CV download   ---- */
+    const cvBtn = document.querySelector('.download-button');
+    if(cvBtn){
+        cvBtn.addEventListener('click', ()=>{
+            const r = cvBtn.getBoundingClientRect();
+            confetti({
+                particleCount:150,
+                spread:60,
+                startVelocity:35,
+                origin:{x:(r.left+r.width/2)/window.innerWidth,
+                        y:(r.top+r.height/2)/window.innerHeight}
+            });
+        });
+    }
 
     function updateImage() {
         const famousName = document.getElementById("famous_name").value;
