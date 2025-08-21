@@ -765,6 +765,24 @@
             }
         }
 
+    /* Mobile hero adjustments: hide large image, keep clean layout */
+    @media (max-width: 720px) {
+      .hero-wrap {
+        grid-template-columns: 1fr; /* single column */
+        gap: 16px;
+        padding: 56px 0 24px; /* slightly tighter */
+      }
+      .hero h1 { font-size: 32px; }
+      .hero-art { display: none; } /* hide the Silicon Valley image on mobile */
+    }
+
+    @media (min-width: 721px) and (max-width: 920px) {
+      .hero-art {
+        min-height: 320px;
+        background-size: contain; /* avoid cropping in mid widths */
+        background-position: center;
+      }
+    }
     </style>
 </head>
 <body>
