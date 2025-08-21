@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GBD6XTE35X"></script>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Amit Israeli — Research Engineer</title>
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()"/>
+    <link rel="icon" type="image/png" href="icon.png"/>
 
+    <!-- Analytics (kept from your site) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GBD6XTE35X"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -14,1508 +19,1624 @@
         gtag('js', new Date());
         gtag('config', 'G-GBD6XTE35X');
     </script>
-    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amit Israeli - Research Engineer</title>
-    <link rel="icon" type="image/x-icon" href="icon.png">
-    <!-- GSAP Library -->
+
+    <!-- JS libs -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat+Alternates:wght@700&family=Poppins&display=swap"
-          rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+          rel="stylesheet"/>
+
     <style>
-        /* Base Styles */
+        :root {
+            --bg: #0b0e12; /* base dark */
+            --bg-soft: #12161d; /* panels */
+            --txt: #e7eef8; /* primary text */
+            --muted: #9fb1c7; /* muted text */
+            --brand1: #13efe7; /* cyan */
+            --brand2: #77b300; /* lime */
+            --ring: rgba(19, 239, 231, .35);
+            --card: rgba(255, 255, 255, .06);
+            --glass: rgba(255, 255, 255, .08);
+            --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html, body {
+            height: 100%
+        }
+
         body {
-            font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
-            line-height: 1.6;
-            cursor: url('assets/cursor.png'), auto;
+            font: 16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            color: var(--txt);
+            background: #0b0e12;
+            overflow-x: hidden;
         }
 
-        /* Container */
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
         .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
+            width: min(1200px, 92%);
+            margin: 0 auto
         }
 
-        /* Enhanced Header */
-        header {
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-            url('assets/header_siliconValley_image.png') center center no-repeat;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: #000;
-            color: white;
-            text-align: center;
-            position: relative;
-            width: 100%;
-            height: 400px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        header h1 {
-            font-size: 48px;
-            font-weight: bold;
-            margin: 0 0 20px 0;
-            color: #fff;
-            font-family: 'Montserrat Alternates', sans-serif;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            animation: fadeInDown 1s ease-out;
-            max-width: 800px;
-            line-height: 1.2;
-        }
-
-        @keyframes fadeInDown {
-            0% {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        /* Section Titles */
-        .section-title {
-            font-size: 28px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            color: #333;
-            text-align: center;
-            position: relative;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .section-title::after {
-            content: '';
-            width: 50px;
-            height: 3px;
-            background: #77b300;
-            display: block;
-            margin: 10px auto 0;
-            border-radius: 2px;
-        }
-
-        /* Apple-style Timeline */
-        .timeline {
-            position: relative;
-            padding: 40px 0;
-            overflow: hidden;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
+        /* ===== Navbar ===== */
+        .nav {
+            position: sticky;
             top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, 
-                rgba(119, 179, 0, 0.2),
-                rgba(19, 239, 231, 0.2),
-                rgba(119, 179, 0, 0.2)
-            );
-            transform: translateX(-50%);
-            z-index: 1;
+            z-index: 50;
+            backdrop-filter: saturate(1.2) blur(10px);
+            background: linear-gradient(180deg, rgba(16, 24, 32, .9), rgba(16, 24, 32, .6));
+            border-bottom: 1px solid rgba(255, 255, 255, .07);
         }
 
-        .experience-item {
-            width: 50%;
-            position: relative;
-            margin: 60px 0;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 2;
-            opacity: 0;
-            transform: translateY(50px);
-            backdrop-filter: blur(10px);
-        }
-
-        .experience-item.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .experience-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .timeline-dot {
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            background: #13efe7;
-            border: 3px solid #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 0 3px #77b300;
-            z-index: 3;
-            top: 50%;
-            transform: translateY(-50%);
-            transition: all 0.3s ease;
-        }
-
-        .timeline-dot.revealed {
-            transform: translateY(-50%) scale(1.2);
-            background: #77b300;
-        }
-
-        /* Left side items */
-        .experience-item:nth-child(odd) {
-            left: 0;
-            padding-right: 60px;
-        }
-
-        .experience-item:nth-child(odd) .timeline-dot {
-            right: -8px;
-        }
-
-        /* Right side items */
-        .experience-item:nth-child(even) {
-            left: 50%;
-            padding-left: 60px;
-        }
-
-        .experience-item:nth-child(even) .timeline-dot {
-            left: -8px;
-        }
-
-        /* Mobile Responsive Fix */
-        @media screen and (max-width: 768px) {
-            .timeline::before {
-                left: 30px;
-            }
-
-            .experience-item,
-            .experience-item:nth-child(even),
-            .experience-item:nth-child(odd) {
-                width: 100%;
-                left: 0 !important;
-                padding: 20px 20px 20px 60px;
-                margin: 40px 0;
-            }
-
-            .experience-item .timeline-dot {
-                left: 30px;
-                transform: translateX(-50%);
-            }
-
-            .experience-item.revealed .timeline-dot {
-                transform: translateX(-50%) scale(1.2);
-            }
-        }
-
-        /* Projects Section */
-        .project-item {
-            margin-bottom: 50px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-radius: 8px;
-        }
-
-        .project-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: scale(1.02);
-            background-color: #fff;
-        }
-
-        .project-item h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #333;
-            text-align: center;
-            font-family: 'Montserrat Alternates', sans-serif;
+        .nav-inner {
             display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 14px 0
         }
 
-        /* Button Styles */
-        .github-button,
-        .huggingface-button,
-        .wandb-button,
-        .spotify-button,
-        .youtube-button {
+        .brand {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-weight: 800;
+            letter-spacing: .2px
+        }
+
+        .brand img {
+            width: 40px;
+            height: 40px
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+            align-items: center
+        }
+
+        .nav-links a {
+            opacity: .9;
+            padding: 10px 12px;
+            border-radius: 10px
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, .06)
+        }
+
+        /* Theme toggle — koala button */
+        .toggle {
+            border: 2px solid var(--brand1);
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(145deg, #0f1722, #0a0d12);
+            box-shadow: var(--shadow);
+            transition: transform .2s ease;
+            cursor: pointer
+        }
+
+        .toggle:hover {
+            transform: scale(1.06)
+        }
+
+        .toggle img {
+            width: 40px;
+            height: 40px
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            position: relative;
+            isolation: isolate;
+        }
+
+        .hero-wrap {
+            padding: 80px 0 40px;
+            display: grid;
+            grid-template-columns:1.2fr .8fr;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .hero-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .04));
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero h1 {
+            font: 800 42px/1.15 'Space Grotesk', Inter, sans-serif;
+            margin: 0 0 10px;
+            letter-spacing: .4px
+        }
+
+        .hero p {
+            color: var(--muted);
+            margin: 0 0 18px
+        }
+
+        .accent {
+            background: linear-gradient(90deg, var(--brand1), var(--brand2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        .btn {
             display: inline-flex;
             align-items: center;
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-            margin-left: 8px;
+            gap: 10px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--brand2), var(--brand1));
+            color: #081016;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 26px rgba(19, 239, 231, .25);
         }
 
-        .github-button {
-            background-color: #24292e;
+        .btn img {
+            width: 26px;
+            height: 26px
         }
 
-        .github-button:hover {
-            background-color: #444c56;
+        .btn.ghost {
+            background: transparent;
+            color: var(--txt);
+            border: 1.5px solid rgba(255, 255, 255, .18)
         }
 
-        .huggingface-button {
-            background-color: #FF6562;
+        .hero-art {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            min-height: 280px;
+            background: url('assets/header_siliconValley_image.png') center/cover no-repeat;
+            box-shadow: var(--shadow);
         }
 
-        .huggingface-button:hover {
-            background-color: #e04e50;
+        .hero-art::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            /* neutral, subtle sheen for dark mode */
+            background: radial-gradient(600px 300px at 80% 0%, rgba(255, 255, 255, .06), transparent 60%),
+            radial-gradient(400px 260px at 20% 100%, rgba(255, 255, 255, .04), transparent 60%);
+            mix-blend: screen;
         }
 
-        .wandb-button {
-            background-color: #4C9AFF;
+        .light .hero-art::after {
+            background: radial-gradient(600px 300px at 80% 0%, rgba(119, 179, 0, .16), transparent 60%),
+            radial-gradient(400px 260px at 20% 100%, rgba(19, 239, 231, .16), transparent 60%);
         }
 
-        .wandb-button:hover {
-            background-color: #3b8ae0;
+        /* Contain-fit helper for GIF/video cards to avoid cropping */
+        .card[data-fit="contain"] .media {
+            object-fit: contain;
+            object-position: center;
+            background: #000;
         }
 
-        .spotify-button {
-            background-color: #1DB954;
-            color: white;
+        /* Funko live generator styles */
+        .funko-builder {
+            margin-top: 12px;
+            padding: 14px;
+            border: 1px dashed var(--brand1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .04)
         }
 
-        .spotify-button:hover {
-            background-color: #1aa34a;
-        }
-
-        .youtube-button {
-            background-color: #FF0000;
-            color: white;
-        }
-
-        .youtube-button:hover {
-            background-color: #cc0000;
-        }
-
-        /* Replace SVG icons with PNG icons in buttons */
-        .button-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-        }
-
-        /* Project Content Layout */
-        .project-content {
+        .funko-row {
             display: flex;
             flex-wrap: wrap;
-            align-items: flex-start;
-            gap: 20px;
-        }
-
-        .project-description {
-            flex: 1;
-            min-width: 250px;
-        }
-
-        .project-points {
-            list-style-type: disc;
-            padding-left: 20px;
-            font-size: 16px;
-            color: #555;
-        }
-
-        .project-points li {
-            margin-bottom: 10px;
-        }
-
-        .project-options-image {
-            flex: 1;
-            min-width: 250px;
-            display: flex;
-            flex-direction: column;
+            gap: 10px;
             align-items: center;
+            margin-bottom: 10px
         }
 
-        #options {
-            background-color: #f0f0f0;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-
-        .option-group {
-            margin-bottom: 15px;
-        }
-
-        .option-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
-        }
-
-        .option-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-            font-size: 16px;
-            color: #333;
-            transition: all 0.3s ease;
-        }
-
-        .option-group select:hover {
-            border-color: #77b300;
-        }
-
-        .option-group select:focus {
-            outline: none;
-            border-color: #77b300;
-            box-shadow: 0 0 5px rgba(119, 179, 0, 0.5);
-        }
-
-        /* Image Styling */
-        #image-container img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-images {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .project-images img,
-        .project-images iframe {
-            width: 100%;
-            max-width: 300px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-video {
-            flex: 1;
-            min-width: 250px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .project-video video {
-            width: 100%;
-            max-width: 500px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .project-gallery img,
-        .project-gallery video,
-        .project-gallery iframe {
-            width: 300px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Contact Section */
-        .contact-info {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            border: 2px solid #13efe7;
-            border-radius: 8px;
-            padding: 10px 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            font-size: 16px;
-            color: #555;
-            text-decoration: none;
-        }
-
-        .contact-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .contact-item img {
-            width: 28px;
-            height: 28px;
-            margin-right: 8px;
-        }
-
-        .contact-item a {
-            color: #333;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .contact-item a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px 0;
-            background: #fff;
-            border-top: 2px solid #e0e0e0;
-            color: #777;
-            margin-top: 40px;
-        }
-
-        /* Specific Styling for Enlarged Image in CelebrityLook */
-        .project-description img.enlarged {
-            max-width: 600px;
-        }
-
-        /* Styled Sentence */
-        #customization-sentence {
-            font-family: "Poppins", sans-serif;
-            font-size: 20px;
-            font-weight: bold;
-            color: #444;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        #customization-sentence select {
-            display: inline-block;
-            width: auto;
-            padding: 5px 10px;
-            margin: 0 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #fff;
-            font-size: 16px;
-            color: #333;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            font-family: "Poppins", sans-serif;
-        }
-
-        #customization-sentence select:hover {
-            border-color: #13efe7;
-        }
-
-        #customization-sentence select:focus {
-            outline: none;
-            border-color: #77b300;
-            box-shadow: 0 0 5px rgba(119, 179, 0, 0.5);
-        }
-
-        /* Cool Image Generator Section */
-        #image-container {
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            border: 2px dashed #00ffea;
+        .funko-row select {
+            padding: 8px 10px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #f0f0f0, rgba(110, 255, 255, 0.34));
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-family: "Poppins", sans-serif;
+            border: 1px solid rgba(255, 255, 255, .18);
+            background: transparent;
+            color: var(--txt)
+        }
+
+        .light .funko-row select {
+            color: var(--txt)
         }
 
         .funko-image {
-            max-width: 300px;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            max-width: 320px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: transform .25s ease, opacity .25s ease
         }
 
         .funko-image.fade-out {
-            opacity: 0;
-            transform: scale(0.9);
+            opacity: .25;
+            transform: scale(.98)
         }
 
-        /* Enhanced Project Tags */
-        .project-tags {
-            margin: 15px 0;
+        .funko-sentence {
             text-align: center;
+            font-weight: 700;
+            letter-spacing: .2px;
+            margin-bottom: 10px
+        }
+
+        .funko-sentence select {
+            padding: 8px 12px;
+            margin: 0 4px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            background: rgba(255, 255, 255, .04);
+            color: var(--txt);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .light .funko-sentence select {
+            background: #fff;
+            color: var(--txt);
+            border-color: #e6e8ef
+        }
+
+        .more {
+            margin-top: 12px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .05);
+            overflow: hidden
+        }
+
+        .more > summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 10px 14px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            min-height: 40px; /* prevents the summary text from looking cut */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .more > summary::-webkit-details-marker {
+            display: none
+        }
+
+        .more[open] {
+            box-shadow: 0 10px 22px rgba(0, 0, 0, .28)
+        }
+
+        .more .more-body {
+            height: 0;                 /* collapsed height */
+            overflow: hidden;          /* hide content when collapsed */
+            transition: height .32s ease;
+            padding: 0 14px;           /* remove bottom padding when collapsed */
+        }
+        .more[open] .more-body {
+            /* height is managed via JS for smooth open/close; keep only padding */
+            padding: 0 14px 14px;
+        }
+
+        .more h4 {
+            margin: 12px 0 6px;
+            font: 700 16px Inter
+        }
+
+        .more ul {
+            margin: 6px 0 0 18px
+        }
+
+        .light .more {
+            background: #fff
+        }
+
+        .xp-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 14px;
+            padding: 12px
+        }
+
+        .xp-logo {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            margin-left: 6px;
+            vertical-align: middle;
+            object-fit: cover
+        }
+
+        .xp .stack .tag {
+            font-size: 11px;
+            padding: 6px 10px 6px 28px
+        }
+
+        /* ===== Chips & sections ===== */
+        .section {
+            padding: 36px 0
+        }
+
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 18px
+        }
+
+        .title h2 {
+            margin: 0;
+            font: 700 28px/1 'Space Grotesk', Inter, sans-serif
+        }
+
+        .chip {
+            font: 600 12px/1 Inter;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .12)
+        }
+
+        /* ===== Cards grid ===== */
+        .grid {
+            display: grid;
+            gap: 18px
+        }
+
+        @media (min-width: 720px) {
+            .grid.cols-3 {
+                grid-template-columns:repeat(3, 1fr)
+            }
+        }
+
+        @media (min-width: 920px) {
+            .grid.cols-2 {
+                grid-template-columns:repeat(2, 1fr)
+            }
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 18px;
+            overflow: hidden;
+            position: relative;
+            transition: transform .25s ease, box-shadow .25s ease;
+            box-shadow: var(--shadow);
+            min-height: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, .45)
+        }
+
+        .card-body {
+            padding: 18px
+        }
+
+        .card h3 {
+            margin: 0 0 6px;
+            font: 700 20px/1.2 Inter
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--muted)
+        }
+
+        .tag-row {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
             gap: 8px;
+            margin: 12px 0 0
         }
 
-        .project-tags .tag {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: default;
+        .tag {
             position: relative;
-            overflow: hidden;
+            padding: 8px 12px 8px 28px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: .2px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 6px 14px rgba(0, 0, 0, .22);
+            backdrop-filter: blur(4px);
+            transition: transform .2s ease, box-shadow .2s ease;
         }
 
-        /* Tag Colors */
-        .project-tags .tag[data-tag="Image Generation"] {
-            background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
-            color: white;
+        /* Project link buttons: stacked/wrapping pill layout */
+        .project-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 12px;
+        }
+        .project-links .contact {
+          background: rgba(255, 255, 255, .08);
+          border: 1px solid rgba(255, 255, 255, .16);
+          border-radius: 999px;
+          padding: 8px 12px;
+          font-weight: 600;
+          transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .project-links .contact img {
+          width: 18px;
+          height: 18px;
+        }
+        .project-links .contact:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 6px 14px rgba(0, 0, 0, .22);
         }
 
-        .project-tags .tag[data-tag="Segmentation"] {
-            background: linear-gradient(135deg, #4ECDC4, #45B7AF);
-            color: white;
-        }
-
-        .project-tags .tag[data-tag="NLP"] {
-            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
-            color: white;
-        }
-
-        .project-tags .tag[data-tag="VLM"] {
-            background: linear-gradient(135deg, #00B894, #00D8A0);
-            color: white;
-        }
-
-        .project-tags .tag[data-tag="Computer Vision"] {
-            background: linear-gradient(135deg, #FDCB6E, #FFEAA7);
-            color: #2D3436;
-        }
-
-        .project-tags .tag[data-tag="Mobile App"] {
-            background: linear-gradient(135deg, #74B9FF, #A8D5FF);
-            color: white;
-        }
-
-        .project-tags .tag[data-tag="Audio Generation"] {
-            background: linear-gradient(135deg, #E84393, #FD79A8);
-            color: white;
-        }
-
-        /* Tag Hover Effects */
-        .project-tags .tag:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .project-tags .tag::before {
+        .tag::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .project-tags .tag:hover::before {
-            transform: translateX(100%);
-        }
-
-        /* Tag Filter Styling */
-        .tag-filter {
-            text-align: center;
-            margin: 20px 0 30px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .tag-filter p {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 15px;
-            font-weight: 500;
-        }
-
-        .tag-filter .tag-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .tag-filter label {
-            display: inline-flex;
-            align-items: center;
-            padding: 8px 16px;
-            border-radius: 20px;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
             font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #f0f0f0;
-            color: #555;
+            line-height: 1;
         }
 
-        .tag-filter label:hover {
-            background: #e0e0e0;
+        .tag::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, .18) 65%, rgba(255, 255, 255, 0));
+            opacity: 0;
+            transition: opacity .25s ease;
+            pointer-events: none;
         }
 
-        .tag-filter input[type="checkbox"] {
-            display: none;
+        .tag:hover {
+            transform: translateY(-1px) scale(1.03);
+            box-shadow: 0 0 0 2px var(--tag-ring, rgba(255, 255, 255, .25)), 0 10px 18px rgba(0, 0, 0, .3);
         }
 
-        .tag-filter input[type="checkbox"]:checked + label {
-            background: #77b300;
-            color: white;
-            transform: scale(1.05);
+        .tag:hover::after {
+            opacity: .25;
         }
 
-        /* Mobile Responsive Fix for Tags */
-        @media screen and (max-width: 768px) {
-            .project-tags {
-                gap: 6px;
-            }
-
-            .project-tags .tag {
-                padding: 5px 10px;
-                font-size: 12px;
-            }
-
-            .tag-filter {
-                padding: 10px;
-            }
-
-            .tag-filter label {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
+        .t-nlp {
+            background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+            color: white
         }
 
-        /* Profile Section */
-        #profile {
-            margin: 40px 0;
-            padding: 20px 0;
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
+        .t-vlm {
+            background: linear-gradient(135deg, #00B894, #00D8A0);
+            color: white
+        }
+
+        .t-cv {
+            background: linear-gradient(135deg, #FDCB6E, #FFEAA7);
+            color: #2D3436
+        }
+
+        .t-img {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+            color: white
+        }
+
+        .t-aud {
+            background: linear-gradient(135deg, #E84393, #FD79A8);
+            color: white
+        }
+
+        .t-seg {
+            background: linear-gradient(135deg, #4ECDC4, #45B7AF);
+            color: white
+        }
+
+        .t-mobile {
+            background: linear-gradient(135deg, #74B9FF, #A8D5FF);
+            color: white
+        }
+
+        .t-nlp {
+            --tag-ring: rgba(162, 155, 254, .5);
+        }
+
+        .t-nlp::before {
+            content: '🔤';
+        }
+
+        .t-vlm {
+            --tag-ring: rgba(0, 216, 160, .5);
+        }
+
+        .t-vlm::before {
+            content: '🧠';
+        }
+
+        .t-cv {
+            --tag-ring: rgba(253, 203, 110, .5);
+        }
+
+        .t-cv::before {
+            content: '📷';
+        }
+
+        .t-img {
+            --tag-ring: rgba(255, 142, 142, .5);
+        }
+
+        .t-img::before {
+            content: '🎨';
+        }
+
+        .t-aud {
+            --tag-ring: rgba(253, 121, 168, .5);
+        }
+
+        .t-aud::before {
+            content: '🎵';
+        }
+
+        .t-seg {
+            --tag-ring: rgba(69, 183, 175, .5);
+        }
+
+        .t-seg::before {
+            content: '✂️';
+        }
+
+        .t-mobile {
+            --tag-ring: rgba(168, 213, 255, .5);
+        }
+
+        .t-mobile::before {
+            content: '📱';
+        }
+
+        .media {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block
+        }
+
+        /* Project media strip inside Read more */
+        .media-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .media-strip img,
+        .media-strip video {
+            width: 100%;
+            height: auto;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, .12);
+            background: #000;
+            object-fit: contain;
         }
 
-        .profile-content {
-            display: flex;
+        /* ===== Experience timeline (compact) ===== */
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(var(--brand1), var(--brand2));
+            opacity: .35
+        }
+
+        .xp {
+            display: grid;
+            grid-template-columns:30px 1fr;
+            gap: 14px;
+            padding: 14px 0
+        }
+
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--brand1);
+            border: 3px solid #0b0e12;
+            box-shadow: 0 0 0 3px rgba(119, 179, 0, .35)
+        }
+
+        .xp h4 {
+            margin: 0;
+            font: 700 18px/1.2 Inter
+        }
+
+        .xp .where {
+            color: var(--muted);
+            font-weight: 600
+        }
+
+        .xp .when {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .xp ul {
+            margin: 8px 0 0 18px
+        }
+
+        /* ===== Profile panel ===== */
+        .profile {
+            display: grid;
+            grid-template-columns:100px 1fr;
+            gap: 16px;
             align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            padding: 18px;
+            border-radius: 18px;
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, .12)
         }
 
-        .profile-picture {
-            width: 150px;
-            height: 150px;
+        .avatar {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             object-fit: cover;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, .2)
         }
 
-        .profile-text {
-            flex: 1;
-            font-size: 16px;
-            color: #555;
-            line-height: 1.6;
-        }
-
-        .profile-text p {
-            margin-bottom: 15px;
-        }
-
-        .header-content {
+        /* ===== Footer & contacts ===== */
+        .contacts {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            padding: 40px;
-            gap: 30px;
-            z-index: 1;
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
+            gap: 12px;
+            flex-wrap: wrap
         }
 
-        .download-button {
+        .contact {
             display: inline-flex;
             align-items: center;
-            background: linear-gradient(135deg, #77b300, #13efe7);
-            color: #fff;
-            padding: 18px 36px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-family: 'Poppins', sans-serif;
-            font-size: 20px;
-            letter-spacing: .5px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .12)
         }
 
-        .download-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
+        .contact img {
+            width: 22px;
+            height: 22px
         }
 
-        .download-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, .07);
+            padding: 26px 0;
+            text-align: center;
+            color: var(--muted)
         }
 
-        .download-button:hover::before {
-            transform: translateX(100%);
+        /* ===== Light theme ===== */
+        .light {
+            --bg: #f9fafb;
+            --bg-soft: #ffffff;
+            --txt: #12161d;
+            --muted: #4f637a;
+            --card: rgba(255, 255, 255, 1);
+            --glass: rgba(255, 255, 255, .75);
         }
 
-        .download-button img {
-            width: 32px;
-            height: 32px;
-            margin-right: 12px;
-            transition: transform 0.3s ease;
+        .light body {
+            background: #f5f7fb;
+            color: var(--txt)
         }
 
-        .download-button:hover img {
-            transform: translateX(4px);
-        }
-
-        @media screen and (max-width: 768px) {
-            header {
-                height: 300px;
-            }
-
-            header h1 {
-                font-size: 32px;
-                padding: 0 20px;
-            }
-
-            .download-button {
-                padding: 14px 26px;
-                font-size: 18px;
-            }
-
-            .download-button img {
-                width: 26px;
-                height: 26px;
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important
             }
         }
 
-        /* ===== Dark‑/Light theme toggle button (revamped) ===== */
-        #theme-toggle{
-            position:absolute;
-            top:20px;
-            right:20px;
-            width:80px;
-            height:80px;
-            padding:10px;          /* keep koala centred at larger size */
-            background:rgba(255,255,255,0.85);          /* neutral background */
-            border:2px solid #13efe7;
-            border-radius:50%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            box-shadow:0 2px 6px rgba(0,0,0,0.25);
-            transition:transform .3s ease, background-color .3s ease;
-            cursor:pointer;
-            z-index:5;
-        }
-        #theme-toggle:hover{
-            transform:scale(1.1);
-            background:rgba(255,255,255,1);
-        }
-
-        /* Harmonise button colours in dark mode */
-        body.dark-mode #theme-toggle{
-            background:rgba(0,0,0,0.75);
-            border-color:#77b300;
-        }
-
-        /* ===== Simple dark‑mode palette ===== */
-        body.dark-mode{
-            background-color:#121212;
-            color:#e0e0e0;
-        }
-        body.dark-mode header{
-            background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
-                       url('assets/header_siliconValley_image.png') center/cover no-repeat;
-        }
-        body.dark-mode .experience-item,
-        body.dark-mode .project-item,
-        body.dark-mode #profile{
-            background:rgba(50,50,50,.9);
-        }
-        body.dark-mode .project-item:hover{
-            background-color:#222;
-        }
-
-        /* Add cursor styling for clickable elements */
-        a, button, select, input[type="checkbox"] + label,
-        .experience-item:hover, .project-item:hover, .contact-item:hover,
-        .tag:hover, .download-button, .funko-image {
-            cursor: url('assets/cursor.png'), pointer !important;
-        }
     </style>
 </head>
 <body>
-<header>
-    <div class="container header-content">
-        <h1>Amit Israeli - Research Engineer</h1>
-        <a href="assets/Amit-Israeli-FlowCV-Resume-20250404.pdf" download class="download-button">
-            <img src="assets/koala_looking.png" alt="Download Icon">
-            Download My CV
-        </a>
-        <button id="theme-toggle" aria-label="Toggle dark / light theme">
-            <img src="assets/theme_toggle_icon.png" alt="Toggle Theme Icon" style="width:55px;height:55px;">
-        </button>
+<nav class="nav">
+    <div class="container nav-inner">
+        <div class="brand">
+            <img src="assets/koala_looking.png" alt="Koala"/>
+            <span>Amit Israeli — <span class="accent">Research Engineer</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <button id="themeToggle" class="toggle" aria-label="Toggle theme">
+                <img src="assets/theme_toggle_icon.png" alt="Theme"/>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+    <div class="container hero-wrap">
+        <div class="hero-card">
+            <h1>Working at the intersection of <span class="accent">AI, research,</span> and engineering.</h1>
+            <p>
+                I enjoy exploring ideas, building systems, and turning complex problems into something practical.
+                My focus is on thoughtful research and solid engineering that lasts.
+            </p>
+            <div class="cta-row">
+                <a class="btn" id="cvBtn" href="assets/Amit-Israeli-FlowCV-Resume-20250820.pdf" download>
+                    <img src="assets/koala_looking.png" alt="CV"/> Download CV
+                </a>
+                <a class="btn ghost" href="#projects">See Projects ↓</a>
+            </div>
+        </div>
+        <div class="hero-art" role="img" aria-label="Silicon Valley skyline with gradient glows"></div>
     </div>
 </header>
 
-<!-- Profile Section -->
-<section id="profile">
-    <div class="container">
-        <h2 class="section-title">Profile</h2>
-        <div class="profile-content">
-            <img src="assets/linkdin_profile_image_ghibli.png" alt="Amit Israeli" class="profile-picture">
-            <div class="profile-text">
-                <p>
-                    I am Amit Israeli, a dedicated Computer Vision Research Engineer with a passion for creating
-                    innovative solutions in deep learning and AI. As a self-learner, I have cultivated a strong
-                    foundation in computer vision and artificial intelligence, continuously expanding my knowledge to
-                    stay ahead in this rapidly evolving field. My expertise lies in developing and deploying
-                    state-of-the-art models for edge devices, addressing challenges in real-time vision applications,
-                    segmentation, and optimization.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
 
-<div class="container">
-    <!-- Experience Section with Timeline -->
-    <section id="experience">
-        <h2 class="section-title">Experience</h2>
-        <div class="timeline">
-            <div class="experience-item">
-                <div class="timeline-dot"></div>
-                <a href="https://www.realitydefender.com" target="_blank">
-                    <img src="assets/experience/reality_defender_logo.png" alt="Reality Defender Logo"
-                         class="company-logo">
-                </a>
-                <div class="experience-details">
-                    <h3>Reality Defender</h3>
-                    <h4>Computer Vision Research Engineer</h4>
-                    <p class="dates">Jan 2025 - Present</p>
-                    <ul>
-                        <li>Developing and optimizing AI-driven security solutions to detect deepfakes and fraudulent
-                            media.
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="experience-item">
-                <div class="timeline-dot"></div>
-                <img src="assets/experience/luckylab_logo.jpeg" alt="Freelance Work Logo" class="company-logo">
-                <div class="experience-details">
-                    <h3>Freelance</h3>
-                    <h4>Computer Vision Research Engineer</h4>
-                    <p class="dates">Dec 2024 – Apr 2025</p>
-                    <ul>
-                        <li>Collaborated with <a href="https://www.luckylab.org/" target="_blank"
-                                                 rel="noopener noreferrer">LuckyLab</a> to develop and deploy
-                            cutting-edge deep learning solutions for computer vision challenges on edge devices.
-                        </li>
-                        <li>Focused on real-time segmentation, object detection, and optimization techniques for
-                            resource-constrained environments.
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="experience-item">
-                <div class="timeline-dot"></div>
-                <a href="https://nlpearl.ai/">
-                    <img src="assets/experience/nlpearl_logo.jpeg" alt="NLPearl Logo" class="company-logo">
-                </a>
-                <div class="experience-details">
-                    <h3>NLPearl</h3>
-                    <h4>Deep Learning Research Engineer</h4>
-                    <p class="dates">Jul 2024 - Jan 2025</p>
-                    <ul>
-                        <li>Developed real-time systems to detect conversational pauses and suggest optimal starter
-                            sentences for AI agents using fine-tuned LLMs, with specialized prediction heads.
-                        </li>
-                        <li>Experimented with various architectures, including encoder-based and decoder-pretrained
-                            models, applying LoRA and multi-stage training to enhance prediction accuracy.
-                        </li>
-                        <li>Designed a small language model (SLM) to generate task-specific tokens, enabling multi-task
-                            outputs from a single fine-tuned model for efficient real-time inference.
-                        </li>
-                        <li>Designed solutions using pre-trained SOTA audio tokenization models and large language
-                            models (LLMs) tailored for audio-specific objectives.
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="experience-item">
-                <div class="timeline-dot"></div>
-                <a href="https://www.linkedin.com/company/pashoot-robotics/">
-                    <img src="assets/experience/pashoot_robotics_logo.jpeg" alt="Pashoot Robotics Logo"
-                         class="company-logo">
-                </a>
-                <div class="experience-details">
-                    <h3>Pashoot Robotics</h3>
-                    <h4>Computer Vision and Deep Learning Research Engineer</h4>
-                    <p class="dates">May 2023 - Jul 2024</p>
-                    <p>As a pivotal member of the Algorithms team at Pashoot Robotics, my role focused on enhancing and
-                        innovating vision solutions critical to manufacturing automation. I applied deep learning
-                        methods to practical applications, including research in 3D reconstruction, object detection,
-                        segmentation (few-shot, zero-shot), tracking, 6DOF estimation, and simulation expertise
-                        (specifically using Blender).</p>
+<main>
+    <!-- ABOUT / PROFILE -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="title"><span class="chip">About</span>
+                <h2>Profile</h2></div>
+            <div class="profile">
+                <img class="avatar" src="assets/linkdin_profile_image_ghibli.png" alt="Amit Israeli"/>
+                <div>
+                    <p>
+                        I work on <strong>AI research</strong> across <strong>computer vision</strong> and
+                        <strong>natural language processing</strong>, focusing on
+                        <strong>training</strong> and <strong>evaluating models</strong> for
+                        <em>segmentation</em>, <em>detection</em>, <em>generation</em>, and
+                        <em>multimodal reasoning</em>. My background spans
+                        <strong>deepfake detection</strong>, <strong>few-shot learning</strong>,
+                        <strong>efficient model design</strong>, and
+                        <strong>language–vision integration</strong>, with an emphasis on
+                        <strong>turning research ideas into working systems</strong>.
+                    </p>
+                    <div class="contacts" style="margin-top:10px">
+                        <a class="contact" href="mailto:amit1541541@gmail.com"><img
+                                src="assets/contact_icons/email-icon.png" alt="Email"/>Email</a>
+                        <a class="contact" target="_blank"
+                           href="https://www.linkedin.com/in/amit-israeli-aa4a30242/"><img
+                                src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn"/>LinkedIn</a>
+                        <a class="contact" target="_blank" href="https://github.com/amit154154"><img
+                                src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
+                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli">
+                            <img src="assets/contact_icons/huggingface-icon.png" alt="Hugging Face"/>Hugging Face
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <h2 class="section-title">Projects</h2>
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+        <div class="container">
+            <div class="title"><span class="chip">Selected</span>
+                <h2>Projects</h2></div>
 
-        <!-- Tag Filter -->
-        <div class="tag-filter">
-            <div class="tag-list">
-                <input type="checkbox" id="tag-image-generation" value="Image Generation" onchange="filterProjects()">
-                <label for="tag-image-generation">Image Generation</label>
-                <input type="checkbox" id="tag-segmentation" value="Segmentation" onchange="filterProjects()">
-                <label for="tag-segmentation">Segmentation</label>
-                <input type="checkbox" id="tag-nlp" value="NLP" onchange="filterProjects()">
-                <label for="tag-nlp">NLP</label>
-                <input type="checkbox" id="tag-VLM" value="VLM" onchange="filterProjects()">
-                <label for="tag-VLM">VLM</label>
-                <input type="checkbox" id="tag-computer-vision" value="Computer Vision" onchange="filterProjects()">
-                <label for="tag-computer-vision">Computer Vision</label>
-                <input type="checkbox" id="tag-mobile-app" value="Mobile App" onchange="filterProjects()">
-                <label for="tag-mobile-app">Mobile App</label>
-                <input type="checkbox" id="Audio-Generation" value="Audio Generation" onchange="filterProjects()">
-                <label for="Audio-Generation">Audio-Generation</label>
-            </div>
-        </div>
-
-        <!-- Project: Token-Budget-Aware LLM Reasoning (VLM Implementation) -->
-        <div class="project-item">
-            <h3>
-                Token-Budget-Aware LLM Reasoning (VLM Implementation)
-                <a href="https://github.com/amit154154/Token_Budget_cot_VLM" class="github-button" target="_blank"
-                   aria-label="View GitHub Repository">
-                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
-                    GitHub
-                </a>
-                <a href="https://api.wandb.ai/links/amit154154/9sa4u3th" class="wandb-button" target="_blank"
-                   aria-label="View Weights & Biases Report">
-                    <img src="assets/contact_icons/wandb-icon.png" alt="Weights & Biases" class="button-icon">
-                    wandb
-                </a>
-            </h3>
-            <div class="project-tags">
-                <span class="tag" data-tag="NLP">NLP</span>
-                <span class="tag" data-tag="VLM">VLM</span>
-            </div>
-            <div class="project-content">
-                <div class="project-description">
-                    <ul class="project-points">
-                        <li>Implemented the paper <a href="https://huggingface.co/papers/2412.18547"
-                                                     target="_blank"><strong>Token-Budget-Aware LLM
-                            Reasoning</strong></a> for visual-language model (VLM) chain-of-thought tasks.
-                        </li>
-                        <li>Implemented a token-budget-aware method for multimodal environments by fine-tuning an LLM
-                            with LoRA and integrating a frozen SigLIP image encoder. Designed a head combining the
-                            SigLIP CLS token and LLM hidden states to predict token budgets, evaluated with text-only
-                            and multimodal inputs.
-                        </li>
-                    </ul>
-                </div>
-                <div class="project-images">
-                    <img src="assets/projects_assets/token_budget_cot/token_budget_example.png"
-                         alt="Token Budget Reasoning - Example 1">
-                    <img src="assets/projects_assets/token_budget_cot/token_budget_predictor.png"
-                         alt="Token Budget Reasoning - Example 2">
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 1: PopYou2 -->
-        <div class="project-item">
-            <h3>
-                PopYou2 - VAR Text
-                <a href="https://github.com/amit154154/VAR_clip" class="github-button" target="_blank"
-                   aria-label="View GitHub Repository">
-                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
-                    GitHub
-                </a>
-                <a href="https://huggingface.co/spaces/AmitIsraeli/PopYou" class="huggingface-button" target="_blank"
-                   aria-label="View Hugging Face Repository">
-                    <img src="assets/contact_icons/huggingface-icon.png" alt="Hugging Face" class="button-icon">
-                    Hugging Face🤗
-                </a>
-                <a href="https://api.wandb.ai/links/amit154154/cqccmfsl" class="wandb-button" target="_blank"
-                   aria-label="View Weights & Biases Report">
-                    <img src="assets/contact_icons/wandb-icon.png" alt="Weights & Biases" class="button-icon">
-                    wandb
-                </a>
-            </h3>
-            <div class="project-tags">
-                <span class="tag" data-tag="Image Generation">Image Generation</span>
-                <span class="tag" data-tag="Computer Vision">Computer Vision</span>
-            </div>
-            <div class="project-content">
-                <div class="project-description">
-                    <ul class="project-points">
-                        <li>Generated a comprehensive dataset of approximately 100,000 Funko Pop! images with detailed
-                            prompts using <a href="https://huggingface.co/stabilityai/sdxl-turbo" target="_blank">SDXL
-                                Turbo</a> for high-quality data creation.
-                        </li>
-                        <li>Fine-tuned the <a href="https://arxiv.org/abs/2404.02905" target="_blank">Visual
-                            AutoRegressive (VAR)</a> model, pretrained on ImageNet, adapting it for Funko Pop!
-                            generation by injecting a custom embedding representing the "doll" class.
-                        </li>
-                        <li>Trained an adapter with the frozen <a href="https://arxiv.org/abs/2303.15343"
-                                                                  target="_blank">SigLIP image encoder</a> and a
-                            lightweight LoRA module to map image embeddings to text representations.
-                        </li>
-                        <li>Enabled text-to-image generation by replacing the SigLIP image encoder with its text
-                            encoder, retaining frozen components like the VAE and generator for efficiency and quality.
-                        </li>
-                    </ul>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <img src="assets/projects_assets/PopYou2/VAR_explained.png"
-                             style="width: 100%; max-width: 600px;" alt="VAR Explained">
+            <div class="grid cols-2" id="projectGrid">
+                <!-- Token-Budget-Aware LLM Reasoning (VLM) -->
+                <article class="card" data-tags="nlp,vlm" data-fit="contain">
+                    <img class="media" src="assets/projects_assets/token_budget_cot/token_budget_example.png"
+                         alt="Token Budget example"/>
+                    <div class="card-body">
+                        <h3>Token-Budget-Aware Reasoning for VLMs</h3>
+                        <p>
+                            Built on the paper <em>Token-Budget-Aware LLM Reasoning</em>, this project extends the idea
+                            to <strong>multimodal setups</strong> by combining a frozen <strong>SigLIP image
+                            encoder</strong>
+                            with a <strong>LoRA-tuned LLM</strong>. The goal is to predict the reasoning budget before
+                            decoding,
+                            making chain-of-thought both efficient and controllable.
+                        </p>
+                        <div class="tag-row">
+                          <span class="tag t-vlm">CoT Budgeting</span>
+                          <span class="tag t-nlp">LoRA</span>
+                          <span class="tag t-vlm">SigLIP</span>
+                          <span class="tag t-vlm">Multimodal</span>
+                        </div>
+                        <div class="project-links">
+                          <a class="contact" target="_blank" href="https://github.com/amit154154/Token_Budget_cot_VLM"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                          <a class="contact" target="_blank" href="https://api.wandb.ai/links/amit154154/9sa4u3th"><img src="assets/contact_icons/wandb-icon.png"/>W&B</a>
+                        </div>
+                        <details class="more">
+                            <summary>Read more</summary>
+                            <div class="more-body">
+                                <h4>Summary</h4>
+                                <p>
+                                    The original paper asked whether we can control chain-of-thought (CoT) reasoning
+                                    with an adaptive <strong>token budget</strong>. Their method trains a predictor
+                                    model
+                                    to estimate how many tokens the ground-truth CoT would require, and uses this as a
+                                    budget for the main LLM.
+                                    <br/><br/>
+                                    My contribution was to extend this idea to <strong>multimodal environments</strong>.
+                                    The system takes both text and image inputs, predicts the reasoning budget, and then
+                                    guides the LLM’s CoT length accordingly — balancing efficiency and accuracy.
+                                </p>
+                                <h4>Deep dive</h4>
+                                <ul>
+                                    <li><strong>Architecture:</strong> Frozen SigLIP encoder extracts visual features; a
+                                        custom budget head combines these with LLM hidden states to predict the token
+                                        budget.
+                                    </li>
+                                    <li><strong>Training:</strong> LoRA fine-tuning on text-only and multimodal batches,
+                                        supervised with oracle CoT lengths; KL regularization for stable budget
+                                        predictions.
+                                    </li>
+                                    <li><strong>Evaluation:</strong> Compared accuracy vs. average token usage on text
+                                        vs.
+                                        multimodal inputs; ablations on encoder freezing and head depth.
+                                    </li>
+                                    <li><strong>Outcome:</strong> Early results show notable token savings while
+                                        maintaining
+                                        competitive accuracy — highlighting the trade-offs of token-aware reasoning for
+                                        VLMs.
+                                    </li>
+                                </ul>
+                                <div class="media-strip">
+                                    <img src="assets/projects_assets/token_budget_cot/token_budget_predictor.png"
+                                         alt="Token budget predictor diagram"/>
+                                </div>
+                            </div>
+                        </details>
                     </div>
-                </div>
-                <div class="project-options-image">
-                    <div id="customization-sentence">
-                        A Funko Pop figure of
-                        <select id="famous_name" onchange="updateImage()">
-                            <option value="none">None</option>
-                            <option value="donald_trump">Donald Trump</option>
-                            <option value="johnny_depp">Johnny Depp</option>
-                            <option value="oprah_winfrey">Oprah Winfrey</option>
-                        </select>,
-                        styled as a
-                        <select id="character" onchange="updateImage()">
-                            <option value="none">None</option>
-                            <option value="alien">Alien</option>
-                            <option value="robot">Robot</option>
-                        </select>,
-                        performing
-                        <select id="action" onchange="updateImage()">
-                            <option value="none">None</option>
-                            <option value="playing_the_guitar">Playing the Guitar</option>
-                            <option value="holding_the_sword">Holding the Sword</option>
-                        </select>.
+                </article>
+
+                <article class="card" data-tags="img,cv" data-fit="contain">
+                    <img class="media" src="assets/projects_assets/PopYou2/VAR_explained.png" alt="VAR Explained"/>
+                    <div class="card-body">
+                        <h3>PopYou2 — VAR Text</h3>
+                        <p>
+                            Adapted the <em>Visual AutoRegressive (VAR)</em> model for <strong>Funko Pop!
+                            generation</strong>.
+                            Fine-tuned with a custom “doll” embedding and an adapter mapping <strong>SigLIP image
+                            embeddings</strong>
+                            into the model’s text space, enabling both I→I and T→I generation paths.
+                        </p>
+                        <div class="tag-row">
+                          <span class="tag t-img">VAR</span>
+                          <span class="tag t-cv">Adapter</span>
+                          <span class="tag t-img">SigLIP→Text</span>
+                        </div>
+                        <div class="project-links">
+                          <a class="contact" target="_blank" href="https://github.com/amit154154/VAR_clip"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                          <a class="contact" target="_blank" href="https://huggingface.co/spaces/AmitIsraeli/PopYou"><img src="assets/contact_icons/huggingface-icon.png"/>HF Space</a>
+                          <a class="contact" target="_blank" href="https://api.wandb.ai/links/amit154154/cqccmfsl"><img src="assets/contact_icons/wandb-icon.png"/>W&B</a>
+                        </div>
+
+                        <details class="more">
+                            <summary>Read more</summary>
+                            <div class="more-body">
+                                <h4>Summary</h4>
+                                <p>
+                                    Inspired by the <em>Visual Autoregressive Modeling</em> paper, this project explores
+                                    text-to-image
+                                    generation with VAR. By injecting a <strong>custom “doll” embedding</strong> and
+                                    training a lightweight
+                                    adapter, the model can synthesize Funko Pop! figures with controllable styles and
+                                    actions.
+                                    The system supports both image-to-image and text-to-image generation, extending the
+                                    VAR paradigm
+                                    to creative domains.
+                                </p>
+
+                                <h4>Deep dive</h4>
+                                <ul>
+                                    <li><strong>Dataset:</strong> ~100k Funko Pop! images generated with SDXL-Turbo
+                                        prompts.
+                                        Images were filtered and upscaled to ensure high quality and diversity.
+                                    </li>
+                                    <li><strong>Architecture:</strong> BLIP-2 was used for captioning to create initial
+                                        descriptions.
+                                        The VAR and VAE were kept frozen. An adapter layer was trained to map
+                                        <strong>SigLIP image embeddings</strong> into the CLIP text space, conditioning
+                                        the VAR generator.
+                                    </li>
+                                    <li><strong>Training:</strong> Fine-tuned the adapter and a lightweight LoRA module
+                                        while leaving
+                                        the generator and VAE frozen for efficiency. A <strong>custom “doll”
+                                            embedding</strong> was injected
+                                        to specialize the model for Funko Pop! synthesis.
+                                    </li>
+                                    <li><strong>Generation paths:</strong>
+                                        <ul>
+                                            <li><em>Image → Image:</em> use SigLIP image embeddings through the adapter
+                                                to influence VAR output.
+                                            </li>
+                                            <li><em>Text → Image:</em> swap the SigLIP image encoder for a text encoder
+                                                at inference,
+                                                enabling controlled text-to-image synthesis.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Controls:</strong> Style and action modifiers (e.g., “Alien”, “Playing
+                                        guitar”) allow
+                                        flexible customization. Optional textual inversion can be applied for specific
+                                        franchises.
+                                    </li>
+                                    <li><strong>Next steps:</strong> Extend to 3D outputs with multi-view diffusion and
+                                        NeRF/Depth priors,
+                                        enabling mesh export and richer customization.
+                                    </li>
+                                </ul>
+
+                                <h4>Interactive Demo</h4>
+                                <div class="funko-builder" id="py2_builder">
+                                    <div class="funko-sentence">
+                                        A Funko Pop figure of
+                                        <select id="py2_name">
+                                            <option value="none">None</option>
+                                            <option value="donald_trump">Donald Trump</option>
+                                            <option value="johnny_depp">Johnny Depp</option>
+                                            <option value="oprah_winfrey">Oprah Winfrey</option>
+                                        </select>,
+                                        styled as a
+                                        <select id="py2_char">
+                                            <option value="none">None</option>
+                                            <option value="alien">Alien</option>
+                                            <option value="robot">Robot</option>
+                                        </select>,
+                                        performing
+                                        <select id="py2_action">
+                                            <option value="none">None</option>
+                                            <option value="playing_the_guitar">Playing the Guitar</option>
+                                            <option value="holding_the_sword">Holding the Sword</option>
+                                        </select>.
+                                    </div>
+                                    <div style="text-align:center">
+                                        <img id="py2_image" class="funko-image"
+                                             src="assets/projects_assets/PopYou2/generated_images/none_none_none.png"
+                                             alt="Funko preview"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
                     </div>
-                    <div id="image-container">
-                        <img id="funko_image" class="funko-image"
-                             src="assets/projects_assets/PopYou2/generated_images/none_none_none.png"
-                             alt="Funko Pop Image">
+                </article>
+
+                <!-- SAM + LoRA Few‑Shot -->
+                <article class="card" data-tags="seg,cv" data-fit="contain">
+                    <img class="media" src="assets/projects_assets/few_shot_sam_lora/sam_lora_figure.png"
+                         alt="SAM LoRA figure"/>
+                    <div class="card-body">
+                        <h3>Few-Shot Segmentation with SAM + LoRA</h3>
+                        <p>
+                            Adapted SAM and its lightweight variants with LoRA adapters for few-shot segmentation,
+                            showing improvements over PerSAM.
+                        </p>
+                        <div class="tag-row">
+                          <span class="tag t-seg">Few‑Shot</span>
+                          <span class="tag t-cv">LoRA</span>
+                          <span class="tag t-seg">Pruning</span>
+                          <span class="tag t-seg">Quantization</span>
+                          <span class="tag t-cv">Edge</span>
+                        </div>
+                        <div class="project-links">
+                          <a class="contact" target="_blank" href="https://github.com/amit154154/SAM_LORA"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                        </div>
+                        <details class="more">
+                            <summary>Read more</summary>
+                            <div class="more-body">
+                                <h4>Deep dive</h4>
+                                <p>
+                                    This project extends <strong>SAM</strong> and its efficient variants
+                                    (<em>FastSAM, EfficientSAM, MobileSAM</em>) with <strong>LoRA adapters</strong>
+                                    to handle class-aware few-shot segmentation. I ran systematic experiments on
+                                    <em>COCO, Cityscapes, and Soccer</em> datasets, carefully varying the number of
+                                    shots
+                                    per class, loss functions, and augmentation strategies to evaluate generalization.
+                                    Beyond accuracy gains, the focus was on <strong>practical deployment</strong>:
+                                    I applied <strong>pruning and quantization</strong> to reduce model size by up to
+                                    80%,
+                                    then fine-tuned LoRA modules to recover accuracy without sacrificing speed.
+                                    This compression pipeline enabled <strong>real-time inference on edge
+                                    devices</strong>,
+                                    demonstrating how research-grade models can be adapted for production.
+                                    Results showed that these LoRA-adapted SAM models consistently surpassed PerSAM in
+                                    class-specific IoU, while remaining lightweight and efficient enough for real-world
+                                    use.
+                                </p>
+                                <div class="media-strip">
+                                    <img src="assets/projects_assets/few_shot_sam_lora/coco.png"
+                                         alt="COCO few-shot examples"/>
+                                    <img src="assets/projects_assets/few_shot_sam_lora/cityscapes.png"
+                                         alt="Cityscapes examples"/>
+                                    <img src="assets/projects_assets/few_shot_sam_lora/soccer.png"
+                                         alt="Soccer examples"/>
+                                    <img src="assets/projects_assets/few_shot_sam_lora/segment+anything.avif"
+                                         alt="Segment Anything variants"/>
+                                </div>
+                            </div>
+                        </details>
                     </div>
-                </div>
+                </article>
+
+                <!-- CelebrityLook -->
+                <article class="card" data-tags="img,cv,mobile" data-fit="contain">
+                    <video class="media" src="assets/projects_assets/CelebryLook/celebrityLook_demo.mp4" autoplay muted
+                           loop playsinline></video>
+                    <div class="card-body">
+                        <h3>CelebrityLook — Mobile Face Transform</h3>
+                        <p>
+                            On-device face stylization with a distilled StyleGAN2 (MobileStyleNet) and CLIP-to-StyleGAN
+                            latent alignment for text-driven edits; ~30fps on modern phones.
+                        </p>
+                        <div class="tag-row">
+                          <span class="tag t-mobile">On‑Device 30fps</span>
+                          <span class="tag t-img">StyleGAN2 Distill</span>
+                          <span class="tag t-cv">Latent Alignment</span>
+                          <span class="tag t-mobile">CoreML</span>
+                        </div>
+                        <div class="project-links">
+                          <a class="contact" target="_blank" href="https://github.com/amit154154/CelebrityLook"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                        </div>
+                        <details class="more">
+                            <summary>Read more</summary>
+                            <div class="more-body">
+                                <h4>Summary</h4>
+                                <p>
+                                    Built an edge app that performs GAN inversion and text-conditioned editing directly
+                                    on device. It implements
+                                    <em>Bridging CLIP and StyleGAN through Latent Alignment</em> to connect language and
+                                    vision, keeping identity while applying prompt-guided changes — work that won the
+                                    Samsung Next MobileXGenAI Hackathon and was optimized for ~30fps mobile inference.
+                                </p>
+                                <h4>Deep dive</h4>
+                                <p>
+                                    The pipeline uses <strong>MobileStyleNet</strong> (a StyleGAN2 distillation) as the
+                                    generator. For <em>inversion</em>,
+                                    inference is <code>G(f(E_I(x)))</code>, where a few mapper layers <code>f</code>
+                                    remain trainable and
+                                    <code>E_I</code> is an image encoder distilled from OpenCLIP to
+                                    EfficientFormer-Large (per the latent-alignment setup in the paper/README).
+                                    To <em>connect text to the model</em>, a mapper is trained to align CLIP
+                                    representations with the
+                                    <strong>W+</strong> latent: the OpenCLIP <strong>text encoder</strong>
+                                    (<code>E_T</code>) produces an embedding that the mapper converts into a
+                                    <strong>ΔW+</strong>. Starting from the mean latent (text→image) or from an inverted
+                                    latent (image→text manipulation), we add the scaled ΔW+ to drive edits like “blonde
+                                    woman with sunglasses,” “man with a hat and beard,” or head-pose changes. In
+                                    practice, the right
+                                    scale factor <strong>C</strong> for ΔW+ depends on each (W+, text) pair, so a small
+                                    <em>projection layer</em> is trained to predict the optimal C with a CLIP-based
+                                    loss, balancing fidelity to the source face and alignment to the prompt. The app
+                                    demonstrates strong attribute control (e.g., glasses, hair, pose), while
+                                    acknowledging inversion identity limits versus SOTA methods ). Export and mobile
+                                    optimizations deliver smooth, on-device performance
+                                    (~30fps).
+                                </p>
+                                <div class="media-strip">
+                                    <img src="assets/projects_assets/CelebryLook/mapper_training.png"
+                                         alt="Mapper training diagram"/>
+                                    <img src="assets/projects_assets/CelebryLook/wining_hackaton.jpeg"
+                                         alt="Hackathon win"/>
+                                    <img src="assets/projects_assets/CelebryLook/compressed_blond_woman_with_sunglasses.gif"
+                                         alt="Text edit: blond woman with sunglasses"/>
+                                    <img src="assets/projects_assets/CelebryLook/compressed_Donald_Trump_looking_left.gif"
+                                         alt="Pose edit: looking left"/>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </article>
+
+                <!-- PopYou - FastGAN -->
+                <article class="card" data-tags="img,cv" data-fit="contain">
+                    <img class="media" src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.png"
+                         alt="FastGAN sample"/>
+                    <div class="card-body">
+                        <h3>PopYou — FastGAN + CLIP</h3>
+                        <p>
+                            Multi-stage pipeline: scrape + super-resolve real Funko images, synthesize ~30k with
+                            DeciDiffusion, train <strong>FastGAN</strong>, then add a <strong>frozen-CLIP</strong>
+                            inversion mapper for text- and image-conditioned edits; optional 3D lifting.
+                        </p>
+                        <div class="tag-row">
+                          <span class="tag t-img">FastGAN</span>
+                          <span class="tag t-img">CLIP Inversion</span>
+                          <span class="tag t-img">Synthetic Data</span>
+                          <span class="tag t-img">3D Lifting</span>
+                        </div>
+                        <div class="project-links">
+                          <a class="contact" target="_blank" href="https://github.com/amit154154/PopYou"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                        </div>
+                        <details class="more">
+                            <summary>Read more</summary>
+                            <div class="more-body">
+                                <h4>Summary</h4>
+                                <p>
+                                    PopYou! targets Funko-style synthesis with GAN-level latency and memory. The data
+                                    stage combines
+                                    <strong>scraped Funko Pop images</strong> (upscaled with a super-resolution model)
+                                    with a synthetic corpus of
+                                    ~30,000 renders produced by <em>DeciDiffusion</em>. A <strong>FastGAN</strong>
+                                    generator is trained on this
+                                    semi-synthetic set and then <em>frozen</em>. On top, a lightweight inversion/mapper
+                                    conditioned by
+                                    <strong>frozen CLIP</strong> enables two paths: <em>text→image</em> generation via
+                                    CLIP text embeddings
+                                    (using a prompt template like “funko pop figure of … on a white background”) and
+                                    <em>image→image</em>
+                                    stylization via CLIP image embeddings of real faces/characters. Side-by-side
+                                    examples show prompt alignment
+                                    comparable to diffusion baselines at a fraction of runtime and memory. For 3D
+                                    exploration, outputs can be
+                                    lifted with <em>SyncDreamer</em> / <em>DreamGaussian</em>.
+                                </p>
+                                <h4>Deep dive</h4>
+                                <p>
+                                    <strong>Stage 1 — Data.</strong> Scrape real Funko images and upsample them with a
+                                    high-resolution
+                                    super-resolution model; generate an additional ~30k synthetic Funko renders using
+                                    DeciDiffusion.
+                                    <strong>Stage 2 — GAN training.</strong> Train FastGAN on the combined
+                                    (semi-synthetic) corpus to capture
+                                    the Funko style; freeze the generator for downstream editing.
+                                    <strong>Stage 3 — Inversion & editing.</strong> Train a mapper on top of <em>frozen
+                                    CLIP</em> encoders to
+                                    produce ΔW+ edits in <em>W+</em>. For text-conditioned synthesis, start from the
+                                    mean latent and add a
+                                    ΔW+ derived from the CLIP text embedding; for image-conditioned stylization, derive
+                                    ΔW+ from the CLIP image
+                                    embedding of a reference photo. Attributes like glasses, hair color, clothing and
+                                    coarse pose are controllable
+                                    via the prompt/reference.
+                                    <strong>Stage 4 — Evaluation & 3D.</strong> Using the templated prompts, aggregate
+                                    metrics report
+                                    CLIP-similarity ≈ 0.31 for PopYou! vs 0.33 for DeciDiffusion, and FID ≈ 562 vs 258
+                                    against real Funko images.
+                                    For 3D, generate multi-view/mesh outputs via SyncDreamer/DreamGaussian.
+                                    The result is a practical trade-off: <em>GAN-based</em> Funko synthesis with strong
+                                    promptability and vastly
+                                    lower latency/memory than diffusion, plus an editing path that generalizes to real
+                                    images via CLIP-guided
+                                    inversion.
+                                </p>
+                                <div class="media-strip">
+                                    <img src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.png"
+                                         alt="FastGAN Obama sample"/>
+                                    <img src="assets/projects_assets/PopYou!/compressed_alan_turing_dreamgaussian.gif"
+                                         alt="3D lifting: Alan Turing (DreamGaussian)" loading="eager" decoding="async"/>
+                                    <img src="assets/projects_assets/PopYou!/compressed_ras_dreamgaussian.gif"
+                                         alt="3D lifting: Ras (DreamGaussian)" loading="eager" decoding="async"/>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </article>
+
+                <!-- MusicGen LoRA -->
+                <article class="card" data-tags="aud" data-fit="contain">
+                    <img class="media" src="assets/projects_assets/musicgen_finetune/musigen_look.png"
+                         alt="Audio waveform placeholder" onerror="this.style.display='none'"/>
+                    <div class="card-body">
+                        <h3>MusicGen — Genre LoRA</h3>
+                        <p>
+                            LoRA-adapts Meta’s <strong>MusicGen</strong> for genre-specific generation (e.g.,
+                            MapleStory-style BGM) while keeping prompt controllability.
+                        </p>
+                        <div class="tag-row">
+                          <span class="tag t-aud">LoRA</span>
+                          <span class="tag t-aud">Genre Transfer</span>
+                          <span class="tag t-aud">32k EnCodec</span>
+                          <span class="tag t-aud">Fréchet</span>
+                        </div>
+                        <div class="project-links">
+                          <a class="contact" target="_blank" href="https://github.com/amit154154/musicgen_finetune"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                        </div>
+                        <details class="more">
+                            <summary>Read more</summary>
+                            <div class="more-body">
+                                <h4>Summary</h4>
+                                <p>
+                                    This project fine-tunes <em>MusicGen</em> with <strong>LoRA</strong> to steer the
+                                    model toward specific genres using
+                                    genre-related text prompts, without retraining the full network. MusicGen is a
+                                    single-stage autoregressive Transformer
+                                    trained over a <strong>32 kHz EnCodec</strong> tokenizer with <strong>four codebooks
+                                    @ 50 Hz</strong>; the LoRA approach keeps
+                                    its built-in controllability while specializing style efficiently.
+                                </p>
+                                <h4>Deep dive</h4>
+                                <p>
+                                    The training setup adds low-rank adapters to MusicGen and conditions on genre
+                                    descriptions to bias generation toward target styles.
+                                    To evaluate genre adaptation for a distinctive target, we compare generations
+                                    against <em>MapleStory</em> background music.
+                                    We generate <strong>150 audio clips</strong> (each <strong>8 s</strong>) and measure
+                                    distributional shift with a
+                                    <strong>Fréchet distance</strong> metric. As a reference, example <em>zero-shot</em>
+                                    prompts yield distances of
+                                    1.0153 for “maplestory background music”, 0.7420 for an upbeat orchestral/jazz
+                                    prompt, and 0.6013 for an electronic/playful prompt.
+                                    The same protocol is then applied to the fine-tuned model to quantify genre
+                                    alignment while preserving MusicGen’s prompt controls.
+                                </p>
+                                <h4>Audio samples</h4>
+                                <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap">
+                                  <audio controls style="width:240px">
+                                    <source src="assets/projects_assets/musicgen_finetune/example_1.wav" type="audio/wav"/>
+                                  </audio>
+                                  <audio controls style="width:240px">
+                                    <source src="assets/projects_assets/musicgen_finetune/example_2.wav" type="audio/wav"/>
+                                  </audio>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </article>
+
+                <!-- KoalaReadingAI Podcast -->
+                <article class="card" data-tags="aud,nlp" data-fit="contain">
+                    <video class="media" src="assets/projects_assets/koala_reading_ai/compressed_koala_reading_ai_gif.mp4" autoplay muted loop playsinline></video>
+                    <div class="card-body">
+                        <h3>KoalaReadingAI — AI Papers as a Podcast</h3>
+                        <p>
+                            A pipeline that turns AI research papers into short audio episodes and publishes them to
+                            Spotify and YouTube. Automates paper fetching, summarization, and TTS.
+                        </p>
+                        <div class="tag-row">
+                          <span class="tag t-aud">TTS</span>
+                          <span class="tag t-nlp">LLMs</span>
+                          <span class="tag t-aud">Audio</span>
+                          <span class="tag t-nlp">Automation</span>
+                        </div>
+                        <div class="project-links">
+                          <a class="contact" target="_blank" href="https://github.com/amit154154/KoalaReadingPapers"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                        </div>
+                        <details class="more">
+                            <summary>Read more</summary>
+                            <div class="more-body">
+                                <h4>Summary</h4>
+                                <p>
+                                    The system fetches recent papers (Hugging Face daily papers), summarizes them, and
+                                    converts the text to speech, producing episodes for distribution. It supports paid
+                                    TTS via ElevenLabs as well as a free local option via Tortoise-TTS.
+                                </p>
+                                <h4>Deep dive</h4>
+                                <ul>
+                                    <li><strong>Ingestion:</strong> pull papers by date range from Hugging Face daily papers.</li>
+                                    <li><strong>Summarization:</strong> generate episode scripts from PDFs using an API workflow (ChatPDF in repo README).</li>
+                                    <li><strong>Speech:</strong> text-to-speech with ElevenLabs; optional <em>Tortoise‑TTS</em> for a free local pipeline.</li>
+                                    <li><strong>Output:</strong> publishable audio files and episode metadata for podcast platforms.</li>
+                                </ul>
+                                <h4>Listen</h4>
+                                <div class="contacts" style="margin-top:10px">
+                                    <a class="contact" target="_blank" href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1"><img src="assets/contact_icons/Spotify-icon.png" alt="Spotify"/>Spotify</a>
+                                    <a class="contact" target="_blank" href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA"><img src="assets/contact_icons/youtube-icon.png" alt="YouTube"/>YouTube</a>
+                                    <a class="contact" target="_blank" href="https://github.com/amit154154/KoalaReadingPapers"><img src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
+                                </div>
+                                <div class="media-strip">
+                                    <img src="assets/projects_assets/koala_reading_ai/koala_reading_ai.jpeg" alt="Koala Reading AI cover"/>
+                                    <video src="assets/projects_assets/koala_reading_ai/koala_reading_ai_gif.mp4" autoplay muted loop playsinline></video>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </article>
             </div>
         </div>
+    </section>
 
-        <!-- Project 2: Few-Shot Segmentation with SAM and LoRA -->
-        <div class="project-item">
-            <h3>
-                Few-Shot Segmentation with SAM and LoRA
-                <a href="https://github.com/amit154154/SAM_LORA" class="github-button" target="_blank"
-                   aria-label="View GitHub Repository">
-                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
-                    GitHub
-                </a>
-            </h3>
-            <div class="project-tags">
-                <span class="tag" data-tag="Segmentation">Segmentation</span>
-                <span class="tag" data-tag="Computer Vision">Computer Vision</span>
-            </div>
-            <div class="project-content">
-                <div class="project-description">
-                    <ul class="project-points">
-                        <li>Employs LoRA to adapt SAM for few-shot segmentation with minimal images.</li>
-                        <li>Eliminates reliance on external prompts or detection models like Grounding SAM or YOLO.</li>
-                        <li>Outperforms prior methods (e.g., <a href="https://arxiv.org/abs/2305.03048" target="_blank">PerSAM</a>)
-                            in class-specific segmentation quality and flexibility.
-                        </li>
-                        <li>Trained on diverse datasets, including COCO, Soccer, and Cityscapes, with varying sample
-                            sizes and class distributions.
-                        </li>
-                        <li>Explored enhancements by leveraging other foundation models with prior class-oriented
-                            knowledge (e.g., CLIP, SigLIP).
-                        </li>
-                    </ul>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <img src="assets/projects_assets/few_shot_sam_lora/sam_lora_figure.png"
-                             style="width: 300%; max-width: 650px;" alt="SAM LoRA Explained">
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section">
+        <div class="container">
+            <div class="title"><span class="chip">Timeline</span>
+                <h2>Experience</h2></div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="timeline">
+
+                        <div class="xp">
+                            <div class="dot"></div>
+                            <div class="xp-card">
+                                <h4>Computer Vision Research Engineer <span class="where">@ Reality Defender</span>
+                                    <img class="xp-logo" src="assets/experience/reality_defender_logo.png"
+                                         alt="Reality Defender"/>
+                                </h4>
+                                <div class="when">Jan 2024 – Present</div>
+                                <ul>
+                                    <li>Developing and optimizing deep learning computer vision solutions to detect
+                                        deepfakes and fraudulent media (video/image/audio).
+                                    </li>
+                                    <li>Built synchronization/thresholding pipelines and dataset alignment utilities for
+                                        robust evaluation.
+                                    </li>
+                                    <li>Contributed model compression & latency tuning for faster screening.</li>
+                                </ul>
+                                <div class="stack tag-row">
+                                  <span class="tag t-cv">Deepfake Detection</span>
+                                  <span class="tag t-cv">Latency/Compression</span>
+                                  <span class="tag t-vlm">Screening Pipelines</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="xp">
+                            <div class="dot" style="background:var(--brand2)"></div>
+                            <div class="xp-card">
+                                <h4>Computer Vision Research Engineer <span class="where">@ LuckyLab (Freelance)</span>
+                                    <img class="xp-logo" src="assets/experience/luckylab_logo.jpeg" alt="LuckyLab"/>
+                                </h4>
+                                <div class="when">Dec 2024 – Apr 2025</div>
+                                <ul>
+                                    <li>Built and deployed edge‑optimized solutions for segmentation and object
+                                        detection for production.
+                                    </li>
+                                    <li>Converted research models to production graphs (CoreML/TensorRT) with quality
+                                        gates.
+                                    </li>
+                                </ul>
+                                <div class="stack tag-row">
+                                  <span class="tag t-cv">Edge Deployment</span>
+                                  <span class="tag t-seg">Seg/Det</span>
+                                  <span class="tag t-seg">Few‑Shot</span>
+                                  <span class="tag t-mobile">CoreML/TensorRT</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="xp">
+                            <div class="dot"></div>
+                            <div class="xp-card">
+                                <h4>Deep Learning Research Engineer <span class="where">@ NLPearl</span>
+                                    <img class="xp-logo" src="assets/experience/nlpearl_logo.jpeg" alt="NLPearl"/>
+                                </h4>
+                                <div class="when">Jun 2024 – Jan 2025 · Tel Aviv, Israel</div>
+                                <ul>
+                                    <li>Developed real‑time systems for conversational pause detection and response
+                                        generation using fine‑tuned LLMs.
+                                    </li>
+                                    <li>Explored architectures with LoRA and multi‑stage training to boost
+                                        performance.
+                                    </li>
+                                    <li>Built a compact language model for multi‑task outputs; worked with SOTA audio
+                                        tokenizers and LLMs for audio‑focused tasks.
+                                    </li>
+                                </ul>
+                                <div class="stack tag-row">
+                                  <span class="tag t-nlp">LLMs</span>
+                                  <span class="tag t-nlp">Real‑time</span>
+                                  <span class="tag t-nlp">LoRA</span>
+                                  <span class="tag t-aud">Audio</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="xp">
+                            <div class="dot"
+                                 style="background:linear-gradient(135deg,var(--brand1),var(--brand2))"></div>
+                            <div class="xp-card">
+                                <h4>Computer Vision & Deep Learning Research Engineer <span class="where">@ Pashoot Robotics</span>
+                                    <img class="xp-logo" src="assets/experience/pashoot_robotics_logo.jpeg"
+                                         alt="Pashoot Robotics"/>
+                                </h4>
+                                <div class="when">May 2023 – Jun 2024 · Rehovot, Israel</div>
+                                <ul>
+                                    <li>Improved object detection and segmentation in zero/few‑shot settings using
+                                        foundation models (SAM, YOLO‑World, Grounding DINO, CLIP).
+                                    </li>
+                                    <li>Worked on multi‑object tracking and 6‑DoF pose estimation with synthetic data.
+                                    </li>
+                                    <li>Used Blender and 3D reconstruction (NeRF, Gaussian Splatting, image‑to‑3D) for
+                                        simulation and domain randomization.
+                                    </li>
+                                </ul>
+                                <div class="stack tag-row">
+                                  <span class="tag t-cv">Zero/Few‑Shot</span>
+                                  <span class="tag t-seg">SAM/YOLO‑World</span>
+                                  <span class="tag t-cv">6‑DoF</span>
+                                  <span class="tag t-cv">Sim/Domain Rand.</span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
-                <div class="project-images">
-                    <img src="assets/projects_assets/few_shot_sam_lora/cityscapes.png" alt="Cityscapes">
-                    <img src="assets/projects_assets/few_shot_sam_lora/coco.png" alt="COCO">
-                    <img src="assets/projects_assets/few_shot_sam_lora/soccer.png" alt="Soccer">
-                </div>
-            </div>
-        </div>
-
-        <!-- Project: MusicGen Genre Fine-Tuning with LoRA -->
-        <div class="project-item">
-            <h3>
-                MusicGen Genre Fine-Tuning with LoRA
-                <a href="https://github.com/amit154154/musicgen_finetune" class="github-button" target="_blank"
-                   aria-label="View GitHub Repository">
-                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
-                    GitHub
-                </a>
-            </h3>
-            <div class="project-tags">
-                <span class="tag" data-tag="Audio Generation">Audio Generation</span>
-            </div>
-            <div class="project-content">
-                <div class="project-description">
-                    <ul class="project-points">
-                        <li>Fine-tune Meta's <strong>MusicGen</strong> model using LoRA to generate genre-specific
-                            music.
-                        </li>
-                        <li>Preserves the original controllable generation capabilities of MusicGen.</li>
-                        <li>Evaluated with MapleStory-like background music to achieve distinct style adaptation.</li>
-                    </ul>
-                    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: center; margin-top: 20px;">
-                        <audio controls
-                               style="width: 250px; max-width: 100%; border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);">
-                            <source src="assets/projects_assets/musicgen_finetune/example_1.wav" type="audio/wav">
-                            Your browser does not support the audio element.
-                        </audio>
-                        <audio controls
-                               style="width: 250px; max-width: 100%; border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);">
-                            <source src="assets/projects_assets/musicgen_finetune/example_2.wav" type="audio/wav">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 3: CelebrityLook -->
-        <div class="project-item">
-            <h3>
-                CelebrityLook
-                <a href="https://github.com/amit154154/CelebrityLook" class="github-button" target="_blank"
-                   aria-label="View GitHub Repository">
-                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
-                    GitHub
-                </a>
-            </h3>
-            <div class="project-tags">
-                <span class="tag" data-tag="Image Generation">Image Generation</span>
-                <span class="tag" data-tag="Mobile App">Mobile App</span>
-                <span class="tag" data-tag="Computer Vision">Computer Vision</span>
-            </div>
-            <div class="project-content">
-                <div class="project-description">
-                    <ul class="project-points">
-                        <li>Developed a mobile app for real-time face transformation.</li>
-                        <li>Utilized advanced GAN technologies on-device.</li>
-                        <li>Achieved 30fps on mobile devices with optimized CoreML models.</li>
-                        <li>Won the MobileXGenAI hackathon hosted by Samsung Next.</li>
-                        <li>Combined multiple losses from foundation models and facial feature extractors to ensure
-                            high-quality transformations.
-                        </li>
-                        <li>Implemented the paper <a href="https://arxiv.org/abs/2210.04506" target="_blank"><strong>"Bridging
-                            CLIP and StyleGAN through Latent Alignment for Image Editing"</strong></a> while researching
-                            enhancements through varied loss functions, latent spaces, and mapper architectures.
-                        </li>
-                    </ul>
-                    <div class="project-images">
-                        <img src="assets/projects_assets/CelebryLook/mapper_training.png" alt="Mapper Training"
-                             class="enlarged">
-                    </div>
-                </div>
-                <div class="project-video">
-                    <video controls autoplay muted>
-                        <source src="assets/projects_assets/CelebryLook/celebrityLook_demo.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 4: PopYou - fastgan clip -->
-        <div class="project-item">
-            <h3>
-                PopYou - fastgan clip
-                <a href="https://github.com/amit154154/PopYou" class="github-button" target="_blank"
-                   aria-label="View GitHub Repository">
-                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
-                    GitHub
-                </a>
-            </h3>
-            <div class="project-tags">
-                <span class="tag" data-tag="Image Generation">Image Generation</span>
-                <span class="tag" data-tag="Computer Vision">Computer Vision</span>
-            </div>
-            <div class="project-content">
-                <div class="project-description">
-                    <ul class="project-points">
-                        <li>Utilized an image upscaling model and Deci Diffusion to create a semi-synthetic dataset of
-                            Funko Pop figures.
-                        </li>
-                        <li>Trained a GAN model on the dataset using FastGAN to generate high-quality Funko Pop
-                            designs.
-                        </li>
-                        <li>Developed an inversion model based on a frozen CLIP backbone, enabling image generation from
-                            both text and real images, leveraging techniques from CelebrityLook.
-                        </li>
-                        <li>Explored 3D generation of Funko Pop figures—including mesh creation and multi-view
-                            rendering—using diffusion models and textual inversion.
-                        </li>
-                        <li>Benchmarked the PopYou! model against Deci Diffusion using CLIP similarity and FID scores.
-                        </li>
-                    </ul>
-                </div>
-                <div class="project-images">
-                    <img src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.png" alt="Barack Obama FastGAN">
-                    <img src="assets/projects_assets/PopYou!/ras_dreamgaussian.gif" alt="RAS DreamGaussian">
-                </div>
-            </div>
-        </div>
-
-        <!-- Project 5: KoalaReadingAI -->
-        <div class="project-item">
-            <h3>
-                KoalaReadingAI
-                <a href="https://github.com/amit154154/KoalaReadingPapers" class="github-button" target="_blank"
-                   aria-label="View GitHub Repository">
-                    <img src="assets/contact_icons/github-icon.png" alt="GitHub" class="button-icon">
-                    GitHub
-                </a>
-                <a href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1" class="spotify-button" target="_blank"
-                   aria-label="Listen on Spotify">
-                    <img src="assets/contact_icons/Spotify-icon.png" alt="Spotify" class="button-icon">
-                    Spotify
-                </a>
-                <a href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA" class="youtube-button"
-                   target="_blank" aria-label="Watch on YouTube">
-                    <img src="assets/contact_icons/youtube-icon.png" alt="YouTube" class="button-icon">
-                    YouTube
-                </a>
-            </h3>
-            <div class="project-tags">
-                <span class="tag" data-tag="Image Generation">Image Generation</span>
-                <span class="tag" data-tag="Audio Generation">Audio Generation</span>
-                <span class="tag" data-tag="Computer Vision">Computer Vision</span>
-            </div>
-            <div class="project-content">
-                <div class="project-description">
-                    <ul class="project-points">
-                        <li>Founded an AI podcast that automatically summarizes the latest AI research papers.</li>
-                        <li>Utilizes ElevenLabs text-to-speech and ChatPDF APIs for summarization and speech
-                            synthesis.
-                        </li>
-                        <li>Automated downloading of the latest papers from Hugging Face daily papers.</li>
-                        <li>Implemented a free TTS option using Tortoise-TTS; currently working on summaries using Llama
-                            2.
-                        </li>
-                    </ul>
-                </div>
-                <div class="project-video">
-                    <video controls autoplay muted>
-                        <source src="assets/projects_assets/koala_reading_ai/koala_reading_ai_gif.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <h2 class="section-title">Contact</h2>
-        <div class="contact-info">
-            <a href="mailto:amit1541541@gmail.com" class="contact-item">
-                <img src="assets/contact_icons/email-icon.png" alt="Email Icon">
-                <span>amit1541541@gmail.com</span>
-            </a>
-            <a href="https://www.linkedin.com/in/amit-israeli-aa4a30242/" target="_blank" class="contact-item">
-                <img src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn Icon">
-                <span>LinkedIn</span>
-            </a>
-            <a href="https://github.com/amit154154" target="_blank" class="contact-item">
-                <img src="assets/contact_icons/github-icon.png" alt="GitHub Icon">
-                <span>GitHub</span>
-            </a>
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="title"><span class="chip">Say hi</span>
+                <h2>Contact</h2></div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="contacts">
+                        <a class="contact" href="mailto:amit1541541@gmail.com"><img
+                                src="assets/contact_icons/email-icon.png" alt="Email"/>amit1541541@gmail.com</a>
+                        <a class="contact" target="_blank"
+                           href="https://www.linkedin.com/in/amit-israeli-aa4a30242/"><img
+                                src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn"/>LinkedIn</a>
+                        <a class="contact" target="_blank" href="https://github.com/amit154154"><img
+                                src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
+                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli">
+                            <img src="assets/contact_icons/huggingface-icon.png" alt="Hugging Face"/>Hugging Face
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-</div>
+</main>
 
-<footer>
-    &copy; 2024 Amit Israeli. All rights reserved.
-</footer>
+<footer>© 2025 Amit Israeli. All rights to this vibe coded website reserved.</footer>
 
 <script>
-    // Initialize GSAP ScrollTrigger
-    gsap.registerPlugin(ScrollTrigger);
+    // Theme toggle with persistence
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeToggle');
+    const setTheme = (mode) => {
+        if (mode === 'light') {
+            root.classList.add('light');
+            localStorage.setItem('theme', 'light');
+        } else {
+            root.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+    setTheme(localStorage.getItem('theme') || 'dark');
+    themeBtn.addEventListener('click', () => {
+        const current = localStorage.getItem('theme') === 'light' ? 'dark' : 'light';
+        setTheme(current);
+    });
 
-    // Timeline animations
-    document.addEventListener('DOMContentLoaded', function() {
-        // Select all experience items
-        const experienceItems = document.querySelectorAll('.experience-item');
-        const timelineDots = document.querySelectorAll('.timeline-dot');
-
-        // Create animations for each experience item
-        experienceItems.forEach((item, index) => {
-            // Create scroll trigger for each item
-            ScrollTrigger.create({
-                trigger: item,
-                start: "top 80%",
-                onEnter: () => {
-                    item.classList.add('revealed');
-                    timelineDots[index].classList.add('revealed');
-                },
-                onLeaveBack: () => {
-                    item.classList.remove('revealed');
-                    timelineDots[index].classList.remove('revealed');
-                }
-            });
+    // Confetti burst on CV click
+    const cvBtn = document.getElementById('cvBtn');
+    cvBtn?.addEventListener('click', (e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        confetti({
+            particleCount: 140,
+            spread: 60,
+            startVelocity: 38,
+            origin: {x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight}
         });
+        gtag('event', 'cv_download_click', {event_category: 'CV', value: 1});
+    });
 
-        // Add smooth scroll behavior
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+    // Smooth anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const id = a.getAttribute('href');
+            if (id.length > 1) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+                document.querySelector(id)?.scrollIntoView({behavior: 'smooth'});
+            }
         });
     });
 
-    /* ----   Dark‑/Light theme toggle  ---- */
-    const themeToggle = document.getElementById('theme-toggle');
-    if(themeToggle){
-        // restore previous choice
-        if(localStorage.getItem('theme')==='dark'){
-            document.body.classList.add('dark-mode');
+    // GSAP reveal
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray('.card, .profile, .hero-card').forEach(el => {
+        gsap.fromTo(el, {y: 24, opacity: 0}, {
+            y: 0,
+            opacity: 1,
+            duration: .6,
+            ease: 'power2.out',
+            scrollTrigger: {trigger: el, start: 'top 85%'}
+        });
+    });
+
+    // Animated Read more panels (no leftover tall rows)
+    (function () {
+      const items = document.querySelectorAll('details.more');
+      items.forEach((d) => {
+        const body = d.querySelector('.more-body');
+        if (!body) return;
+
+        // initialize
+        if (d.open) {
+          body.style.display = 'block';
+          body.style.height = 'auto';
+        } else {
+          body.style.display = 'none';
+          body.style.height = '0px';
         }
-        themeToggle.addEventListener('click', ()=>{
-            document.body.classList.toggle('dark-mode');
-            if(document.body.classList.contains('dark-mode')){
-                localStorage.setItem('theme','dark');
-            }else{
-                localStorage.removeItem('theme');
-            }
-        });
-    }
 
-    /* ----   Confetti burst on CV download   ---- */
-    const cvBtn = document.querySelector('.download-button');
-    if(cvBtn){
-        cvBtn.addEventListener('click', ()=>{
-            const r = cvBtn.getBoundingClientRect();
-            confetti({
-                particleCount:150,
-                spread:60,
-                startVelocity:35,
-                origin:{x:(r.left+r.width/2)/window.innerWidth,
-                        y:(r.top+r.height/2)/window.innerHeight}
+        d.addEventListener('toggle', () => {
+          const isOpen = d.open;
+          if (isOpen) {
+            // show & expand from 0 → content height
+            body.style.display = 'block';
+            body.style.height = '0px';
+            requestAnimationFrame(() => {
+              body.style.height = body.scrollHeight + 'px';
             });
+            const onEnd = () => {
+              if (d.open) body.style.height = 'auto';
+              body.removeEventListener('transitionend', onEnd);
+            };
+            body.addEventListener('transitionend', onEnd);
+          } else {
+            // collapse from current height → 0, then fully remove from flow
+            const h = body.scrollHeight;
+            body.style.height = h + 'px';
+            requestAnimationFrame(() => {
+              body.style.height = '0px';
+            });
+            const onEnd = () => {
+              if (!d.open) body.style.display = 'none';
+              body.removeEventListener('transitionend', onEnd);
+            };
+            body.addEventListener('transitionend', onEnd);
+          }
         });
-    }
+      });
+    })();
 
-    function updateImage() {
-        const famousName = document.getElementById("famous_name").value;
-        const character = document.getElementById("character").value;
-        const action = document.getElementById("action").value;
-        const filename = `${famousName}_${character}_${action}.png`;
-        const imagePath = `assets/projects_assets/PopYou2/generated_images/${filename}`;
-        const funkoImage = document.getElementById("funko_image");
+    // --- PopYou2 live generator ---
+    (function () {
+        const nameSel = document.getElementById('py2_name');
+        const charSel = document.getElementById('py2_char');
+        const actSel = document.getElementById('py2_action');
+        const img = document.getElementById('py2_image');
+        if (!(nameSel && charSel && actSel && img)) return;
 
-        const isRealSelection = true;
-
-        funkoImage.classList.add("fade-out");
-        setTimeout(() => {
-            funkoImage.src = imagePath;
-            funkoImage.classList.remove("fade-out");
-
-            if (isRealSelection) {
-                const rect = funkoImage.getBoundingClientRect();
-                const x = (rect.left + rect.width / 2) / window.innerWidth;
-                const y = (rect.top + rect.height / 2) / window.innerHeight;
-
+        function updateFunko() {
+            const filename = `${nameSel.value}_${charSel.value}_${actSel.value}.png`;
+            const path = `assets/projects_assets/PopYou2/generated_images/${filename}`;
+            img.classList.add('fade-out');
+            setTimeout(() => {
+                img.src = path;
+                img.classList.remove('fade-out');
+                // confetti pop at image center
+                const r = img.getBoundingClientRect();
                 confetti({
-                    particleCount: 100,
-                    spread: 80,
-                    startVelocity: 35,
-                    origin: { x: x, y: y }
+                    particleCount: 90, spread: 70, startVelocity: 32,
+                    origin: {x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight}
                 });
-            }
-        }, 150);
-
-        if (isRealSelection) {
-            gtag('event', 'funko_pop_selection', {
-                'event_category': 'PopYou2',
-                'event_label': `${famousName}_${character}_${action}`,
-                'value': 1
-            });
+                // analytics event
+                if (typeof gtag === 'function') {
+                    gtag('event', 'funko_pop_selection', {
+                        event_category: 'PopYou2',
+                        event_label: `${nameSel.value}_${charSel.value}_${actSel.value}`,
+                        value: 1
+                    });
+                }
+            }, 140);
         }
-    }
 
-    function filterProjects() {
-        const selectedTags = Array.from(document.querySelectorAll('.tag-filter input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
-        const projects = document.querySelectorAll('.project-item');
-        projects.forEach(project => {
-            const projectTags = Array.from(project.querySelectorAll('.project-tags .tag')).map(tag => tag.textContent);
-            if (selectedTags.length === 0 || selectedTags.some(tag => projectTags.includes(tag))) {
-                project.style.display = '';
-            } else {
-                project.style.display = 'none';
-            }
-        });
-    }
+        [nameSel, charSel, actSel].forEach(el => el.addEventListener('change', updateFunko));
+    })();
 </script>
 </body>
 </html>
