@@ -7,7 +7,6 @@
     <meta http-equiv="Permissions-Policy" content="interest-cohort=()"/>
     <link rel="icon" type="image/png" href="icon.png"/>
 
-    <!-- Analytics (kept from your site) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GBD6XTE35X"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -31,12 +30,12 @@
 
     <style>
         :root {
-            --bg: #0b0e12; /* base dark */
-            --bg-soft: #12161d; /* panels */
-            --txt: #e7eef8; /* primary text */
-            --muted: #9fb1c7; /* muted text */
-            --brand1: #13efe7; /* cyan */
-            --brand2: #77b300; /* lime */
+            --bg: #0b0e12;
+            --bg-soft: #12161d;
+            --txt: #e7eef8;
+            --muted: #9fb1c7;
+            --brand1: #13efe7;
+            --brand2: #77b300;
             --ring: rgba(19, 239, 231, .35);
             --card: rgba(255, 255, 255, .06);
             --glass: rgba(255, 255, 255, .08);
@@ -198,17 +197,130 @@
             cursor: pointer;
             box-shadow: 0 10px 26px rgba(19, 239, 231, .25);
         }
+        /* Bigger, premium CTA variant */
+.btn.btn-lg{
+  font-size: 18px;
+  line-height: 1.1;
+  padding: 16px 22px;                 /* more breathing room */
+  min-height: 56px;                   /* taller button */
+  border-radius: 16px;
+  gap: 14px;                          /* bigger gap between icon & text */
+  box-shadow: 0 14px 30px rgba(19,239,231,.22); /* stronger glow */
+}
 
-        .btn img {
-            width: 26px;
-            height: 26px
+/* bump it up a bit more on desktop */
+@media (min-width: 920px){
+  .btn.btn-lg{
+    font-size: 20px;
+    padding: 18px 26px;
+    min-height: 60px;
+  }
+}
+
+/* bigger icon badge for the large button */
+.btn.btn-lg .icon-wrap{
+  width: 44px;
+  height: 44px;
+}
+
+.btn.btn-lg .icon-wrap img{
+  width: 26px;
+  height: 26px;
+}
+
+/* keep the icon badge we added before */
+.btn .icon-wrap{
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 2px 6px rgba(0,0,0,.25), inset 0 0 0 1px rgba(0,0,0,.06);
+}
+.btn .icon-wrap img{ display:block; }
+
+.btn:hover .icon-wrap{
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.28), inset 0 0 0 1px rgba(0,0,0,.08);
+}
+
+/* light theme badge tuning */
+.light .btn .icon-wrap{
+  background: rgba(0,0,0,.08);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.06);
+}
+
+/* mobile: let the buttons comfortably fill the row */
+@media (max-width:720px){
+  .cta-row .btn{
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+        /* --- Button icon badge (for the koala) --- */
+        .btn .icon-wrap {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, .85); /* subtle badge in dark mode */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .25), inset 0 0 0 1px rgba(0, 0, 0, .06);
         }
+
+        .btn .icon-wrap img {
+            width: 18px;
+            height: 18px;
+            display: block;
+        }
+
+        /* hover feedback keeps it classy */
+        .btn:hover .icon-wrap {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, .28), inset 0 0 0 1px rgba(0, 0, 0, .08);
+        }
+
+        /* light theme: make the badge slightly darker so it still reads */
+        .light .btn .icon-wrap {
+            background: rgba(0, 0, 0, .08);
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .06);
+        }
+
 
         .btn.ghost {
             background: transparent;
             color: var(--txt);
             border: 1.5px solid rgba(255, 255, 255, .18)
         }
+
+        /* Image-only CV button */
+.cv-btn {
+  display: inline-block;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform .18s ease, filter .2s ease;
+}
+
+.cv-btn img {
+  display: block;
+  width: 180px;   /* adjust size here */
+  height: auto;
+  border-radius: 18px; /* keeps soft corners if image has them */
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+}
+
+.cv-btn:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.05);
+}
+
+.cv-btn:active img {
+  transform: scale(0.98);
+}
+
+
 
         .hero-art {
             position: relative;
@@ -234,14 +346,12 @@
             radial-gradient(400px 260px at 20% 100%, rgba(19, 239, 231, .16), transparent 60%);
         }
 
-        /* Contain-fit helper for GIF/video cards to avoid cropping */
         .card[data-fit="contain"] .media {
             object-fit: contain;
             object-position: center;
             background: #000;
         }
 
-        /* Funko live generator styles */
         .funko-builder {
             margin-top: 12px;
             padding: 14px;
@@ -335,11 +445,12 @@
         }
 
         .more .more-body {
-            height: 0;                 /* collapsed height */
-            overflow: hidden;          /* hide content when collapsed */
+            height: 0; /* collapsed height */
+            overflow: hidden; /* hide content when collapsed */
             transition: height .32s ease;
-            padding: 0 14px;           /* remove bottom padding when collapsed */
+            padding: 0 14px; /* remove bottom padding when collapsed */
         }
+
         .more[open] .more-body {
             /* height is managed via JS for smooth open/close; keep only padding */
             padding: 0 14px 14px;
@@ -474,26 +585,29 @@
 
         /* Project link buttons: stacked/wrapping pill layout */
         .project-links {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
         }
+
         .project-links .contact {
-          background: rgba(255, 255, 255, .08);
-          border: 1px solid rgba(255, 255, 255, .16);
-          border-radius: 999px;
-          padding: 8px 12px;
-          font-weight: 600;
-          transition: transform .2s ease, box-shadow .2s ease;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .16);
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-weight: 600;
+            transition: transform .2s ease, box-shadow .2s ease;
         }
+
         .project-links .contact img {
-          width: 18px;
-          height: 18px;
+            width: 18px;
+            height: 18px;
         }
+
         .project-links .contact:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 6px 14px rgba(0, 0, 0, .22);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, .22);
         }
 
         .tag::before {
@@ -765,24 +879,192 @@
             }
         }
 
-    /* Mobile hero adjustments: hide large image, keep clean layout */
-    @media (max-width: 720px) {
-      .hero-wrap {
-        grid-template-columns: 1fr; /* single column */
-        gap: 16px;
-        padding: 56px 0 24px; /* slightly tighter */
-      }
-      .hero h1 { font-size: 32px; }
-      .hero-art { display: none; } /* hide the Silicon Valley image on mobile */
-    }
+        /* Mobile hero adjustments: hide large image, keep clean layout */
+        @media (max-width: 720px) {
+            .hero-wrap {
+                grid-template-columns: 1fr; /* single column */
+                gap: 16px;
+                padding: 56px 0 24px; /* slightly tighter */
+            }
 
-    @media (min-width: 721px) and (max-width: 920px) {
-      .hero-art {
-        min-height: 320px;
-        background-size: contain; /* avoid cropping in mid widths */
-        background-position: center;
-      }
-    }
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero-art {
+                display: none;
+            }
+
+            /* hide the Silicon Valley image on mobile */
+        }
+
+        @media (min-width: 721px) and (max-width: 920px) {
+            .hero-art {
+                min-height: 320px;
+                background-size: contain; /* avoid cropping in mid widths */
+                background-position: center;
+            }
+        }
+
+        /* --- Kokoro WIP styles --- */
+        /* Sharper corner ribbon + clearer text */
+        .wip {
+            position: relative;
+            overflow: hidden; /* hide the stripe outside the corner */
+            border-image: linear-gradient(120deg, var(--brand1), var(--brand2)) 1;
+        }
+
+        /* text badge */
+        .wip::before {
+            content: "IN PROGRESS • LIVE";
+            position: absolute;
+            top: 12px;
+            right: -40px;
+            transform: rotate(35deg);
+            padding: 8px 14px;
+            font: 800 11px/1 Inter, system-ui, sans-serif;
+            letter-spacing: .9px;
+            color: #081016;
+            background: linear-gradient(135deg, var(--brand1), var(--brand2));
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .35), inset 0 0 0 1px rgba(255, 255, 255, .25);
+            text-shadow: 0 1px 0 rgba(255, 255, 255, .35);
+        }
+
+        /* diagonal accent stripe under the text for clarity */
+        .wip::after {
+            content: "";
+            position: absolute;
+            top: -28px;
+            right: -28px;
+            width: 140px;
+            height: 140px;
+            transform: rotate(45deg);
+            background: linear-gradient(135deg, rgba(19, 239, 231, .12), rgba(119, 179, 0, .12));
+            border-top: 1px solid rgba(255, 255, 255, .14);
+            border-left: 1px solid rgba(255, 255, 255, .14);
+            pointer-events: none;
+        }
+
+        /* Kokoro-specific tags */
+        .t-tinytts {
+            background: linear-gradient(135deg, #0fd4c5, #7bd400);
+            color: #081016;
+            --tag-ring: rgba(19, 239, 231, .45);
+        }
+
+        .t-tinytts::before {
+            content: '🐜';
+        }
+
+        .t-mix {
+            background: linear-gradient(135deg, #ff7aa2, #ffb86b);
+            color: #1a0d12;
+            --tag-ring: rgba(255, 154, 120, .45);
+        }
+
+        .t-mix::before {
+            content: '🎛️';
+        }
+
+        .t-embed {
+            background: linear-gradient(135deg, #6c5ce7, #00c2ff);
+            color: #fff;
+            --tag-ring: rgba(0, 194, 255, .45);
+        }
+
+        .t-embed::before {
+            content: '🧬';
+        }
+
+        .t-speaker {
+            background: linear-gradient(135deg, #ffcf33, #ff8a00);
+            color: #1a0d12;
+            --tag-ring: rgba(255, 170, 0, .45);
+        }
+
+        .t-speaker::before {
+            content: '🗣️';
+        }
+
+        .t-viz {
+            background: linear-gradient(135deg, #00d1b2, #1e90ff);
+            color: #081016;
+            --tag-ring: rgba(30, 144, 255, .45);
+        }
+
+        .t-viz::before {
+            content: '📈';
+        }
+
+        .live-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 6px 0 10px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .12);
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--brand1);
+            box-shadow: 0 0 0 0 rgba(19, 239, 231, .7);
+            animation: pulse 1.6s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(19, 239, 231, .7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(19, 239, 231, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(19, 239, 231, 0);
+            }
+        }
+
+        .kokoro-progress {
+            --stripe: linear-gradient(120deg, rgba(255, 255, 255, .14) 25%, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, .14) 50%, rgba(255, 255, 255, .14) 75%, rgba(255, 255, 255, 0) 75%, rgba(255, 255, 255, 0));
+            position: relative;
+            height: 10px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .16);
+            margin-top: 10px;
+        }
+
+        .kokoro-progress > span {
+            display: block;
+            height: 100%;
+            background: linear-gradient(90deg, var(--brand2), var(--brand1));
+            background-size: 200% 100%;
+            width: 65%; /* pseudo-progress */
+            position: relative;
+        }
+
+        .kokoro-progress::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: var(--stripe);
+            background-size: 36px 100%;
+            animation: stripes 1.2s linear infinite;
+            mix-blend-mode: soft-light;
+            opacity: .6;
+        }
+
+        @keyframes stripes {
+            to {
+                background-position: 36px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -814,10 +1096,11 @@
                 My focus is on thoughtful research and solid engineering that lasts.
             </p>
             <div class="cta-row">
-                <a class="btn" id="cvBtn" href="assets/Amit-Israeli-FlowCV-Resume-20250820.pdf" download>
-                    <img src="assets/koala_looking.png" alt="CV"/> Download CV
-                </a>
-                <a class="btn ghost" href="#projects">See Projects ↓</a>
+<a class="cv-btn" id="cvBtn"
+   href="assets/Amit-Israeli-FlowCV-Resume-20250820.pdf"
+   download>
+  <img src="assets/download_cv_image.png" alt="Download CV">
+</a>
             </div>
         </div>
         <div class="hero-art" role="img" aria-label="Silicon Valley skyline with gradient glows"></div>
@@ -869,6 +1152,74 @@
                 <h2>Projects</h2></div>
 
             <div class="grid cols-2" id="projectGrid">
+
+                <!-- Kokoro — Tiny TTS, Big Voices (WIP) -->
+                <article class="card wip" data-tags="aud,nlp" data-fit="contain">
+                    <!-- Note: URL-encode the space in folder name -->
+                    <img class="media" src="assets/projects_assets/Kokoro%20research/coeff_viz.gif"
+                         alt="Kokoro coefficient trajectory (GIF)"/>
+
+                    <div class="card-body">
+                        <h3>Kokoro — Tiny TTS, Big Voices <span class="chip">WIP</span></h3>
+                        <div class="live-row">
+                            <span class="pulse-dot"></span>
+                            <strong>Actively building now</strong> — voice embedding optimization + tools
+                        </div>
+
+                        <p>
+                            Researching small-footprint TTS with <strong>Kokoro-82M</strong>: fast
+                            <em>mixture-of-voices</em> coefficients, full-embedding optimization,
+                            and clean visual tooling (live trajectory + video export).
+                        </p>
+
+                        <div class="kokoro-progress" aria-label="Work in progress">
+                            <span></span>
+                        </div>
+
+                        <div class="tag-row">
+                            <span class="tag t-tinytts">Tiny TTS</span>
+                            <span class="tag t-mix">Mixture-of-Voices</span>
+                            <span class="tag t-embed">Embedding Opt</span>
+                            <span class="tag t-speaker">Speaker Adaptation</span>
+                            <span class="tag t-viz">Visualizer</span>
+                        </div>
+
+                        <div class="project-links">
+                            <!-- Replace with your repo path when public -->
+                            <a class="contact" target="_blank" href="https://github.com/amit154154/Jarvis_Phone">
+                                <img src="assets/contact_icons/github-icon.png" alt="GitHub"/>Repo
+                            </a>
+                            <!-- Local asset download still useful -->
+                            <a class="contact" href="assets/optemize_voices/coeff_viz.mp4">
+                                <img src="assets/contact_icons/youtube-icon.png" alt="Video"/>Trajectory MP4
+                            </a>
+                            <!-- If your W&B run remains private, add title to hint -->
+                            <a class="contact" target="_blank" href="https://wandb.ai/amit154154/kokoro_opt"
+                               title="Requires access if private">
+                                <img src="assets/contact_icons/wandb-icon.png" alt="W&B"/>W&B (access)
+                            </a>
+                        </div>
+
+                        <details class="more" style="margin-top:10px">
+                            <summary>What I’m building</summary>
+                            <div class="more-body">
+                                <h4>Now</h4>
+                                <ul>
+                                    <li>Mixture-of-voices optimizer with temperature-annealed softmax</li>
+                                    <li>Stable MR-STFT loss (MPS-friendly), clean W&B logging</li>
+                                    <li>GUI visualizer: circular mixer + per-voice bars + MP4 export</li>
+                                </ul>
+                                <h4>Next</h4>
+                                <ul>
+                                    <li>Full-embedding optimization & partial model fine-tuning</li>
+                                    <li>Optimizer ablations (AdamW, SAM, cosine/plateau/one-cycle)</li>
+                                    <li>“Speaker description → voice embedding” mapping</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </article>
+
                 <!-- Token-Budget-Aware LLM Reasoning (VLM) -->
                 <article class="card" data-tags="nlp,vlm" data-fit="contain">
                     <img class="media" src="assets/projects_assets/token_budget_cot/token_budget_example.png"
@@ -884,14 +1235,18 @@
                             making chain-of-thought both efficient and controllable.
                         </p>
                         <div class="tag-row">
-                          <span class="tag t-vlm">CoT Budgeting</span>
-                          <span class="tag t-nlp">LoRA</span>
-                          <span class="tag t-vlm">SigLIP</span>
-                          <span class="tag t-vlm">Multimodal</span>
+                            <span class="tag t-vlm">CoT Budgeting</span>
+                            <span class="tag t-nlp">LoRA</span>
+                            <span class="tag t-vlm">SigLIP</span>
+                            <span class="tag t-vlm">Multimodal</span>
                         </div>
                         <div class="project-links">
-                          <a class="contact" target="_blank" href="https://github.com/amit154154/Token_Budget_cot_VLM"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
-                          <a class="contact" target="_blank" href="https://api.wandb.ai/links/amit154154/9sa4u3th"><img src="assets/contact_icons/wandb-icon.png"/>W&B</a>
+                            <a class="contact" target="_blank"
+                               href="https://github.com/amit154154/Token_Budget_cot_VLM"><img
+                                    src="assets/contact_icons/github-icon.png"/>Repo</a>
+                            <a class="contact" target="_blank"
+                               href="https://api.wandb.ai/links/amit154154/9sa4u3th"><img
+                                    src="assets/contact_icons/wandb-icon.png"/>W&B</a>
                         </div>
                         <details class="more">
                             <summary>Read more</summary>
@@ -949,14 +1304,19 @@
                             into the model’s text space, enabling both I→I and T→I generation paths.
                         </p>
                         <div class="tag-row">
-                          <span class="tag t-img">VAR</span>
-                          <span class="tag t-cv">Adapter</span>
-                          <span class="tag t-img">SigLIP→Text</span>
+                            <span class="tag t-img">VAR</span>
+                            <span class="tag t-cv">Adapter</span>
+                            <span class="tag t-img">SigLIP→Text</span>
                         </div>
                         <div class="project-links">
-                          <a class="contact" target="_blank" href="https://github.com/amit154154/VAR_clip"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
-                          <a class="contact" target="_blank" href="https://huggingface.co/spaces/AmitIsraeli/PopYou"><img src="assets/contact_icons/huggingface-icon.png"/>HF Space</a>
-                          <a class="contact" target="_blank" href="https://api.wandb.ai/links/amit154154/cqccmfsl"><img src="assets/contact_icons/wandb-icon.png"/>W&B</a>
+                            <a class="contact" target="_blank" href="https://github.com/amit154154/VAR_clip"><img
+                                    src="assets/contact_icons/github-icon.png"/>Repo</a>
+                            <a class="contact" target="_blank"
+                               href="https://huggingface.co/spaces/AmitIsraeli/PopYou"><img
+                                    src="assets/contact_icons/huggingface-icon.png"/>HF Space</a>
+                            <a class="contact" target="_blank"
+                               href="https://api.wandb.ai/links/amit154154/cqccmfsl"><img
+                                    src="assets/contact_icons/wandb-icon.png"/>W&B</a>
                         </div>
 
                         <details class="more">
@@ -1060,14 +1420,15 @@
                             showing improvements over PerSAM.
                         </p>
                         <div class="tag-row">
-                          <span class="tag t-seg">Few‑Shot</span>
-                          <span class="tag t-cv">LoRA</span>
-                          <span class="tag t-seg">Pruning</span>
-                          <span class="tag t-seg">Quantization</span>
-                          <span class="tag t-cv">Edge</span>
+                            <span class="tag t-seg">Few‑Shot</span>
+                            <span class="tag t-cv">LoRA</span>
+                            <span class="tag t-seg">Pruning</span>
+                            <span class="tag t-seg">Quantization</span>
+                            <span class="tag t-cv">Edge</span>
                         </div>
                         <div class="project-links">
-                          <a class="contact" target="_blank" href="https://github.com/amit154154/SAM_LORA"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                            <a class="contact" target="_blank" href="https://github.com/amit154154/SAM_LORA"><img
+                                    src="assets/contact_icons/github-icon.png"/>Repo</a>
                         </div>
                         <details class="more">
                             <summary>Read more</summary>
@@ -1117,13 +1478,14 @@
                             latent alignment for text-driven edits; ~30fps on modern phones.
                         </p>
                         <div class="tag-row">
-                          <span class="tag t-mobile">On‑Device 30fps</span>
-                          <span class="tag t-img">StyleGAN2 Distill</span>
-                          <span class="tag t-cv">Latent Alignment</span>
-                          <span class="tag t-mobile">CoreML</span>
+                            <span class="tag t-mobile">On‑Device 30fps</span>
+                            <span class="tag t-img">StyleGAN2 Distill</span>
+                            <span class="tag t-cv">Latent Alignment</span>
+                            <span class="tag t-mobile">CoreML</span>
                         </div>
                         <div class="project-links">
-                          <a class="contact" target="_blank" href="https://github.com/amit154154/CelebrityLook"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                            <a class="contact" target="_blank" href="https://github.com/amit154154/CelebrityLook"><img
+                                    src="assets/contact_icons/github-icon.png"/>Repo</a>
                         </div>
                         <details class="more">
                             <summary>Read more</summary>
@@ -1187,13 +1549,14 @@
                             inversion mapper for text- and image-conditioned edits; optional 3D lifting.
                         </p>
                         <div class="tag-row">
-                          <span class="tag t-img">FastGAN</span>
-                          <span class="tag t-img">CLIP Inversion</span>
-                          <span class="tag t-img">Synthetic Data</span>
-                          <span class="tag t-img">3D Lifting</span>
+                            <span class="tag t-img">FastGAN</span>
+                            <span class="tag t-img">CLIP Inversion</span>
+                            <span class="tag t-img">Synthetic Data</span>
+                            <span class="tag t-img">3D Lifting</span>
                         </div>
                         <div class="project-links">
-                          <a class="contact" target="_blank" href="https://github.com/amit154154/PopYou"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                            <a class="contact" target="_blank" href="https://github.com/amit154154/PopYou"><img
+                                    src="assets/contact_icons/github-icon.png"/>Repo</a>
                         </div>
                         <details class="more">
                             <summary>Read more</summary>
@@ -1251,7 +1614,8 @@
                                     <img src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.png"
                                          alt="FastGAN Obama sample"/>
                                     <img src="assets/projects_assets/PopYou!/compressed_alan_turing_dreamgaussian.gif"
-                                         alt="3D lifting: Alan Turing (DreamGaussian)" loading="eager" decoding="async"/>
+                                         alt="3D lifting: Alan Turing (DreamGaussian)" loading="eager"
+                                         decoding="async"/>
                                     <img src="assets/projects_assets/PopYou!/compressed_ras_dreamgaussian.gif"
                                          alt="3D lifting: Ras (DreamGaussian)" loading="eager" decoding="async"/>
                                 </div>
@@ -1271,13 +1635,15 @@
                             MapleStory-style BGM) while keeping prompt controllability.
                         </p>
                         <div class="tag-row">
-                          <span class="tag t-aud">LoRA</span>
-                          <span class="tag t-aud">Genre Transfer</span>
-                          <span class="tag t-aud">32k EnCodec</span>
-                          <span class="tag t-aud">Fréchet</span>
+                            <span class="tag t-aud">LoRA</span>
+                            <span class="tag t-aud">Genre Transfer</span>
+                            <span class="tag t-aud">32k EnCodec</span>
+                            <span class="tag t-aud">Fréchet</span>
                         </div>
                         <div class="project-links">
-                          <a class="contact" target="_blank" href="https://github.com/amit154154/musicgen_finetune"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                            <a class="contact" target="_blank"
+                               href="https://github.com/amit154154/musicgen_finetune"><img
+                                    src="assets/contact_icons/github-icon.png"/>Repo</a>
                         </div>
                         <details class="more">
                             <summary>Read more</summary>
@@ -1309,12 +1675,14 @@
                                 </p>
                                 <h4>Audio samples</h4>
                                 <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap">
-                                  <audio controls style="width:240px">
-                                    <source src="assets/projects_assets/musicgen_finetune/example_1.wav" type="audio/wav"/>
-                                  </audio>
-                                  <audio controls style="width:240px">
-                                    <source src="assets/projects_assets/musicgen_finetune/example_2.wav" type="audio/wav"/>
-                                  </audio>
+                                    <audio controls style="width:240px">
+                                        <source src="assets/projects_assets/musicgen_finetune/example_1.wav"
+                                                type="audio/wav"/>
+                                    </audio>
+                                    <audio controls style="width:240px">
+                                        <source src="assets/projects_assets/musicgen_finetune/example_2.wav"
+                                                type="audio/wav"/>
+                                    </audio>
                                 </div>
                             </div>
                         </details>
@@ -1323,7 +1691,9 @@
 
                 <!-- KoalaReadingAI Podcast -->
                 <article class="card" data-tags="aud,nlp" data-fit="contain">
-                    <video class="media" src="assets/projects_assets/koala_reading_ai/compressed_koala_reading_ai_gif.mp4" autoplay muted loop playsinline></video>
+                    <video class="media"
+                           src="assets/projects_assets/koala_reading_ai/compressed_koala_reading_ai_gif.mp4" autoplay
+                           muted loop playsinline></video>
                     <div class="card-body">
                         <h3>KoalaReadingAI — AI Papers as a Podcast</h3>
                         <p>
@@ -1331,13 +1701,15 @@
                             Spotify and YouTube. Automates paper fetching, summarization, and TTS.
                         </p>
                         <div class="tag-row">
-                          <span class="tag t-aud">TTS</span>
-                          <span class="tag t-nlp">LLMs</span>
-                          <span class="tag t-aud">Audio</span>
-                          <span class="tag t-nlp">Automation</span>
+                            <span class="tag t-aud">TTS</span>
+                            <span class="tag t-nlp">LLMs</span>
+                            <span class="tag t-aud">Audio</span>
+                            <span class="tag t-nlp">Automation</span>
                         </div>
                         <div class="project-links">
-                          <a class="contact" target="_blank" href="https://github.com/amit154154/KoalaReadingPapers"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                            <a class="contact" target="_blank"
+                               href="https://github.com/amit154154/KoalaReadingPapers"><img
+                                    src="assets/contact_icons/github-icon.png"/>Repo</a>
                         </div>
                         <details class="more">
                             <summary>Read more</summary>
@@ -1350,20 +1722,36 @@
                                 </p>
                                 <h4>Deep dive</h4>
                                 <ul>
-                                    <li><strong>Ingestion:</strong> pull papers by date range from Hugging Face daily papers.</li>
-                                    <li><strong>Summarization:</strong> generate episode scripts from PDFs using an API workflow (ChatPDF in repo README).</li>
-                                    <li><strong>Speech:</strong> text-to-speech with ElevenLabs; optional <em>Tortoise‑TTS</em> for a free local pipeline.</li>
-                                    <li><strong>Output:</strong> publishable audio files and episode metadata for podcast platforms.</li>
+                                    <li><strong>Ingestion:</strong> pull papers by date range from Hugging Face daily
+                                        papers.
+                                    </li>
+                                    <li><strong>Summarization:</strong> generate episode scripts from PDFs using an API
+                                        workflow (ChatPDF in repo README).
+                                    </li>
+                                    <li><strong>Speech:</strong> text-to-speech with ElevenLabs; optional <em>Tortoise‑TTS</em>
+                                        for a free local pipeline.
+                                    </li>
+                                    <li><strong>Output:</strong> publishable audio files and episode metadata for
+                                        podcast platforms.
+                                    </li>
                                 </ul>
                                 <h4>Listen</h4>
                                 <div class="contacts" style="margin-top:10px">
-                                    <a class="contact" target="_blank" href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1"><img src="assets/contact_icons/Spotify-icon.png" alt="Spotify"/>Spotify</a>
-                                    <a class="contact" target="_blank" href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA"><img src="assets/contact_icons/youtube-icon.png" alt="YouTube"/>YouTube</a>
-                                    <a class="contact" target="_blank" href="https://github.com/amit154154/KoalaReadingPapers"><img src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
+                                    <a class="contact" target="_blank"
+                                       href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1"><img
+                                            src="assets/contact_icons/Spotify-icon.png" alt="Spotify"/>Spotify</a>
+                                    <a class="contact" target="_blank"
+                                       href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA"><img
+                                            src="assets/contact_icons/youtube-icon.png" alt="YouTube"/>YouTube</a>
+                                    <a class="contact" target="_blank"
+                                       href="https://github.com/amit154154/KoalaReadingPapers"><img
+                                            src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
                                 </div>
                                 <div class="media-strip">
-                                    <img src="assets/projects_assets/koala_reading_ai/koala_reading_ai.jpeg" alt="Koala Reading AI cover"/>
-                                    <video src="assets/projects_assets/koala_reading_ai/koala_reading_ai_gif.mp4" autoplay muted loop playsinline></video>
+                                    <img src="assets/projects_assets/koala_reading_ai/koala_reading_ai.jpeg"
+                                         alt="Koala Reading AI cover"/>
+                                    <video src="assets/projects_assets/koala_reading_ai/koala_reading_ai_gif.mp4"
+                                           autoplay muted loop playsinline></video>
                                 </div>
                             </div>
                         </details>
@@ -1400,9 +1788,9 @@
                                     <li>Contributed model compression & latency tuning for faster screening.</li>
                                 </ul>
                                 <div class="stack tag-row">
-                                  <span class="tag t-cv">Deepfake Detection</span>
-                                  <span class="tag t-cv">Latency/Compression</span>
-                                  <span class="tag t-vlm">Screening Pipelines</span>
+                                    <span class="tag t-cv">Deepfake Detection</span>
+                                    <span class="tag t-cv">Latency/Compression</span>
+                                    <span class="tag t-vlm">Screening Pipelines</span>
                                 </div>
                             </div>
                         </div>
@@ -1423,10 +1811,10 @@
                                     </li>
                                 </ul>
                                 <div class="stack tag-row">
-                                  <span class="tag t-cv">Edge Deployment</span>
-                                  <span class="tag t-seg">Seg/Det</span>
-                                  <span class="tag t-seg">Few‑Shot</span>
-                                  <span class="tag t-mobile">CoreML/TensorRT</span>
+                                    <span class="tag t-cv">Edge Deployment</span>
+                                    <span class="tag t-seg">Seg/Det</span>
+                                    <span class="tag t-seg">Few‑Shot</span>
+                                    <span class="tag t-mobile">CoreML/TensorRT</span>
                                 </div>
                             </div>
                         </div>
@@ -1450,10 +1838,10 @@
                                     </li>
                                 </ul>
                                 <div class="stack tag-row">
-                                  <span class="tag t-nlp">LLMs</span>
-                                  <span class="tag t-nlp">Real‑time</span>
-                                  <span class="tag t-nlp">LoRA</span>
-                                  <span class="tag t-aud">Audio</span>
+                                    <span class="tag t-nlp">LLMs</span>
+                                    <span class="tag t-nlp">Real‑time</span>
+                                    <span class="tag t-nlp">LoRA</span>
+                                    <span class="tag t-aud">Audio</span>
                                 </div>
                             </div>
                         </div>
@@ -1478,10 +1866,10 @@
                                     </li>
                                 </ul>
                                 <div class="stack tag-row">
-                                  <span class="tag t-cv">Zero/Few‑Shot</span>
-                                  <span class="tag t-seg">SAM/YOLO‑World</span>
-                                  <span class="tag t-cv">6‑DoF</span>
-                                  <span class="tag t-cv">Sim/Domain Rand.</span>
+                                    <span class="tag t-cv">Zero/Few‑Shot</span>
+                                    <span class="tag t-seg">SAM/YOLO‑World</span>
+                                    <span class="tag t-cv">6‑DoF</span>
+                                    <span class="tag t-cv">Sim/Domain Rand.</span>
                                 </div>
                             </div>
                         </div>
@@ -1576,49 +1964,49 @@
 
     // Animated Read more panels (no leftover tall rows)
     (function () {
-      const items = document.querySelectorAll('details.more');
-      items.forEach((d) => {
-        const body = d.querySelector('.more-body');
-        if (!body) return;
+        const items = document.querySelectorAll('details.more');
+        items.forEach((d) => {
+            const body = d.querySelector('.more-body');
+            if (!body) return;
 
-        // initialize
-        if (d.open) {
-          body.style.display = 'block';
-          body.style.height = 'auto';
-        } else {
-          body.style.display = 'none';
-          body.style.height = '0px';
-        }
+            // initialize
+            if (d.open) {
+                body.style.display = 'block';
+                body.style.height = 'auto';
+            } else {
+                body.style.display = 'none';
+                body.style.height = '0px';
+            }
 
-        d.addEventListener('toggle', () => {
-          const isOpen = d.open;
-          if (isOpen) {
-            // show & expand from 0 → content height
-            body.style.display = 'block';
-            body.style.height = '0px';
-            requestAnimationFrame(() => {
-              body.style.height = body.scrollHeight + 'px';
+            d.addEventListener('toggle', () => {
+                const isOpen = d.open;
+                if (isOpen) {
+                    // show & expand from 0 → content height
+                    body.style.display = 'block';
+                    body.style.height = '0px';
+                    requestAnimationFrame(() => {
+                        body.style.height = body.scrollHeight + 'px';
+                    });
+                    const onEnd = () => {
+                        if (d.open) body.style.height = 'auto';
+                        body.removeEventListener('transitionend', onEnd);
+                    };
+                    body.addEventListener('transitionend', onEnd);
+                } else {
+                    // collapse from current height → 0, then fully remove from flow
+                    const h = body.scrollHeight;
+                    body.style.height = h + 'px';
+                    requestAnimationFrame(() => {
+                        body.style.height = '0px';
+                    });
+                    const onEnd = () => {
+                        if (!d.open) body.style.display = 'none';
+                        body.removeEventListener('transitionend', onEnd);
+                    };
+                    body.addEventListener('transitionend', onEnd);
+                }
             });
-            const onEnd = () => {
-              if (d.open) body.style.height = 'auto';
-              body.removeEventListener('transitionend', onEnd);
-            };
-            body.addEventListener('transitionend', onEnd);
-          } else {
-            // collapse from current height → 0, then fully remove from flow
-            const h = body.scrollHeight;
-            body.style.height = h + 'px';
-            requestAnimationFrame(() => {
-              body.style.height = '0px';
-            });
-            const onEnd = () => {
-              if (!d.open) body.style.display = 'none';
-              body.removeEventListener('transitionend', onEnd);
-            };
-            body.addEventListener('transitionend', onEnd);
-          }
         });
-      });
     })();
 
     // --- PopYou2 live generator ---
