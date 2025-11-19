@@ -60,7 +60,7 @@
   }
   *{ box-sizing:border-box }
   html,body{ height:100% }
-  body{ margin:0; font:16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:var(--txt); background:#0b0e12; overflow-x:hidden; }
+  body{ margin:0; font:16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:var(--txt); background:#0b0e12}
   a{ color:inherit; text-decoration:none }
   .container{ width:min(1200px,92%); margin:0 auto }
   :focus-visible{ outline:2px solid var(--brand1); outline-offset:2px; border-radius:8px }
@@ -247,6 +247,36 @@
       min-height: 0;                            /* crucial for Safari */
     }
     .card-body { min-height: 0; }               /* flex child can shrink */
+  /* === Fix mobile horizontal cropping === */
+
+/* Let mobile scroll sideways if something still overflows */
+@media (max-width: 720px) {
+  body {
+    overflow-x: auto;       /* was hidden */
+  }
+}
+
+/* Make sure long inline UI doesn’t force extra width */
+.funko-sentence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.funko-sentence select {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Contacts: make pills wrap nicely and not exceed viewport */
+.contacts {
+  width: 100%;
+}
+
+.contact {
+  flex: 1 1 auto;
+  max-width: 100%;
+}
 </style>
 <!-- HERO -->
 <header class="hero">
@@ -399,6 +429,89 @@
                 </summary>
                 <div class="projects-body">
                     <div class="grid cols-2" id="projectGrid">
+
+                        <!-- Sana Simplified — One-Step Diffusion Playground -->
+                        <article class="card" data-tags="img,cv" data-fit="contain">
+                            <video
+                                class="media"
+                                src="assets/projects_assets/Sana_Simplified/corgi_lastlayer_opt_text.mp4"
+                                autoplay
+                                muted
+                                loop
+                                playsinline
+                            ></video>
+                            <div class="card-body">
+                                <h3>Sana Simplified — Efficient Diffusion Playground</h3>
+                                <p>
+                                    An end-to-end playground around the <strong>Sana</strong> and
+                                    <strong>Sana Sprint</strong> text-to-image models, built to run
+                                    comfortably even on an M1 Max laptop. I stripped the pipelines down
+                                    to their core components and turned them into a clean lab for
+                                    experimenting with diffusion behaviour, conditioning, and
+                                    fine-tuning tricks.
+                                </p>
+                                <div class="tag-row">
+                                    <span class="tag t-img">Diffusion</span>
+                                    <span class="tag t-cv">Sana / Sana Sprint</span>
+                                    <span class="tag t-cv">ControlNet</span>
+                                    <span class="tag t-cv">Textual Inversion</span>
+                                </div>
+                                <div class="project-links">
+                                    <!-- If you later open-source it, swap this span for an <a> with href -->
+                                    <span class="contact">Internal research sandbox</span>
+                                    <a
+                                        class="contact"
+                                        target="_blank"
+                                        href="https://wandb.ai/amit154154/sana15-token-dreambooth/reports/Fine-Tuning-text-delta-for-Corgi-Token-Personalization--VmlldzoxNTEwMDc1Nw?accessToken=d2o3h5elyk4nf2ui8jbp217iozaepai06ciy6nuvbsa0ke629gmbo11npgrrrubb"
+                                    >
+                                        <img src="assets/contact_icons/wandb-icon.png" alt="W&B"/>W&B report Corgi Token Personalization
+                                    </a>
+                                </div>
+                                <details class="more" style="margin-top:10px">
+                                    <summary>Read more</summary>
+                                    <div class="more-body">
+                                        <h4>Summary</h4>
+                                        <p>
+                                            Sana Simplified started as a frictionless way to work with
+                                            <strong>Sana Sprint 0.6B / 1.6B</strong>: minimal
+                                            boilerplate, clear separation between the transformer, VAE
+                                            and conditioning blocks, and a focus on stable
+                                            <strong>one-step generation</strong> from random noise.
+                                            Over time it became my main sandbox for trying small
+                                            research ideas on top of <strong>Sana 1.5</strong> as well.
+                                        </p>
+
+                                        <h4>Highlights</h4>
+                                        <ul>
+                                            <li>
+                                                <strong>One-step diffusion with Sana Sprint:</strong>
+                                                experiments with direct noise-to-image training and
+                                                loss design in a compact Lightning + diffusers setup.
+                                            </li>
+                                            <li>
+                                                <strong>Sana 1.5 fine-tuning:</strong>
+                                                simplified DreamBooth-style and control-oriented
+                                                adapters, including lightweight textual-inversion /
+                                                LoRA-style tweaks for new concepts and styles.
+                                            </li>
+                                            <li>
+                                                <strong>Zoom & SigLIP control:</strong>
+                                                a small 3D-asset dataset at multiple zoom levels to
+                                                learn zoom projections and SigLIP-based conditioning
+                                                for consistent re-renders of the same object.
+                                            </li>
+                                        </ul>
+
+                                        <div class="media-strip">
+                                            <img
+                                                src="assets/projects_assets/Sana_Simplified/sana_sprint_logo.png"
+                                                alt="Sana Sprint logo"
+                                            />
+                                        </div>
+                                    </div>
+                                </details>
+                            </div>
+                        </article>
 
                         <!-- Kokoro — Tiny TTS, Big Voices -->
                         <article class="card" data-tags="aud,nlp" data-fit="contain">
@@ -814,7 +927,7 @@
   const USE_PUBLICATIONS = false;
 
   // How many items to show
-  const ZOTERO_LIMIT = 5;
+  const ZOTERO_LIMIT = 6;
 
   // OPTIONAL: only needed for private libraries
   // (Don’t commit real keys; keep in local .env or replace at deploy)
