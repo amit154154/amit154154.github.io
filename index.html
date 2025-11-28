@@ -667,22 +667,139 @@
     .contacts {
         display: flex;
         gap: 12px;
-        flex-wrap: wrap
+        flex-wrap: wrap;
+        align-items: center;
     }
 
     .contact {
+        position: relative;
         display: inline-flex;
         align-items: center;
+        justify-content: flex-start;
         gap: 8px;
-        padding: 10px 12px;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, .06);
-        border: 1px solid rgba(255, 255, 255, .12)
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: radial-gradient(circle at 0% 0%, rgba(19, 239, 231, .26), transparent 55%) border-box,
+        radial-gradient(circle at 100% 100%, rgba(119, 179, 0, .18), transparent 55%) border-box,
+        rgba(255, 255, 255, .06);
+        border: 1px solid rgba(255, 255, 255, .22);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, .35),
+        0 0 0 1px rgba(255, 255, 255, .08) inset;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: .02em;
+        color: var(--txt);
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform .18s ease,
+        box-shadow .18s ease,
+        background .22s ease,
+        border-color .22s ease,
+        opacity .18s ease;
     }
 
-    .contact img {
-        width: 22px;
-        height: 22px
+    .contact::before {
+        content: "";
+        position: absolute;
+        inset: -40%;
+        background: conic-gradient(from 220deg,
+        rgba(19, 239, 231, .35),
+        rgba(119, 179, 0, .35),
+        transparent,
+        rgba(19, 239, 231, .35));
+        opacity: 0;
+        mix-blend-mode: screen;
+        transform: rotate(-10deg);
+        transition: opacity .25s ease, transform .25s ease;
+        pointer-events: none;
+    }
+
+    .contact:hover {
+        transform: translateY(-1px) scale(1.02);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, .45),
+        0 0 0 1px rgba(19, 239, 231, .4);
+        border-color: rgba(19, 239, 231, .65);
+        background: radial-gradient(circle at 0% 0%, rgba(19, 239, 231, .35), transparent 60%) border-box,
+        radial-gradient(circle at 100% 100%, rgba(119, 179, 0, .28), transparent 60%) border-box,
+        rgba(8, 16, 22, .96);
+    }
+
+    .contact:hover::before {
+        opacity: 1;
+        transform: rotate(5deg);
+    }
+
+    .contact:active {
+        transform: translateY(0) scale(.98);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, .5),
+        0 0 0 1px rgba(19, 239, 231, .5);
+        opacity: .95;
+    }
+
+    .contact-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #fdfdfd;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, .2), 0 0 16px rgba(19, 239, 231, .4);
+        background: radial-gradient(circle at 30% 0%, rgba(19, 239, 231, .85), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(119, 179, 0, .7), rgba(8, 16, 22, .95));
+    }
+
+    .contact-icon.mail {
+        background: radial-gradient(circle at 20% 0%, rgba(255, 204, 128, .95), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(255, 94, 98, .9), rgba(8, 16, 22, .95));
+    }
+
+    .contact-icon.linkedin {
+        background: radial-gradient(circle at 20% 0%, rgba(0, 191, 255, .95), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(0, 119, 181, .9), rgba(8, 16, 22, .95));
+    }
+
+    .contact-icon.github {
+        background: radial-gradient(circle at 20% 0%, rgba(255, 255, 255, .15), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(40, 40, 52, .95), rgba(0, 0, 0, 1));
+    }
+
+    .contact-icon.hf {
+        background: radial-gradient(circle at 20% 0%, rgba(255, 236, 179, .95), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(255, 204, 77, .95), rgba(8, 16, 22, .95));
+    }
+
+    .contact-icon.spotify {
+        background: radial-gradient(circle at 20% 0%, rgba(46, 255, 144, .95), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(29, 185, 84, .95), rgba(8, 16, 22, .95));
+    }
+
+    .contact-icon.youtube {
+        background: radial-gradient(circle at 20% 0%, rgba(255, 180, 180, .95), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(255, 0, 0, .95), rgba(8, 16, 22, .95));
+    }
+
+    .contact-icon svg {
+        width: 14px;
+        height: 14px;
+        display: block;
+    }
+
+    .contact-label {
+        flex: 1 1 auto;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .contact-arrow {
+        flex-shrink: 0;
+        font-size: 14px;
+        opacity: .75;
+        transform: translateY(1px);
     }
 
     footer {
@@ -1166,15 +1283,63 @@
                         cool domains (:.
                     </p>
                     <div class="contacts" style="margin-top:10px">
-                        <a class="contact" href="mailto:amit1541541@gmail.com"><img
-                                src="assets/contact_icons/email-icon.png" alt="Email"/>Email</a>
-                        <a class="contact" target="_blank"
-                           href="https://www.linkedin.com/in/amit-israeli-aa4a30242/"><img
-                                src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn"/>LinkedIn</a>
-                        <a class="contact" target="_blank" href="https://github.com/amit154154"><img
-                                src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
-                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli"><img
-                                src="assets/contact_icons/huggingface-icon.png" alt="Hugging Face"/>Hugging Face</a>
+                        <a class="contact" href="mailto:amit1541541@gmail.com">
+                            <span class="contact-icon mail">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="3" y="5" width="18" height="14" rx="3" ry="3" fill="none"
+                                          stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M5 7.5L12 12.5L19 7.5" fill="none" stroke="currentColor" stroke-width="1.6"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">Email</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
+                        <a class="contact" target="_blank" href="https://www.linkedin.com/in/amit-israeli-aa4a30242/">
+                            <span class="contact-icon linkedin">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="3" y="3" width="18" height="18" rx="3" ry="3" fill="none"
+                                          stroke="currentColor" stroke-width="1.6"/>
+                                    <circle cx="8" cy="9" r="1.4" fill="currentColor"/>
+                                    <path d="M8 11.5V17" stroke="currentColor" stroke-width="1.6"
+                                          stroke-linecap="round"/>
+                                    <path d="M11.5 17V12.3C11.5 11.3 12.3 10.5 13.3 10.5C14.4 10.5 15.2 11.3 15.2 12.3V17"
+                                          stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">LinkedIn</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
+                        <a class="contact" target="_blank" href="https://github.com/amit154154">
+                            <span class="contact-icon github">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M10 15.5c-.8.3-1.5 0-2-.7" stroke="currentColor" stroke-width="1.3"
+                                          stroke-linecap="round"/>
+                                    <path d="M14 15.5c.8.3 1.5 0 2-.7" stroke="currentColor" stroke-width="1.3"
+                                          stroke-linecap="round"/>
+                                    <path d="M9.2 10.2c1.9 1.3 3.7 1.3 5.6 0" stroke="currentColor" stroke-width="1.3"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">GitHub</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
+                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli">
+                            <span class="contact-icon hf">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <circle cx="12" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M9 10c.4-.5 1-.7 1.6-.7" stroke="currentColor" stroke-width="1.4"
+                                          stroke-linecap="round"/>
+                                    <path d="M15 10c-.4-.5-1-.7-1.6-.7" stroke="currentColor" stroke-width="1.4"
+                                          stroke-linecap="round"/>
+                                    <path d="M9 13c.7 1.1 1.7 1.7 3 1.7s2.3-.6 3-1.7" stroke="currentColor"
+                                          stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">Hugging Face</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1203,10 +1368,14 @@
                             <div class="card-body">
                                 <h3>Sana Simplified — Image &amp; Zoom Control</h3>
                                 <p>
-                                    Research playground around <strong>Sana 1.5</strong> and <strong>Sana Sprint</strong> for
-                                    image generation,controlnet implemntation,  and a <strong>SigLIP-driven zoom controller</strong>. GLB objects are
-                                    rendered offline at multiple zoom levels, and object + zoom embeddings are appended as
-                                    tokens to the text encoder so the model can smoothly change the camera distance while
+                                    Research playground around <strong>Sana 1.5</strong> and <strong>Sana
+                                    Sprint</strong> for
+                                    image generation,controlnet implemntation, and a <strong>SigLIP-driven zoom
+                                    controller</strong>. GLB objects are
+                                    rendered offline at multiple zoom levels, and object + zoom embeddings are appended
+                                    as
+                                    tokens to the text encoder so the model can smoothly change the camera distance
+                                    while
                                     keeping identity and style consistent.
                                 </p>
                                 <div class="project-links">
@@ -1221,36 +1390,54 @@
                                                 alt="GitHub – Sana Simplified"
                                         />
                                     </a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://huggingface.co/AmitIsraeli/sana1.5_siglipzoom_glb_step30000"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/HuggingFace-sana1.5_siglipzoom-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=000000"
+                                                alt="Hugging Face – sana1.5_siglipzoom"
+                                        />
+                                    </a>
                                 </div>
                                 <details class="more" style="margin-top:10px">
                                     <summary>Read more</summary>
                                     <div class="more-body">
                                         <h4>Method Overview</h4>
                                         <p>
-                                            A zero-zoom reference image is encoded with <strong>SigLIP</strong> to form an
-                                            object token, while a scalar zoom value <code>z ∈ [0, 1]</code> is mapped through
-                                            a small MLP to a zoom token. Both tokens are appended to the cached text encoding,
+                                            A zero-zoom reference image is encoded with <strong>SigLIP</strong> to form
+                                            an
+                                            object token, while a scalar zoom value <code>z ∈ [0, 1]</code> is mapped
+                                            through
+                                            a small MLP to a zoom token. Both tokens are appended to the cached text
+                                            encoding,
                                             and then finetuning the <strong>Sana 1.5 transformer</strong> with LoRA.
                                         </p>
                                         <h4>Reference &amp; Zoom Sweep</h4>
                                         <div class="zoom-gallery">
                                             <figure class="zoom-item">
-                                                <a href="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.jpeg" target="_blank" rel="noopener">
+                                                <a href="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.jpeg"
+                                                   target="_blank" rel="noopener">
                                                     <img
-                                                        src="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.jpeg"
-                                                        alt="Reference zero-zoom view"
+                                                            src="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.jpeg"
+                                                            alt="Reference zero-zoom view"
                                                     />
                                                 </a>
                                                 <figcaption>Reference zero-zoom render (zoom_0)</figcaption>
                                             </figure>
                                             <figure class="zoom-item">
-                                                <a href="assets/projects_assets/siglip_zoom_sana/video_example_zoom.gif" target="_blank" rel="noopener">
+                                                <a href="assets/projects_assets/siglip_zoom_sana/video_example_zoom.gif"
+                                                   target="_blank" rel="noopener">
                                                     <img
-                                                        src="assets/projects_assets/siglip_zoom_sana/video_example_zoom.gif"
-                                                        alt="Zoom controller sweep example"
+                                                            src="assets/projects_assets/siglip_zoom_sana/video_example_zoom.gif"
+                                                            alt="Zoom controller sweep example"
                                                     />
                                                 </a>
-                                                <figcaption>Model-generated zoom sweep as the zoom token moves from 0 → 1</figcaption>
+                                                <figcaption>Model-generated zoom sweep as the zoom token moves from 0 →
+                                                    1
+                                                </figcaption>
                                             </figure>
                                         </div>
                                     </div>
@@ -1268,7 +1455,10 @@
                             <div class="card-body">
                                 <h3>Tom &amp; Jerry generation - Sana Video</h3>
                                 <p>
-                                    Using SANA-Video 2B to efficiently generate Tom & Jerry–style animations at 224×224, experimenting with off-native resolution training and inference. The goal is to optimize SANA-Video for high-quality 224×224 clips that run comfortably on consumer-grade GPUs.
+                                    Using SANA-Video 2B to efficiently generate Tom & Jerry–style animations at 224×224,
+                                    experimenting with off-native resolution training and inference. The goal is to
+                                    optimize SANA-Video for high-quality 224×224 clips that run comfortably on
+                                    consumer-grade GPUs.
                                 </p>
                                 <div class="project-links">
                                     <a
@@ -1311,9 +1501,12 @@
                                         <h4>V1 Class Training Setup</h4>
                                         <ul>
                                             <li>Base model: <code>SANA-Video_2B_480p_diffusers</code></li>
-                                            <li>Resolution: <strong>224×224</strong>, clip length: <strong>81 frames</strong></li>
+                                            <li>Resolution: <strong>224×224</strong>, clip length: <strong>81
+                                                frames</strong></li>
                                             <li>LoRA rank 16 on all linear layers in the diffusion transformer</li>
-                                            <li>Single Tom &amp; Jerry style class prompt, AdamW on LoRA parameters only</li>
+                                            <li>Single Tom &amp; Jerry style class prompt, AdamW on LoRA parameters
+                                                only
+                                            </li>
                                         </ul>
                                         <h4>Checkpoint progression</h4>
                                         <p>Same seed and prompt, scroll through checkpoints with the selector wheel:</p>
@@ -1329,9 +1522,9 @@
                                             </div>
                                             <div class="tj-display">
                                                 <img
-                                                    data-tj-image
-                                                    src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_base_seed69420.gif"
-                                                    alt="Tom &amp; Jerry checkpoint preview"
+                                                        data-tj-image
+                                                        src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_base_seed69420.gif"
+                                                        alt="Tom &amp; Jerry checkpoint preview"
                                                 />
                                             </div>
                                             <p class="tj-caption" data-tj-caption>
@@ -1341,7 +1534,8 @@
                                         <h4>Text-conditioned probes</h4>
                                         <p>
                                             After training, the same LoRA is tested with multiple prompts (night scenes,
-                                            staircase chases, outdoor pranks, etc.) to see how much text controllability remains
+                                            staircase chases, outdoor pranks, etc.) to see how much text controllability
+                                            remains
                                         </p>
                                     </div>
                                 </details>
@@ -1758,13 +1952,37 @@
                                         <h4>Listen</h4>
                                         <div class="contacts" style="margin-top:10px">
                                             <a class="contact" target="_blank"
-                                               href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1"><img
-                                                    src="assets/contact_icons/Spotify-icon.png"
-                                                    alt="Spotify"/>Spotify</a>
+                                               href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1">
+                                                <span class="contact-icon spotify">
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor"
+                                                                stroke-width="1.6"/>
+                                                        <path d="M8.2 11.2c2.1-.5 4.1-.4 5.9.3" fill="none"
+                                                              stroke="currentColor" stroke-width="1.3"
+                                                              stroke-linecap="round"/>
+                                                        <path d="M8.6 13.4c1.7-.4 3.2-.3 4.6.3" fill="none"
+                                                              stroke="currentColor" stroke-width="1.2"
+                                                              stroke-linecap="round"/>
+                                                        <path d="M9 15.4c1.3-.3 2.4-.2 3.4.2" fill="none"
+                                                              stroke="currentColor" stroke-width="1.1"
+                                                              stroke-linecap="round"/>
+                                                    </svg>
+                                                </span>
+                                                <span class="contact-label">Spotify</span>
+                                                <span class="contact-arrow">↗</span>
+                                            </a>
                                             <a class="contact" target="_blank"
-                                               href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA"><img
-                                                    src="assets/contact_icons/youtube-icon.png"
-                                                    alt="YouTube"/>YouTube</a>
+                                               href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA">
+                                                <span class="contact-icon youtube">
+                                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                        <rect x="4" y="7" width="16" height="10" rx="3" ry="3"
+                                                              fill="none" stroke="currentColor" stroke-width="1.6"/>
+                                                        <path d="M11 10l4 2-4 2v-4z" fill="currentColor"/>
+                                                    </svg>
+                                                </span>
+                                                <span class="contact-label">YouTube</span>
+                                                <span class="contact-arrow">↗</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </details>
@@ -1794,15 +2012,63 @@
             <div class="card">
                 <div class="card-body">
                     <div class="contacts">
-                        <a class="contact" href="mailto:amit1541541@gmail.com"><img
-                                src="assets/contact_icons/email-icon.png" alt="Email"/>amit1541541@gmail.com</a>
-                        <a class="contact" target="_blank"
-                           href="https://www.linkedin.com/in/amit-israeli-aa4a30242/"><img
-                                src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn"/>LinkedIn</a>
-                        <a class="contact" target="_blank" href="https://github.com/amit154154"><img
-                                src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
-                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli"><img
-                                src="assets/contact_icons/huggingface-icon.png" alt="Hugging Face"/>Hugging Face</a>
+                        <a class="contact" href="mailto:amit1541541@gmail.com">
+                            <span class="contact-icon mail">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="3" y="5" width="18" height="14" rx="3" ry="3" fill="none"
+                                          stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M5 7.5L12 12.5L19 7.5" fill="none" stroke="currentColor" stroke-width="1.6"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">amit1541541@gmail.com</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
+                        <a class="contact" target="_blank" href="https://www.linkedin.com/in/amit-israeli-aa4a30242/">
+                            <span class="contact-icon linkedin">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="3" y="3" width="18" height="18" rx="3" ry="3" fill="none"
+                                          stroke="currentColor" stroke-width="1.6"/>
+                                    <circle cx="8" cy="9" r="1.4" fill="currentColor"/>
+                                    <path d="M8 11.5V17" stroke="currentColor" stroke-width="1.6"
+                                          stroke-linecap="round"/>
+                                    <path d="M11.5 17V12.3C11.5 11.3 12.3 10.5 13.3 10.5C14.4 10.5 15.2 11.3 15.2 12.3V17"
+                                          stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">LinkedIn</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
+                        <a class="contact" target="_blank" href="https://github.com/amit154154">
+                            <span class="contact-icon github">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M10 15.5c-.8.3-1.5 0-2-.7" stroke="currentColor" stroke-width="1.3"
+                                          stroke-linecap="round"/>
+                                    <path d="M14 15.5c.8.3 1.5 0 2-.7" stroke="currentColor" stroke-width="1.3"
+                                          stroke-linecap="round"/>
+                                    <path d="M9.2 10.2c1.9 1.3 3.7 1.3 5.6 0" stroke="currentColor" stroke-width="1.3"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">GitHub</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
+                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli">
+                            <span class="contact-icon hf">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <circle cx="12" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M9 10c.4-.5 1-.7 1.6-.7" stroke="currentColor" stroke-width="1.4"
+                                          stroke-linecap="round"/>
+                                    <path d="M15 10c-.4-.5-1-.7-1.6-.7" stroke="currentColor" stroke-width="1.4"
+                                          stroke-linecap="round"/>
+                                    <path d="M9 13c.7 1.1 1.7 1.7 3 1.7s2.3-.6 3-1.7" stroke="currentColor"
+                                          stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">Hugging Face</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
                     </div>
                 </div>
             </div>
