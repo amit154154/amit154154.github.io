@@ -10,7 +10,11 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GBD6XTE35X"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){ dataLayer.push(arguments); }
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
         gtag('js', new Date());
         gtag('config', 'G-GBD6XTE35X');
     </script>
@@ -20,19 +24,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
-
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+          rel="stylesheet"/>
 </head>
 
 <script>
-  if (location.hostname === "amit154154.github.io") {
-    (function(c,l,a,r,i,t,y){
-      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "u32v1t3fq9");
-  }
+    if (location.hostname === "amit154154.github.io") {
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () {
+                (c[a].q = c[a].q || []).push(arguments)
+            };
+            t = l.createElement(r);
+            t.async = 1;
+            t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0];
+            y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "u32v1t3fq9");
+    }
 </script>
 
 <body>
@@ -54,235 +62,961 @@
     </div>
 </nav>
 <style>
-  :root{
-      --bg:#0b0e12; --bg-soft:#12161d; --txt:#e7eef8; --muted:#9fb1c7; --brand1:#13efe7; --brand2:#77b300;
-      --ring:rgba(19,239,231,.35); --card:rgba(255,255,255,.06); --glass:rgba(255,255,255,.08); --shadow:0 10px 30px rgba(0,0,0,.35);
-  }
-  *{ box-sizing:border-box }
-  html,body{ height:100% }
-  body{ margin:0; font:16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:var(--txt); background:#0b0e12}
-  a{ color:inherit; text-decoration:none }
-  .container{ width:min(1200px,92%); margin:0 auto }
-  :focus-visible{ outline:2px solid var(--brand1); outline-offset:2px; border-radius:8px }
-
-  /* ===== Navbar ===== */
-  .nav{ position:sticky; top:0; z-index:50; backdrop-filter:saturate(1.2) blur(10px); background:linear-gradient(180deg, rgba(16,24,32,.9), rgba(16,24,32,.6)); border-bottom:1px solid rgba(255,255,255,.07); }
-  .nav-inner{ display:flex; align-items:center; justify-content:space-between; padding:14px 0 }
-  .brand{ display:flex; gap:12px; align-items:center; font-weight:800; letter-spacing:.2px }
-  .brand img{ width:40px; height:40px }
-  .nav-links{ display:flex; gap:18px; align-items:center }
-  .nav-links a{ opacity:.9; padding:10px 12px; border-radius:10px }
-  .nav-links a:hover{ background:rgba(255,255,255,.06) }
-
-  /* Theme toggle */
-  .toggle{ border:2px solid var(--brand1); border-radius:50%; width:56px; height:56px; display:grid; place-items:center; background:linear-gradient(145deg,#0f1722,#0a0d12); box-shadow:var(--shadow); transition:transform .2s ease; cursor:pointer }
-  .toggle:hover{ transform:scale(1.05) }
-  .toggle img{ width:32px; height:32px }
-
-  /* ===== Hero ===== */
-  .hero{ position:relative; isolation:isolate; }
-  .hero-wrap{ padding:64px 0 28px; display:grid; grid-template-columns:1.2fr .8fr; gap:32px; align-items:center; }
-  .hero-card{ background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04)); border:1px solid rgba(255,255,255,.12); border-radius:24px; padding:28px; box-shadow:var(--shadow); }
-  .hero h1{ font:800 42px/1.15 'Space Grotesk', Inter, sans-serif; margin:0 0 10px; letter-spacing:.4px }
-  .hero p{ color:var(--muted); margin:0 0 18px }
-  .accent{ background:linear-gradient(90deg,var(--brand1),var(--brand2)); -webkit-background-clip:text; background-clip:text; color:transparent }
-
-  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; align-items:center }
-  .btn{ display:inline-flex; align-items:center; gap:10px; padding:14px 18px; border-radius:14px; font-weight:600; background:linear-gradient(135deg,var(--brand2),var(--brand1)); color:#081016; border:none; cursor:pointer; box-shadow:0 10px 26px rgba(19,239,231,.25); }
-  .btn.ghost{ background:transparent; color:var(--txt); border:1.5px solid rgba(255,255,255,.18) }
-
-  /* Image-only CV button */
-  .cv-btn{ display:inline-block; border:none; background:none; padding:0; cursor:pointer; transition:transform .18s ease, filter .2s ease; }
-  .cv-btn img{ display:block; width:180px; height:auto; border-radius:18px; box-shadow:0 10px 24px rgba(0,0,0,.35); }
-  .cv-btn:hover img{ transform:scale(1.05); filter:brightness(1.05); }
-  .cv-btn:active img{ transform:scale(.98); }
-
-  .hero-art{ position:relative; border-radius:24px; overflow:hidden; min-height:280px; background:url('assets/header_siliconValley_image.png') center/cover no-repeat; box-shadow:var(--shadow); }
-  .hero-art::after{ content:""; position:absolute; inset:0; background:radial-gradient(600px 300px at 80% 0%, rgba(255,255,255,.06), transparent 60%), radial-gradient(400px 260px at 20% 100%, rgba(255,255,255,.04), transparent 60%); mix-blend:screen; }
-  .light .hero-art::after{ background:radial-gradient(600px 300px at 80% 0%, rgba(119,179,0,.16), transparent 60%), radial-gradient(400px 260px at 20% 100%, rgba(19,239,231,.16), transparent 60%); }
-
-  /* General section/chips */
-  .section{ padding:32px 0 }
-  .title{ display:flex; align-items:center; gap:12px; margin:0 0 18px }
-  .title h2{ margin:0; font:700 28px/1 'Space Grotesk', Inter, sans-serif }
-  .chip{ font:600 12px/1 Inter; padding:7px 10px; border-radius:999px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12) }
-
-  /* Cards grid */
-  .grid{ display:grid; gap:18px }
-  @media (min-width:720px){ .grid.cols-3{ grid-template-columns:repeat(3,1fr) } }
-  @media (min-width:920px){ .grid.cols-2{ grid-template-columns:repeat(2,1fr) } }
-  @media (min-width:1280px){ .grid.cols-2{ grid-template-columns:repeat(3,1fr) } }
-  .card{ display:flex; flex-direction:column; background:var(--card); border:1px solid rgba(255,255,255,.12); border-radius:18px; overflow:hidden; position:relative; transition:transform .25s ease, box-shadow .25s ease; box-shadow:var(--shadow); min-height:100%; }
-  .card:hover{ transform:translateY(-4px); box-shadow:0 18px 40px rgba(0,0,0,.45) }
-  .card-body{ padding:18px; display:flex; flex-direction:column; gap:8px; flex:1 }
-  .card h3{ margin:0 0 6px; font:700 20px/1.2 Inter }
-  .card p{ margin:0; color:var(--muted) }
-
-  /* Media */
-  .media{ width:100%; aspect-ratio:16/9; object-fit:cover; display:block }
-  .card[data-fit="contain"] .media{ object-fit:contain; object-position:center; background:#000; }
-  .media-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:10px; margin-top:12px; }
-  .media-strip img, .media-strip video{ width:100%; height:auto; border-radius:10px; border:1px solid rgba(255,255,255,.12); background:#000; object-fit:contain; }
-
-  /* Tags */
-  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 0 }
-  .tag{ position:relative; padding:8px 12px; border-radius:999px; font-weight:700; font-size:12px; letter-spacing:.2px; border:1px solid rgba(255,255,255,.18); box-shadow:inset 0 1px 0 rgba(255,255,255,.15), 0 6px 14px rgba(0,0,0,.22); backdrop-filter:blur(4px); transition:transform .2s ease, box-shadow .2s ease; }
-  .tag:hover{ transform:translateY(-1px) scale(1.03); box-shadow:0 0 0 2px var(--tag-ring), 0 10px 18px rgba(0,0,0,.3); }
-  .t-nlp{ background:linear-gradient(135deg,#6C5CE7,#A29BFE); color:#fff; --tag-ring:rgba(162,155,254,.5); }
-  .t-vlm{ background:linear-gradient(135deg,#00B894,#00D8A0); color:#fff; --tag-ring:rgba(0,216,160,.5); }
-  .t-cv{ background:linear-gradient(135deg,#FDCB6E,#FFEAA7); color:#2D3436; --tag-ring:rgba(253,203,110,.5); }
-  .t-img{ background:linear-gradient(135deg,#FF6B6B,#FF8E8E); color:#fff; --tag-ring:rgba(255,142,142,.5); }
-  .t-aud{ background:linear-gradient(135deg,#E84393,#FD79A8); color:#fff; --tag-ring:rgba(253,121,168,.5); }
-  .t-seg{ background:linear-gradient(135deg,#4ECDC4,#45B7AF); color:#fff; --tag-ring:rgba(69,183,175,.5); }
-  .t-mobile{ background:linear-gradient(135deg,#74B9FF,#A8D5FF); color:#fff; --tag-ring:rgba(168,213,255,.5); }
-  .t-tinytts{ background:linear-gradient(135deg,#0fd4c5,#7bd400); color:#081016; --tag-ring:rgba(19,239,231,.45); }
-  .t-mix{ background:linear-gradient(135deg,#ff7aa2,#ffb86b); color:#1a0d12; --tag-ring:rgba(255,154,120,.45); }
-  .t-embed{ background:linear-gradient(135deg,#6c5ce7,#00c2ff); color:#fff; --tag-ring:rgba(0,194,255,.45); }
-  .t-speaker{ background:linear-gradient(135deg,#ffcf33,#ff8a00); color:#1a0d12; --tag-ring:rgba(255,170,0,.45); }
-  .t-viz{ background:linear-gradient(135deg,#00d1b2,#1e90ff); color:#081016; --tag-ring:rgba(30,144,255,.45); }
-
-  /* Project link buttons */
-  .project-links{ display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
-  .project-links .contact{ background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:999px; padding:8px 12px; font-weight:600; transition:transform .2s ease, box-shadow .2s ease; }
-  .project-links .contact img{ width:18px; height:18px; }
-  .project-links .contact:hover{ transform:translateY(-1px); box-shadow:0 6px 14px rgba(0,0,0,.22); }
-
-  /* ===== Experience — upgraded timeline ===== */
-  .timeline{ position:relative; padding-left:44px; --progress:0%; }
-  .timeline::before{ content:""; position:absolute; left:16px; top:0; bottom:0; width:4px; border-radius:4px; background:linear-gradient(180deg, rgba(19,239,231,.2), rgba(119,179,0,.2)); box-shadow:0 0 0 1px rgba(255,255,255,.06) inset; }
-  .timeline::after{ content:""; position:absolute; left:16px; top:0; width:4px; border-radius:4px; height:var(--progress); background:linear-gradient(180deg, var(--brand1), var(--brand2)); box-shadow:0 0 18px rgba(19,239,231,.55); }
-  .xp{ position:relative; margin:0 0 18px; padding:0 }
-  .xp .dot{ position:absolute; left:8px; top:10px; width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg,var(--brand1),var(--brand2)); border:1px solid rgba(255,255,255,.35); box-shadow:0 0 0 3px rgba(19,239,231,.18) }
-  .xp-card{ margin-left:44px; background:var(--glass); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:14px 16px; box-shadow:var(--shadow); transition:transform .2s ease, box-shadow .2s ease; }
-  .xp-card:hover{ transform:translateY(-2px); box-shadow:0 18px 40px rgba(0,0,0,.45) }
-  .xp h4{ margin:0 0 6px; font:700 18px/1.2 Inter; display:flex; align-items:center; gap:8px }
-  .xp .where{ color:var(--muted); font-weight:600 }
-  .xp .when{ font-size:13px; color:var(--muted) }
-  .xp-logo{ width:18px; height:18px; object-fit:contain; margin-left:4px; vertical-align:-3px; border-radius:3px }
-  .xp-meta{ display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 8px }
-  .meta-chip{ font:600 11px/1 Inter; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06) }
-
-  /* Profile */
-  .profile{ display:grid; grid-template-columns:100px 1fr; gap:16px; align-items:center; padding:18px; border-radius:18px; background:var(--glass); border:1px solid rgba(255,255,255,.12) }
-  .avatar{ width:100px; height:100px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,.2) }
-
-  /* Contacts */
-  .contacts{ display:flex; gap:12px; flex-wrap:wrap }
-  .contact{ display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12) }
-  .contact img{ width:22px; height:22px }
-
-  footer{ border-top:1px solid rgba(255,255,255,.07); padding:26px 0; text-align:center; color:var(--muted) }
-
-  /* Light theme */
-  .light{ --bg:#f9fafb; --bg-soft:#ffffff; --txt:#12161d; --muted:#4f637a; --card:#fff; --glass:rgba(255,255,255,.75); }
-  .light body{ background:#f5f7fb; color:var(--txt) }
-
-  /* Mobile hero tweaks */
-  @media (max-width:720px){
-      .hero-wrap{ grid-template-columns:1fr; gap:16px; padding:48px 0 18px; }
-      .hero h1{ font-size:32px; }
-      .hero-art{ display:none; }
-  }
-
-  /* Zotero cards */
-  .paper-meta{ color:var(--muted); font-size:13px; margin-top:6px }
-  .paper-venue{ opacity:.95 }
-  .paper-skel{
-    height:16px; border-radius:8px; margin:6px 0;
-    background:linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.12), rgba(255,255,255,.06));
-    background-size:200% 100%; animation:shimmer 1.2s infinite linear;
-  }
-  @keyframes shimmer { to { background-position:-200% 0; } }
-
-  /* ===== FUNKO BUILDER (new) ===== */
-  .funko-builder{
-    margin-top:12px; padding:16px;
-    background:var(--glass); border:1px solid rgba(255,255,255,.12);
-    border-radius:16px; box-shadow:var(--shadow)
-  }
-  .funko-sentence{
-    font:600 16px/1.5 Inter, system-ui, sans-serif; margin:0 0 12px
-  }
-  .funko-sentence .hl{
-    background:linear-gradient(90deg,var(--brand1),var(--brand2));
-    -webkit-background-clip:text; background-clip:text; color:transparent
-  }
-
-  .funko-controls{ display:grid; gap:10px; margin:8px 0 12px }
-  @media (min-width:720px){ .funko-controls{ grid-template-columns:1fr 1fr 1fr auto } }
-  .ctl{ display:flex; flex-direction:column; gap:6px }
-  .ctl label span{ font:600 12px/1 Inter; color:var(--muted); letter-spacing:.2px }
-
-  /* pill radios */
-  .seg{ display:flex; flex-wrap:wrap; gap:8px; -webkit-tap-highlight-color:transparent }
-  .seg input{ position:absolute; opacity:0; pointer-events:none }
-  .seg label{
-    padding:8px 12px; border-radius:999px; cursor:pointer; user-select:none;
-    border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.06);
-    font:600 12px/1 Inter; transition:transform .15s ease, box-shadow .2s ease, background .2s, color .2s
-  }
-  .seg label:hover{ transform:translateY(-1px) }
-  .seg label:active{ transform:translateY(0) scale(.99) }
-  .seg input:focus-visible + label{ box-shadow:0 0 0 3px var(--ring) }
-  .seg input:checked + label{
-    background:linear-gradient(135deg,var(--brand2),var(--brand1)); color:#081016;
-    box-shadow:0 8px 18px rgba(19,239,231,.25)
-  }
-
-  .funko-image{
-    width:100%; max-width:420px; display:block; margin:8px auto 0;
-    border-radius:14px; border:1px solid rgba(255,255,255,.12); background:#000
-  }
-  .swap{ animation:imgswap .32s ease both }
-  @keyframes imgswap{ from{opacity:.1; transform:scale(.98)} to{opacity:1; transform:scale(1)} }
-
-  .btn-mini{
-    align-self:flex-end; padding:8px 12px; border-radius:12px; cursor:pointer;
-    border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.08); font-weight:600
-  }
-  .btn-mini:hover{ box-shadow:0 6px 14px rgba(0,0,0,.22) }
-  /* Let grid items shrink again in Safari */
-    .grid { align-items: start; }               /* don’t stretch rows by accident */
-    .card { /* remove this if you have it: min-height:100%; */
-      min-height: 0;                            /* crucial for Safari */
+    :root {
+        --bg: #0b0e12;
+        --bg-soft: #12161d;
+        --txt: #e7eef8;
+        --muted: #9fb1c7;
+        --brand1: #13efe7;
+        --brand2: #77b300;
+        --ring: rgba(19, 239, 231, .35);
+        --card: rgba(255, 255, 255, .06);
+        --glass: rgba(255, 255, 255, .08);
+        --shadow: 0 10px 30px rgba(0, 0, 0, .35);
     }
-    .card-body { min-height: 0; }               /* flex child can shrink */
-  /* === Fix mobile horizontal cropping === */
 
-/* Let mobile scroll sideways if something still overflows */
-@media (max-width: 720px) {
-  body {
-    overflow-x: auto;       /* was hidden */
-  }
-}
+    * {
+        box-sizing: border-box
+    }
 
-/* Make sure long inline UI doesn’t force extra width */
-.funko-sentence {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
+    html, body {
+        height: 100%
+    }
 
-.funko-sentence select {
-  min-width: 0;
-  max-width: 100%;
-}
+    body {
+        margin: 0;
+        font: 16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        color: var(--txt);
+        background: #0b0e12
+    }
 
-/* Contacts: make pills wrap nicely and not exceed viewport */
-.contacts {
-  width: 100%;
-}
+    a {
+        color: inherit;
+        text-decoration: none
+    }
 
-.contact {
-  flex: 1 1 auto;
-  max-width: 100%;
-}
+    .container {
+        width: min(1200px, 92%);
+        margin: 0 auto
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--brand1);
+        outline-offset: 2px;
+        border-radius: 8px
+    }
+
+    /* ===== Navbar ===== */
+    .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: saturate(1.2) blur(10px);
+        background: linear-gradient(180deg, rgba(16, 24, 32, .9), rgba(16, 24, 32, .6));
+        border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0
+    }
+
+    .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        font-weight: 800;
+        letter-spacing: .2px
+    }
+
+    .brand img {
+        width: 40px;
+        height: 40px
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 18px;
+        align-items: center
+    }
+
+    .nav-links a {
+        opacity: .9;
+        padding: 10px 12px;
+        border-radius: 10px
+    }
+
+    .nav-links a:hover {
+        background: rgba(255, 255, 255, .06)
+    }
+
+    /* Theme toggle */
+    .toggle {
+        border: 2px solid var(--brand1);
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(145deg, #0f1722, #0a0d12);
+        box-shadow: var(--shadow);
+        transition: transform .2s ease;
+        cursor: pointer
+    }
+
+    .toggle:hover {
+        transform: scale(1.05)
+    }
+
+    .toggle img {
+        width: 32px;
+        height: 32px
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+        position: relative;
+        isolation: isolate;
+    }
+
+    .hero-wrap {
+        padding: 64px 0 28px;
+        display: grid;
+        grid-template-columns:1.2fr .8fr;
+        gap: 32px;
+        align-items: center;
+    }
+
+    .hero-card {
+        background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .04));
+        border: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: var(--shadow);
+    }
+
+    .hero h1 {
+        font: 800 42px/1.15 'Space Grotesk', Inter, sans-serif;
+        margin: 0 0 10px;
+        letter-spacing: .4px
+    }
+
+    .hero p {
+        color: var(--muted);
+        margin: 0 0 18px
+    }
+
+    .accent {
+        background: linear-gradient(90deg, var(--brand1), var(--brand2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent
+    }
+
+    .cta-row {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        align-items: center
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px;
+        border-radius: 14px;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--brand2), var(--brand1));
+        color: #081016;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 10px 26px rgba(19, 239, 231, .25);
+    }
+
+    .btn.ghost {
+        background: transparent;
+        color: var(--txt);
+        border: 1.5px solid rgba(255, 255, 255, .18)
+    }
+
+    /* Image-only CV button */
+    .cv-btn {
+        display: inline-block;
+        border: none;
+        background: none;
+        padding: 0;
+        cursor: pointer;
+        transition: transform .18s ease, filter .2s ease;
+    }
+
+    .cv-btn img {
+        display: block;
+        width: 180px;
+        height: auto;
+        border-radius: 18px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, .35);
+    }
+
+    .cv-btn:hover img {
+        transform: scale(1.05);
+        filter: brightness(1.05);
+    }
+
+    .cv-btn:active img {
+        transform: scale(.98);
+    }
+
+    .hero-art {
+        position: relative;
+        border-radius: 24px;
+        overflow: hidden;
+        min-height: 280px;
+        background: url('assets/header_siliconValley_image.png') center/cover no-repeat;
+        box-shadow: var(--shadow);
+    }
+
+    .hero-art::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(600px 300px at 80% 0%, rgba(255, 255, 255, .06), transparent 60%), radial-gradient(400px 260px at 20% 100%, rgba(255, 255, 255, .04), transparent 60%);
+        mix-blend: screen;
+    }
+
+    .light .hero-art::after {
+        background: radial-gradient(600px 300px at 80% 0%, rgba(119, 179, 0, .16), transparent 60%), radial-gradient(400px 260px at 20% 100%, rgba(19, 239, 231, .16), transparent 60%);
+    }
+
+    /* General section/chips */
+    .section {
+        padding: 32px 0
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 18px
+    }
+
+    .title h2 {
+        margin: 0;
+        font: 700 28px/1 'Space Grotesk', Inter, sans-serif
+    }
+
+    .chip {
+        font: 600 12px/1 Inter;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .08);
+        border: 1px solid rgba(255, 255, 255, .12)
+    }
+
+    /* Cards grid */
+    .grid {
+        display: grid;
+        gap: 18px
+    }
+
+    @media (min-width: 720px) {
+        .grid.cols-3 {
+            grid-template-columns:repeat(3, 1fr)
+        }
+    }
+
+    @media (min-width: 920px) {
+        .grid.cols-2 {
+            grid-template-columns:repeat(2, 1fr)
+        }
+    }
+
+    @media (min-width: 1280px) {
+        .grid.cols-2 {
+            grid-template-columns:repeat(3, 1fr)
+        }
+    }
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        background: var(--card);
+        border: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 18px;
+        overflow: hidden;
+        position: relative;
+        transition: transform .25s ease, box-shadow .25s ease;
+        box-shadow: var(--shadow);
+        min-height: 100%;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, .45)
+    }
+
+    .card-body {
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex: 1
+    }
+
+    .card h3 {
+        margin: 0 0 6px;
+        font: 700 20px/1.2 Inter
+    }
+
+    .card p {
+        margin: 0;
+        color: var(--muted)
+    }
+
+    /* Media */
+    .media {
+        width: 100%;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        display: block
+    }
+
+    .card[data-fit="contain"] .media {
+        object-fit: contain;
+        object-position: center;
+        background: #000;
+    }
+
+    .media-strip {
+        display: grid;
+        grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+    .media-strip img, .media-strip video {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, .12);
+        background: #000;
+        object-fit: contain;
+    }
+
+    /* Tags */
+    .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 12px 0 0
+    }
+
+    .tag {
+        position: relative;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: .2px;
+        border: 1px solid rgba(255, 255, 255, .18);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 6px 14px rgba(0, 0, 0, .22);
+        backdrop-filter: blur(4px);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .tag:hover {
+        transform: translateY(-1px) scale(1.03);
+        box-shadow: 0 0 0 2px var(--tag-ring), 0 10px 18px rgba(0, 0, 0, .3);
+    }
+
+    .t-nlp {
+        background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+        color: #fff;
+        --tag-ring: rgba(162, 155, 254, .5);
+    }
+
+    .t-vlm {
+        background: linear-gradient(135deg, #00B894, #00D8A0);
+        color: #fff;
+        --tag-ring: rgba(0, 216, 160, .5);
+    }
+
+    .t-cv {
+        background: linear-gradient(135deg, #FDCB6E, #FFEAA7);
+        color: #2D3436;
+        --tag-ring: rgba(253, 203, 110, .5);
+    }
+
+    .t-img {
+        background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+        color: #fff;
+        --tag-ring: rgba(255, 142, 142, .5);
+    }
+
+    .t-aud {
+        background: linear-gradient(135deg, #E84393, #FD79A8);
+        color: #fff;
+        --tag-ring: rgba(253, 121, 168, .5);
+    }
+
+    .t-seg {
+        background: linear-gradient(135deg, #4ECDC4, #45B7AF);
+        color: #fff;
+        --tag-ring: rgba(69, 183, 175, .5);
+    }
+
+    .t-mobile {
+        background: linear-gradient(135deg, #74B9FF, #A8D5FF);
+        color: #fff;
+        --tag-ring: rgba(168, 213, 255, .5);
+    }
+
+    .t-tinytts {
+        background: linear-gradient(135deg, #0fd4c5, #7bd400);
+        color: #081016;
+        --tag-ring: rgba(19, 239, 231, .45);
+    }
+
+    .t-mix {
+        background: linear-gradient(135deg, #ff7aa2, #ffb86b);
+        color: #1a0d12;
+        --tag-ring: rgba(255, 154, 120, .45);
+    }
+
+    .t-embed {
+        background: linear-gradient(135deg, #6c5ce7, #00c2ff);
+        color: #fff;
+        --tag-ring: rgba(0, 194, 255, .45);
+    }
+
+    .t-speaker {
+        background: linear-gradient(135deg, #ffcf33, #ff8a00);
+        color: #1a0d12;
+        --tag-ring: rgba(255, 170, 0, .45);
+    }
+
+    .t-viz {
+        background: linear-gradient(135deg, #00d1b2, #1e90ff);
+        color: #081016;
+        --tag-ring: rgba(30, 144, 255, .45);
+    }
+
+    /* Project link buttons */
+    .project-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    /* text note if you still want little labels like “Internal research sandbox” */
+    .project-links .project-note {
+        font-size: 12px;
+        color: var(--muted);
+    }
+
+    /* badge-style links using shields.io */
+    .project-links .badge-link {
+        padding: 0;
+        border: none;
+        background: none;
+        box-shadow: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .project-links .badge-link img {
+        height: 26px; /* tweak to taste */
+        display: block;
+    }
+
+    /* optional hover scale for badges */
+    .project-links .badge-link:hover img {
+        transform: translateY(-1px);
+    }
+
+    /* ===== Experience — upgraded timeline ===== */
+    .timeline {
+        position: relative;
+        padding-left: 44px;
+        --progress: 0%;
+    }
+
+    .timeline::before {
+        content: "";
+        position: absolute;
+        left: 16px;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        border-radius: 4px;
+        background: linear-gradient(180deg, rgba(19, 239, 231, .2), rgba(119, 179, 0, .2));
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, .06) inset;
+    }
+
+    .timeline::after {
+        content: "";
+        position: absolute;
+        left: 16px;
+        top: 0;
+        width: 4px;
+        border-radius: 4px;
+        height: var(--progress);
+        background: linear-gradient(180deg, var(--brand1), var(--brand2));
+        box-shadow: 0 0 18px rgba(19, 239, 231, .55);
+    }
+
+    .xp {
+        position: relative;
+        margin: 0 0 18px;
+        padding: 0
+    }
+
+    .xp .dot {
+        position: absolute;
+        left: 8px;
+        top: 10px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--brand1), var(--brand2));
+        border: 1px solid rgba(255, 255, 255, .35);
+        box-shadow: 0 0 0 3px rgba(19, 239, 231, .18)
+    }
+
+    .xp-card {
+        margin-left: 44px;
+        background: var(--glass);
+        border: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 16px;
+        padding: 14px 16px;
+        box-shadow: var(--shadow);
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .xp-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, .45)
+    }
+
+    .xp h4 {
+        margin: 0 0 6px;
+        font: 700 18px/1.2 Inter;
+        display: flex;
+        align-items: center;
+        gap: 8px
+    }
+
+    .xp .where {
+        color: var(--muted);
+        font-weight: 600
+    }
+
+    .xp .when {
+        font-size: 13px;
+        color: var(--muted)
+    }
+
+    .xp-logo {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+        margin-left: 4px;
+        vertical-align: -3px;
+        border-radius: 3px
+    }
+
+    .xp-meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 6px 0 8px
+    }
+
+    .meta-chip {
+        font: 600 11px/1 Inter;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, .14);
+        background: rgba(255, 255, 255, .06)
+    }
+
+    /* Profile */
+    .profile {
+        display: grid;
+        grid-template-columns:100px 1fr;
+        gap: 16px;
+        align-items: center;
+        padding: 18px;
+        border-radius: 18px;
+        background: var(--glass);
+        border: 1px solid rgba(255, 255, 255, .12)
+    }
+
+    .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, .2)
+    }
+
+    /* Contacts */
+    .contacts {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap
+    }
+
+    .contact {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, .06);
+        border: 1px solid rgba(255, 255, 255, .12)
+    }
+
+    .contact img {
+        width: 22px;
+        height: 22px
+    }
+
+    footer {
+        border-top: 1px solid rgba(255, 255, 255, .07);
+        padding: 26px 0;
+        text-align: center;
+        color: var(--muted)
+    }
+
+    /* Light theme */
+    .light {
+        --bg: #f9fafb;
+        --bg-soft: #ffffff;
+        --txt: #12161d;
+        --muted: #4f637a;
+        --card: #fff;
+        --glass: rgba(255, 255, 255, .75);
+    }
+
+    .light body {
+        background: #f5f7fb;
+        color: var(--txt)
+    }
+
+    /* Mobile hero tweaks */
+    @media (max-width: 720px) {
+        .hero-wrap {
+            grid-template-columns:1fr;
+            gap: 16px;
+            padding: 48px 0 18px;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+        }
+
+        .hero-art {
+            display: none;
+        }
+    }
+
+    /* Zotero cards */
+    .paper-meta {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 6px
+    }
+
+    .paper-venue {
+        opacity: .95
+    }
+
+    .paper-skel {
+        height: 16px;
+        border-radius: 8px;
+        margin: 6px 0;
+        background: linear-gradient(90deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .12), rgba(255, 255, 255, .06));
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite linear;
+    }
+
+    @keyframes shimmer {
+        to {
+            background-position: -200% 0;
+        }
+    }
+
+    /* ===== FUNKO BUILDER (new) ===== */
+    .funko-builder {
+        margin-top: 12px;
+        padding: 16px;
+        background: var(--glass);
+        border: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 16px;
+        box-shadow: var(--shadow)
+    }
+
+    .funko-sentence {
+        font: 600 16px/1.5 Inter, system-ui, sans-serif;
+        margin: 0 0 12px
+    }
+
+    .funko-sentence .hl {
+        background: linear-gradient(90deg, var(--brand1), var(--brand2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent
+    }
+
+    .funko-controls {
+        display: grid;
+        gap: 10px;
+        margin: 8px 0 12px
+    }
+
+    @media (min-width: 720px) {
+        .funko-controls {
+            grid-template-columns:1fr 1fr 1fr auto
+        }
+    }
+
+    .ctl {
+        display: flex;
+        flex-direction: column;
+        gap: 6px
+    }
+
+    .ctl label span {
+        font: 600 12px/1 Inter;
+        color: var(--muted);
+        letter-spacing: .2px
+    }
+
+    /* pill radios */
+    .seg {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        -webkit-tap-highlight-color: transparent
+    }
+
+    .seg input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none
+    }
+
+    .seg label {
+        padding: 8px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+        user-select: none;
+        border: 1px solid rgba(255, 255, 255, .16);
+        background: rgba(255, 255, 255, .06);
+        font: 600 12px/1 Inter;
+        transition: transform .15s ease, box-shadow .2s ease, background .2s, color .2s
+    }
+
+    .seg label:hover {
+        transform: translateY(-1px)
+    }
+
+    .seg label:active {
+        transform: translateY(0) scale(.99)
+    }
+
+    .seg input:focus-visible + label {
+        box-shadow: 0 0 0 3px var(--ring)
+    }
+
+    .seg input:checked + label {
+        background: linear-gradient(135deg, var(--brand2), var(--brand1));
+        color: #081016;
+        box-shadow: 0 8px 18px rgba(19, 239, 231, .25)
+    }
+
+    .funko-image {
+        width: 100%;
+        max-width: 420px;
+        display: block;
+        margin: 8px auto 0;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, .12);
+        background: #000
+    }
+
+    .swap {
+        animation: imgswap .32s ease both
+    }
+
+    @keyframes imgswap {
+        from {
+            opacity: .1;
+            transform: scale(.98)
+        }
+        to {
+            opacity: 1;
+            transform: scale(1)
+        }
+    }
+
+    .btn-mini {
+        align-self: flex-end;
+        padding: 8px 12px;
+        border-radius: 12px;
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, .16);
+        background: rgba(255, 255, 255, .08);
+        font-weight: 600
+    }
+
+    .btn-mini:hover {
+        box-shadow: 0 6px 14px rgba(0, 0, 0, .22)
+    }
+
+    /* Let grid items shrink again in Safari */
+    .grid {
+        align-items: start;
+    }
+
+    .card {
+        min-height: 0; /* crucial for Safari */
+    }
+
+    .card-body {
+        min-height: 0;
+    }
+
+    /* === Fix mobile horizontal cropping === */
+    @media (max-width: 720px) {
+        body {
+            overflow-x: auto;
+        }
+    }
+
+    .funko-sentence {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .funko-sentence select {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .contacts {
+        width: 100%;
+    }
+
+    .contact {
+        flex: 1 1 auto;
+        max-width: 100%;
+    }
+
+    /* Zoom gallery for Sana Simplified */
+    .zoom-gallery {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 8px;
+    }
+
+    @media (min-width: 900px) {
+        .zoom-gallery {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .zoom-item {
+        background: rgba(0, 0, 0, .4);
+        border-radius: 14px;
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .zoom-item img {
+        width: 100%;
+        display: block;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, .16);
+        background: #000;
+    }
+
+    .zoom-item figcaption {
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--muted);
+    }
+
+    /* Tom & Jerry checkpoint selector */
+    .tj-checkpoints {
+        margin-top: 8px;
+        padding: 10px;
+        border-radius: 14px;
+        background: rgba(0, 0, 0, .35);
+        border: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .tj-steps {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+
+    .tj-step {
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+        border: 1px solid rgba(255, 255, 255, .18);
+        background: rgba(255, 255, 255, .06);
+        cursor: pointer;
+        transition: transform .15s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+    }
+
+    .tj-step:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, .35);
+    }
+
+    .tj-step.active {
+        background: linear-gradient(135deg, var(--brand2), var(--brand1));
+        color: #081016;
+        box-shadow: 0 6px 14px rgba(19, 239, 231, .25);
+    }
+
+    .tj-display {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, .16);
+        background: #000;
+    }
+
+    .tj-display img {
+        width: 100%;
+        display: block;
+    }
+
+    .tj-caption {
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--muted);
+    }
 </style>
+
 <!-- HERO -->
 <header class="hero">
     <div class="container hero-wrap">
         <div class="hero-card">
-            <h1>Working at the intersection of <span class="accent">AI research</span> and <span class="accent">engineering</span></h1>
+            <h1>Working at the intersection of <span class="accent">AI research</span> and <span class="accent">engineering</span>
+            </h1>
             <p>
                 I enjoy exploring ideas, building systems, and turning complex problems into something practical.
                 My focus is on thoughtful research and solid engineering.
@@ -298,127 +1032,156 @@
 </header>
 
 <main>
-    <!-- EXPERIENCE (moved first as requested) -->
+    <!-- EXPERIENCE -->
     <section id="experience" class="section">
         <div class="container">
-            <div class="title"><span class="chip">Timeline</span><h2>Experience</h2></div>
-            <div class="card"><div class="card-body"><div class="timeline">
+            <div class="title"><span class="chip">Timeline</span>
+                <h2>Experience</h2></div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="timeline">
 
-                <div class="xp">
-                    <div class="dot"></div>
-                    <div class="xp-card">
-                        <h4>Computer Vision Research Engineer <span class="where">@ Reality Defender</span>
-                            <img class="xp-logo" src="assets/experience/reality_defender_logo.png" alt="Reality Defender"/>
-                        </h4>
-                        <div class="xp-meta">
-                            <span class="meta-chip when">Jan 2024 – Present</span>
+                        <div class="xp">
+                            <div class="dot"></div>
+                            <div class="xp-card">
+                                <h4>Computer Vision Research Engineer <span class="where">@ Reality Defender</span>
+                                    <img class="xp-logo" src="assets/experience/reality_defender_logo.png"
+                                         alt="Reality Defender"/>
+                                </h4>
+                                <div class="xp-meta">
+                                    <span class="meta-chip when">Jan 2024 – Present</span>
+                                </div>
+                                <ul>
+                                    <li>Developing and optimizing deep learning computer vision solutions to detect
+                                        deepfakes and fraudulent media in the domains of image, video and video with
+                                        audio, in multi model capabilities
+                                    </li>
+                                </ul>
+                                <div class="stack tag-row">
+                                    <span class="tag t-cv">Deepfake Detection</span>
+                                </div>
+                            </div>
                         </div>
-                        <ul>
-                            <li>Developing and optimizing deep learning computer vision solutions to detect deepfakes and fraudulent media in the domains of image, video and video with audio, in multi model capabilities</li>
-                        </ul>
-                        <div class="stack tag-row">
-                            <span class="tag t-cv">Deepfake Detection</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="xp">
-                    <div class="dot"></div>
-                    <div class="xp-card">
-                        <h4>Computer Vision Research Engineer <span class="where">@ LuckyLab (Freelance)</span>
-                            <img class="xp-logo" src="assets/experience/luckylab_logo.jpeg" alt="LuckyLab"/>
-                        </h4>
-                        <div class="xp-meta">
-                            <span class="meta-chip when">Dec 2024 – Apr 2025</span>
+                        <div class="xp">
+                            <div class="dot"></div>
+                            <div class="xp-card">
+                                <h4>Computer Vision Research Engineer <span class="where">@ LuckyLab (Freelance)</span>
+                                    <img class="xp-logo" src="assets/experience/luckylab_logo.jpeg" alt="LuckyLab"/>
+                                </h4>
+                                <div class="xp-meta">
+                                    <span class="meta-chip when">Dec 2024 – Apr 2025</span>
+                                </div>
+                                <ul>
+                                    <li>Edge-optimized segmentation and detection for production, in a few shot
+                                        domain.
+                                    </li>
+                                    <li>Converted research models to production graphs (Jax/TensorRT) with quality
+                                        gates, using Pruning and Quantization.
+                                    </li>
+                                </ul>
+                                <div class="stack tag-row">
+                                    <span class="tag t-cv">Edge Deployment</span>
+                                    <span class="tag t-seg">Segmentation and Detection</span>
+                                    <span class="tag t-seg">Few-Shot</span>
+                                    <span class="tag t-mobile">Jax/TensorRT</span>
+                                </div>
+                            </div>
                         </div>
-                        <ul>
-                            <li>Edge‑optimized segmentation and detection for production, in a few shot domain.</li>
-                            <li>Converted research models to production graphs (Jax/TensorRT) with quality gates, using Pruning and Quantization.</li>
-                        </ul>
-                        <div class="stack tag-row">
-                            <span class="tag t-cv">Edge Deployment</span>
-                            <span class="tag t-seg">Segmentation and Detection</span>
-                            <span class="tag t-seg">Few‑Shot</span>
-                            <span class="tag t-mobile">Jax/TensorRT</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="xp">
-                    <div class="dot"></div>
-                    <div class="xp-card">
-                        <h4>Deep Learning Research Engineer <span class="where">@ NLPearl</span>
-                            <img class="xp-logo" src="assets/experience/nlpearl_logo.jpeg" alt="NLPearl"/>
-                        </h4>
-                        <div class="xp-meta">
-                            <span class="meta-chip when">Jun 2024 – Jan 2025 · Tel Aviv, Israel</span>
+                        <div class="xp">
+                            <div class="dot"></div>
+                            <div class="xp-card">
+                                <h4>Deep Learning Research Engineer <span class="where">@ NLPearl</span>
+                                    <img class="xp-logo" src="assets/experience/nlpearl_logo.jpeg" alt="NLPearl"/>
+                                </h4>
+                                <div class="xp-meta">
+                                    <span class="meta-chip when">Jun 2024 – Jan 2025 · Tel Aviv, Israel</span>
+                                </div>
+                                <ul>
+                                    <li>Compact language model for multi-task outputs; audio tokenizers and LLMs for
+                                        audio tasks.
+                                    </li>
+                                    <li>LoRA and multi-stage training to boost performance.</li>
+                                    <li>Real-time conversational pause detection and response generation with fine-tuned
+                                        LLMs.
+                                    </li>
+                                </ul>
+                                <div class="stack tag-row">
+                                    <span class="tag t-nlp">LLMs</span>
+                                    <span class="tag t-nlp">Real-time</span>
+                                    <span class="tag t-nlp">LoRA</span>
+                                    <span class="tag t-aud">Audio</span>
+                                </div>
+                            </div>
                         </div>
-                        <ul>
-                            <li>Compact language model for multi‑task outputs; audio tokenizers and LLMs for audio tasks.</li>
-                            <li>LoRA and multi‑stage training to boost performance.</li>
-                            <li>Real‑time conversational pause detection and response generation with fine‑tuned LLMs.</li>
-                        </ul>
-                        <div class="stack tag-row">
-                            <span class="tag t-nlp">LLMs</span>
-                            <span class="tag t-nlp">Real‑time</span>
-                            <span class="tag t-nlp">LoRA</span>
-                            <span class="tag t-aud">Audio</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="xp">
-                    <div class="dot"></div>
-                    <div class="xp-card">
-                        <h4>Computer Vision & Deep Learning Research Engineer <span class="where">@ Pashoot Robotics</span>
-                            <img class="xp-logo" src="assets/experience/pashoot_robotics_logo.jpeg" alt="Pashoot Robotics"/>
-                        </h4>
-                        <div class="xp-meta">
-                            <span class="meta-chip when">May 2023 – Jun 2024 · Rehovot, Israel</span>
+                        <div class="xp">
+                            <div class="dot"></div>
+                            <div class="xp-card">
+                                <h4>Computer Vision & Deep Learning Research Engineer <span class="where">@ Pashoot Robotics</span>
+                                    <img class="xp-logo" src="assets/experience/pashoot_robotics_logo.jpeg"
+                                         alt="Pashoot Robotics"/>
+                                </h4>
+                                <div class="xp-meta">
+                                    <span class="meta-chip when">May 2023 – Jun 2024 · Rehovot, Israel</span>
+                                </div>
+                                <ul>
+                                    <li>Zero/few-shot improvements with SAM, YOLO-World, Grounding DINO, CLIP and more
+                                        SOTA models.
+                                    </li>
+                                    <li>Multi-object tracking and 6-DoF pose estimation with synthetic data.</li>
+                                    <li>Blender + 3D reconstruction (NeRF, Gaussian Splatting, image-to-3D) for
+                                        simulation and DR.
+                                    </li>
+                                </ul>
+                                <div class="stack tag-row">
+                                    <span class="tag t-cv">Zero/Few-Shot</span>
+                                    <span class="tag t-seg">SAM/YOLO-World</span>
+                                    <span class="tag t-cv">6-DoF</span>
+                                    <span class="tag t-cv">Sim/Domain Rand.</span>
+                                    <span class="tag t-cv">Robotics</span>
+                                </div>
+                            </div>
                         </div>
-                        <ul>
-                            <li>Zero/few‑shot improvements with SAM, YOLO‑World, Grounding DINO, CLIP and more SOTA models.</li>
-                            <li>Multi‑object tracking and 6‑DoF pose estimation with synthetic data.</li>
-                            <li>Blender + 3D reconstruction (NeRF, Gaussian Splatting, image‑to‑3D) for simulation and DR.</li>
-                        </ul>
-                        <div class="stack tag-row">
-                            <span class="tag t-cv">Zero/Few‑Shot</span>
-                            <span class="tag t-seg">SAM/YOLO‑World</span>
-                            <span class="tag t-cv">6‑DoF</span>
-                            <span class="tag t-cv">Sim/Domain Rand.</span>
-                            <span class="tag t-cv">Robotics</span>
-                        </div>
-                    </div>
-                </div>
 
-            </div></div></div>
-        </div>
-    </section>
-
-    <!-- ABOUT / PROFILE -->
-    <section id="about" class="section">
-        <div class="container">
-            <div class="title"><span class="chip">About</span><h2>Profile</h2></div>
-            <div class="profile">
-                <img class="avatar" src="assets/linkdin_profile_image_ghibli.png" alt="Amit Israeli"/>
-                <div>
-                    <p>
-                        I work on <strong>AI research</strong> across <strong>computer vision</strong> and
-                        <strong>natural language</strong>, focusing on VLA , multi models , image/video generation and other
-                        cool domains (:.
-                    </p>
-                    <div class="contacts" style="margin-top:10px">
-                        <a class="contact" href="mailto:amit1541541@gmail.com"><img src="assets/contact_icons/email-icon.png" alt="Email"/>Email</a>
-                        <a class="contact" target="_blank" href="https://www.linkedin.com/in/amit-israeli-aa4a30242/"><img src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn"/>LinkedIn</a>
-                        <a class="contact" target="_blank" href="https://github.com/amit154154"><img src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
-                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli"><img src="assets/contact_icons/huggingface-icon.png" alt="Hugging Face"/>Hugging Face</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PROJECTS (collapsed by default for a cleaner, more professional first impression) -->
+    <!-- ABOUT / PROFILE -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="title"><span class="chip">About</span>
+                <h2>Profile</h2></div>
+            <div class="profile">
+                <img class="avatar" src="assets/linkdin_profile_image_ghibli.png" alt="Amit Israeli"/>
+                <div>
+                    <p>
+                        I work on <strong>AI research</strong> across <strong>computer vision</strong> and
+                        <strong>natural language</strong>, focusing on VLA , multi models , image/video generation and
+                        other
+                        cool domains (:.
+                    </p>
+                    <div class="contacts" style="margin-top:10px">
+                        <a class="contact" href="mailto:amit1541541@gmail.com"><img
+                                src="assets/contact_icons/email-icon.png" alt="Email"/>Email</a>
+                        <a class="contact" target="_blank"
+                           href="https://www.linkedin.com/in/amit-israeli-aa4a30242/"><img
+                                src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn"/>LinkedIn</a>
+                        <a class="contact" target="_blank" href="https://github.com/amit154154"><img
+                                src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
+                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli"><img
+                                src="assets/contact_icons/huggingface-icon.png" alt="Hugging Face"/>Hugging Face</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
     <section id="projects" class="section">
         <div class="container">
             <details class="projects-collapsible" id="projectsDetails">
@@ -430,87 +1193,156 @@
                 <div class="projects-body">
                     <div class="grid cols-2" id="projectGrid">
 
-                        <!-- Sana Simplified — One-Step Diffusion Playground -->
+                        <!-- Sana Simplified Image & Zoom Control -->
                         <article class="card" data-tags="img,cv" data-fit="contain">
-                            <video
-                                class="media"
-                                src="assets/projects_assets/Sana_Simplified/corgi_lastlayer_opt_text.mp4"
-                                autoplay
-                                muted
-                                loop
-                                playsinline
-                            ></video>
+                            <img
+                                    class="media"
+                                    src="assets/projects_assets/siglip_zoom_sana/method_overview_nanobanana.png"
+                                    alt="SigLIP–zoom method overview"
+                            />
                             <div class="card-body">
-                                <h3>Sana Simplified — Efficient Diffusion Playground</h3>
+                                <h3>Sana Simplified — Image &amp; Zoom Control</h3>
                                 <p>
-                                    An end-to-end playground around the <strong>Sana</strong> and
-                                    <strong>Sana Sprint</strong> text-to-image models, built to run
-                                    comfortably even on an M1 Max laptop. I stripped the pipelines down
-                                    to their core components and turned them into a clean lab for
-                                    experimenting with diffusion behaviour, conditioning, and
-                                    fine-tuning tricks.
+                                    Research playground around <strong>Sana 1.5</strong> and <strong>Sana Sprint</strong> for
+                                    image generation,controlnet implemntation,  and a <strong>SigLIP-driven zoom controller</strong>. GLB objects are
+                                    rendered offline at multiple zoom levels, and object + zoom embeddings are appended as
+                                    tokens to the text encoder so the model can smoothly change the camera distance while
+                                    keeping identity and style consistent.
                                 </p>
-                                <a class="contact" target="_blank" href="https://github.com/amit154154/Sana-Simplified">
-                                        <img src="assets/contact_icons/github-icon.png" alt="GitHub"/>Repo
-                                </a>
-                                <div class="tag-row">
-                                    <span class="tag t-img">Diffusion</span>
-                                    <span class="tag t-cv">Sana / Sana Sprint</span>
-                                    <span class="tag t-cv">ControlNet</span>
-                                    <span class="tag t-cv">Textual Inversion</span>
-                                </div>
                                 <div class="project-links">
-                                    <!-- If you later open-source it, swap this span for an <a> with href -->
-                                    <span class="contact">Internal research sandbox</span>
                                     <a
-                                        class="contact"
-                                        target="_blank"
-                                        href="https://wandb.ai/amit154154/sana15-token-dreambooth/reports/Fine-Tuning-text-delta-for-Corgi-Token-Personalization--VmlldzoxNTEwMDc1Nw?accessToken=d2o3h5elyk4nf2ui8jbp217iozaepai06ciy6nuvbsa0ke629gmbo11npgrrrubb"
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://github.com/amit154154/Sana-Simplified"
                                     >
-                                        <img src="assets/contact_icons/wandb-icon.png" alt="W&B"/>W&B report Corgi Token Personalization
+                                        <img
+                                                src="https://img.shields.io/badge/GitHub-Sana_Simplified-181717?style=for-the-badge&logo=github&logoColor=ffffff"
+                                                alt="GitHub – Sana Simplified"
+                                        />
                                     </a>
                                 </div>
                                 <details class="more" style="margin-top:10px">
                                     <summary>Read more</summary>
                                     <div class="more-body">
-                                        <h4>Summary</h4>
+                                        <h4>Method Overview</h4>
                                         <p>
-                                            Sana Simplified started as a frictionless way to work with
-                                            <strong>Sana Sprint 0.6B / 1.6B</strong>: minimal
-                                            boilerplate, clear separation between the transformer, VAE
-                                            and conditioning blocks, and a focus on stable
-                                            <strong>one-step generation</strong> from random noise.
-                                            Over time it became my main sandbox for trying small
-                                            research ideas on top of <strong>Sana 1.5</strong> as well.
+                                            A zero-zoom reference image is encoded with <strong>SigLIP</strong> to form an
+                                            object token, while a scalar zoom value <code>z ∈ [0, 1]</code> is mapped through
+                                            a small MLP to a zoom token. Both tokens are appended to the cached text encoding,
+                                            and then finetuning the <strong>Sana 1.5 transformer</strong> with LoRA.
                                         </p>
-
-                                        <h4>Highlights</h4>
-                                        <ul>
-                                            <li>
-                                                <strong>One-step diffusion with Sana Sprint:</strong>
-                                                experiments with direct noise-to-image training and
-                                                loss design in a compact Lightning + diffusers setup.
-                                            </li>
-                                            <li>
-                                                <strong>Sana 1.5 fine-tuning:</strong>
-                                                simplified DreamBooth-style and control-oriented
-                                                adapters, including lightweight textual-inversion /
-                                                LoRA-style tweaks for new concepts and styles.
-                                            </li>
-                                            <li>
-                                                <strong>Zoom & SigLIP control:</strong>
-                                                a small 3D-asset dataset at multiple zoom levels to
-                                                learn zoom projections and SigLIP-based conditioning
-                                                for consistent re-renders of the same object.
-                                            </li>
-                                        </ul>
-
-                                        <div class="media-strip">
-                                            <img
-                                                src="assets/projects_assets/Sana_Simplified/sana_sprint_logo.png"
-                                                alt="Sana Sprint logo"
-                                            />
+                                        <h4>Reference &amp; Zoom Sweep</h4>
+                                        <div class="zoom-gallery">
+                                            <figure class="zoom-item">
+                                                <a href="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.jpeg" target="_blank" rel="noopener">
+                                                    <img
+                                                        src="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.jpeg"
+                                                        alt="Reference zero-zoom view"
+                                                    />
+                                                </a>
+                                                <figcaption>Reference zero-zoom render (zoom_0)</figcaption>
+                                            </figure>
+                                            <figure class="zoom-item">
+                                                <a href="assets/projects_assets/siglip_zoom_sana/video_example_zoom.gif" target="_blank" rel="noopener">
+                                                    <img
+                                                        src="assets/projects_assets/siglip_zoom_sana/video_example_zoom.gif"
+                                                        alt="Zoom controller sweep example"
+                                                    />
+                                                </a>
+                                                <figcaption>Model-generated zoom sweep as the zoom token moves from 0 → 1</figcaption>
+                                            </figure>
                                         </div>
+                                    </div>
+                                </details>
+                            </div>
+                        </article>
+
+                        <!-- Sana-Video — Tom & Jerry LoRA -->
+                        <article class="card" data-tags="img,cv" data-fit="contain">
+                            <img
+                                    class="media"
+                                    src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_lora_step010000_seed69420.gif"
+                                    alt="SANA-Video Tom & Jerry LoRA sample"
+                            />
+                            <div class="card-body">
+                                <h3>Tom &amp; Jerry generation - Sana Video</h3>
+                                <p>
+                                    Using SANA-Video 2B to efficiently generate Tom & Jerry–style animations at 224×224, experimenting with off-native resolution training and inference. The goal is to optimize SANA-Video for high-quality 224×224 clips that run comfortably on consumer-grade GPUs.
+                                </p>
+                                <div class="project-links">
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://github.com/amit154154/Sana-Simplified"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/GitHub-Sana_Simplified-181717?style=for-the-badge&logo=github&logoColor=ffffff"
+                                                alt="GitHub – Sana Simplified"
+                                        />
+                                    </a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://huggingface.co/AmitIsraeli/sanavideo-tomjerry-lora-r16-v1"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/HuggingFace-sanavideo--tomjerry--lora--r16--v1-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=000000"
+                                                alt="Hugging Face – sanavideo-tomjerry-lora-r16-v1"
+                                        />
+                                    </a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://wandb.ai/amit154154/sana-video-tomjerry"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/Weights_&_Biases-Tom_%26_Jerry%20Runs-2c8ebb?style=for-the-badge&logo=weightsandbiases&logoColor=white"
+                                                alt="Weights &amp; Biases – Tom &amp; Jerry runs"
+                                        />
+                                    </a>
+                                </div>
+                                <details class="more" style="margin-top:10px">
+                                    <summary>Read more</summary>
+                                    <div class="more-body">
+                                        <h4>V1 Class Training Setup</h4>
+                                        <ul>
+                                            <li>Base model: <code>SANA-Video_2B_480p_diffusers</code></li>
+                                            <li>Resolution: <strong>224×224</strong>, clip length: <strong>81 frames</strong></li>
+                                            <li>LoRA rank 16 on all linear layers in the diffusion transformer</li>
+                                            <li>Single Tom &amp; Jerry style class prompt, AdamW on LoRA parameters only</li>
+                                        </ul>
+                                        <h4>Checkpoint progression</h4>
+                                        <p>Same seed and prompt, scroll through checkpoints with the selector wheel:</p>
+                                        <div class="tj-checkpoints" data-tj-root>
+                                            <div class="tj-steps">
+                                                <button class="tj-step active" data-step="base">Base</button>
+                                                <button class="tj-step" data-step="000100">100</button>
+                                                <button class="tj-step" data-step="001000">1k</button>
+                                                <button class="tj-step" data-step="002000">2k</button>
+                                                <button class="tj-step" data-step="005000">5k</button>
+                                                <button class="tj-step" data-step="007500">7.5k</button>
+                                                <button class="tj-step" data-step="010000">10k</button>
+                                            </div>
+                                            <div class="tj-display">
+                                                <img
+                                                    data-tj-image
+                                                    src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_base_seed69420.gif"
+                                                    alt="Tom &amp; Jerry checkpoint preview"
+                                                />
+                                            </div>
+                                            <p class="tj-caption" data-tj-caption>
+                                                Base model: off-style 224×224 sample before LoRA fine-tuning.
+                                            </p>
+                                        </div>
+                                        <h4>Text-conditioned probes</h4>
+                                        <p>
+                                            After training, the same LoRA is tested with multiple prompts (night scenes,
+                                            staircase chases, outdoor pranks, etc.) to see how much text controllability remains
+                                        </p>
                                     </div>
                                 </details>
                             </div>
@@ -518,12 +1350,15 @@
 
                         <!-- Kokoro — Tiny TTS, Big Voices -->
                         <article class="card" data-tags="aud,nlp" data-fit="contain">
-                            <img class="media" src="assets/projects_assets/Kokoro%20research/coeff_viz.gif" alt="Kokoro coefficient trajectory (GIF)"/>
+                            <img class="media" src="assets/projects_assets/Kokoro%20research/coeff_viz.gif"
+                                 alt="Kokoro coefficient trajectory (GIF)"/>
                             <div class="card-body">
                                 <h3>Kokoro — Tiny TTS, Big Voices</h3>
                                 <p>
-                                    Small‑footprint TTS with <strong>Kokoro‑82M</strong>: fast <em>mixture‑of‑voices</em> coefficients,
-                                    full‑embedding optimization, and streamlined visual tooling (trajectory visualizer + export).
+                                    Small-footprint TTS with <strong>Kokoro-82M</strong>: fast
+                                    <em>mixture-of-voices</em> coefficients,
+                                    full-embedding optimization, and streamlined visual tooling (trajectory visualizer +
+                                    export).
                                 </p>
                                 <div class="tag-row">
                                     <span class="tag t-tinytts">TTS</span>
@@ -531,11 +1366,28 @@
                                     <span class="tag t-viz">Visualizer</span>
                                 </div>
                                 <div class="project-links">
-                                    <a class="contact" target="_blank" href="https://github.com/amit154154/kokoro_jarvis">
-                                        <img src="assets/contact_icons/github-icon.png" alt="GitHub"/>Repo
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://github.com/amit154154/kokoro_jarvis"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff"
+                                                alt="GitHub Repo"
+                                        />
                                     </a>
-                                    <a class="contact" target="_blank" href="https://wandb.ai/amit154154/kokoro_opt" title="Requires access if private">
-                                        <img src="assets/contact_icons/wandb-icon.png" alt="W&B"/>W&B (access)
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://wandb.ai/amit154154/kokoro_opt"
+                                            title="Requires access if private"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/W%26B-Project-FFBE0B?style=for-the-badge&logo=weightsandbiases&logoColor=000000"
+                                                alt="W&B Project"
+                                        />
                                     </a>
                                 </div>
                                 <details class="more" style="margin-top:10px">
@@ -543,23 +1395,29 @@
                                     <div class="more-body">
                                         <h4>Highlights</h4>
                                         <ul>
-                                            <li>Mixture‑of‑voices coefficient optimizer with temperature‑annealed softmax</li>
-                                            <li>optemizing voice embedding and LoRA in a few shot , other scenerios.</li>
-                                            <li>GUI visualizer: circular mixer + per‑voice bars + MP4 export</li>
+                                            <li>Mixture-of-voices coefficient optimizer with temperature-annealed
+                                                softmax
+                                            </li>
+                                            <li>optemizing voice embedding and LoRA in a few shot , other scenerios.
+                                            </li>
+                                            <li>GUI visualizer: circular mixer + per-voice bars + MP4 export</li>
                                         </ul>
                                     </div>
                                 </details>
                             </div>
                         </article>
 
-                        <!-- Token‑Budget‑Aware LLM Reasoning (VLM) -->
+                        <!-- Token-Budget-Aware LLM Reasoning (VLM) -->
                         <article class="card" data-tags="nlp,vlm" data-fit="contain">
-                            <img class="media" src="assets/projects_assets/token_budget_cot/token_budget_example.png" alt="Token Budget example"/>
+                            <img class="media" src="assets/projects_assets/token_budget_cot/token_budget_example.png"
+                                 alt="Token Budget example"/>
                             <div class="card-body">
-                                <h3>Token‑Budget‑Aware Reasoning for VLMs</h3>
+                                <h3>Token-Budget-Aware Reasoning for VLMs</h3>
                                 <p>
-                                    Built on <em>Token‑Budget‑Aware LLM Reasoning</em>, extended to <strong>multimodal</strong> setups by
-                                    combining a frozen <strong>SigLIP image encoder</strong> with a <strong>LoRA‑tuned LLM</strong> to predict
+                                    Built on <em>Token-Budget-Aware LLM Reasoning</em>, extended to
+                                    <strong>multimodal</strong> setups by
+                                    combining a frozen <strong>SigLIP image encoder</strong> with a <strong>LoRA-tuned
+                                    LLM</strong> to predict
                                     reasoning budget prior to decoding.
                                 </p>
                                 <div class="tag-row">
@@ -568,25 +1426,44 @@
                                     <span class="tag t-vlm">Paper Implamentation</span>
                                 </div>
                                 <div class="project-links">
-                                    <a class="contact" target="_blank" href="https://github.com/amit154154/Token_Budget_cot_VLM"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://github.com/amit154154/Token_Budget_cot_VLM"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff"
+                                                alt="GitHub Repo"
+                                        />
+                                    </a>
                                 </div>
                                 <details class="more">
                                     <summary>Read more</summary>
                                     <div class="more-body">
                                         <h4>Summary</h4>
                                         <p>
-                                            The original paper asks whether we can control chain‑of‑thought with an adaptive
-                                            <strong>token budget</strong>. This variant predicts the budget for multimodal inputs and
+                                            The original paper asks whether we can control chain-of-thought with an
+                                            adaptive
+                                            <strong>token budget</strong>. This variant predicts the budget for
+                                            multimodal inputs and
                                             constrains decoding accordingly.
                                         </p>
                                         <h4>Deep dive</h4>
                                         <ul>
-                                            <li><strong>Architecture:</strong> Frozen SigLIP + budget head fused with LLM states.</li>
-                                            <li><strong>Training:</strong> LoRA fine‑tuning with oracle CoT lengths; KL regularization.</li>
-                                            <li><strong>Evaluation:</strong> Accuracy vs. average tokens; ablations on freezing/head depth.</li>
+                                            <li><strong>Architecture:</strong> Frozen SigLIP + budget head fused with
+                                                LLM states.
+                                            </li>
+                                            <li><strong>Training:</strong> LoRA fine-tuning with oracle CoT lengths; KL
+                                                regularization.
+                                            </li>
+                                            <li><strong>Evaluation:</strong> Accuracy vs. average tokens; ablations on
+                                                freezing/head depth.
+                                            </li>
                                         </ul>
                                         <div class="media-strip">
-                                            <img src="assets/projects_assets/token_budget_cot/token_budget_predictor.png" alt="Token budget predictor diagram"/>
+                                            <img src="assets/projects_assets/token_budget_cot/token_budget_predictor.png"
+                                                 alt="Token budget predictor diagram"/>
                                         </div>
                                     </div>
                                 </details>
@@ -595,12 +1472,15 @@
 
                         <!-- PopYou2 — VAR Text -->
                         <article class="card" data-tags="img,cv" data-fit="contain">
-                            <img class="media" src="assets/projects_assets/PopYou2/VAR_explained.png" alt="VAR Explained"/>
+                            <img class="media" src="assets/projects_assets/PopYou2/VAR_explained.png"
+                                 alt="VAR Explained"/>
                             <div class="card-body">
                                 <h3>PopYou2 — VAR Text</h3>
                                 <p>
-                                    Adapted <em>Visual AutoRegressive (VAR)</em> for <strong>Funko Pop! generation</strong> with a
-                                    custom “doll” embedding and a SigLIP→text adapter, enabling I→I and T→I paths, also Implemented a text to image training for VAR.
+                                    Adapted <em>Visual AutoRegressive (VAR)</em> for <strong>Funko Pop!
+                                    generation</strong> with a
+                                    custom “doll” embedding and a SigLIP→text adapter, enabling I→I and T→I paths, also
+                                    Implemented a text to image training for VAR.
                                 </p>
                                 <div class="tag-row">
                                     <span class="tag t-img">VAR</span>
@@ -608,15 +1488,36 @@
                                     <span class="tag t-img">autoregressive image generation</span>
                                 </div>
                                 <div class="project-links">
-                                    <a class="contact" target="_blank" href="https://github.com/amit154154/VAR_clip"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
-                                    <a class="contact" target="_blank" href="https://huggingface.co/spaces/AmitIsraeli/PopYou"><img src="assets/contact_icons/huggingface-icon.png"/>HF Space</a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://github.com/amit154154/VAR_clip"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff"
+                                                alt="GitHub Repo"
+                                        />
+                                    </a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://huggingface.co/spaces/AmitIsraeli/PopYou"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/🤗%20Hugging%20Face-Space-FFCC4D?style=for-the-badge&logo=huggingface&logoColor=000000"
+                                                alt="Hugging Face Space"
+                                        />
+                                    </a>
                                 </div>
                                 <details class="more">
                                     <summary>Read more</summary>
                                     <div class="more-body">
                                         <h4>Summary</h4>
                                         <p>
-                                            Text‑to‑image with VAR using a custom “doll” embedding and a SigLIP→CLIP text space adapter.
+                                            Text-to-image with VAR using a custom “doll” embedding and a SigLIP→CLIP
+                                            text space adapter.
                                         </p>
                                         <div class="funko-builder" id="py2_builder">
                                             <div class="funko-sentence">
@@ -639,7 +1540,9 @@
                                                 </select>.
                                             </div>
                                             <div style="text-align:center">
-                                                <img id="py2_image" class="funko-image" src="assets/projects_assets/PopYou2/generated_images/none_none_none.png" alt="Funko preview"/>
+                                                <img id="py2_image" class="funko-image"
+                                                     src="assets/projects_assets/PopYou2/generated_images/none_none_none.png"
+                                                     alt="Funko preview"/>
                                             </div>
                                         </div>
                                     </div>
@@ -647,34 +1550,52 @@
                             </div>
                         </article>
 
-                        <!-- Few‑Shot SAM + LoRA -->
+                        <!-- Few-Shot SAM + LoRA -->
                         <article class="card" data-tags="seg,cv" data-fit="contain">
-                            <img class="media" src="assets/projects_assets/few_shot_sam_lora/sam_lora_figure.png" alt="SAM LoRA figure"/>
+                            <img class="media" src="assets/projects_assets/few_shot_sam_lora/sam_lora_figure.png"
+                                 alt="SAM LoRA figure"/>
                             <div class="card-body">
-                                <h3>Few‑Shot Segmentation with SAM + LoRA</h3>
+                                <h3>Few-Shot Segmentation with SAM + LoRA</h3>
                                 <p>
-                                    Adapted SAM and efficient variants(like edgeSAM,TinySAM) with LoRA for class‑aware few‑shot segmentation; improvements over PerSAM.
+                                    Adapted SAM and efficient variants(like edgeSAM,TinySAM) with LoRA for class-aware
+                                    few-shot segmentation; improvements over PerSAM.
                                 </p>
                                 <div class="tag-row">
-                                    <span class="tag t-seg">Few‑Shot</span>
+                                    <span class="tag t-seg">Few-Shot</span>
                                     <span class="tag t-cv">LoRA</span>
                                     <span class="tag t-seg">Pruning</span>
                                     <span class="tag t-seg">Quantization</span>
                                     <span class="tag t-cv">Edge Device</span>
                                 </div>
                                 <div class="project-links">
-                                    <a class="contact" target="_blank" href="https://github.com/amit154154/SAM_LORA"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://github.com/amit154154/SAM_LORA"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff"
+                                                alt="GitHub Repo"
+                                        />
+                                    </a>
                                 </div>
                                 <details class="more">
                                     <summary>Read more</summary>
                                     <div class="more-body">
                                         <h4>Deep dive</h4>
-                                        <p>LoRA‑adapted SAM variants with compression for edge deployment, with experimnation in extrem edge case few shots scenario, using few shots methods</p>
+                                        <p>LoRA-adapted SAM variants with compression for edge deployment, with
+                                            experimnation in extrem edge case few shots scenario, using few shots
+                                            methods</p>
                                         <div class="media-strip">
-                                            <img src="assets/projects_assets/few_shot_sam_lora/coco.png" alt="COCO few-shot examples"/>
-                                            <img src="assets/projects_assets/few_shot_sam_lora/cityscapes.png" alt="Cityscapes examples"/>
-                                            <img src="assets/projects_assets/few_shot_sam_lora/soccer.png" alt="Soccer examples"/>
-                                            <img src="assets/projects_assets/few_shot_sam_lora/segment+anything.avif" alt="Segment Anything variants"/>
+                                            <img src="assets/projects_assets/few_shot_sam_lora/coco.png"
+                                                 alt="COCO few-shot examples"/>
+                                            <img src="assets/projects_assets/few_shot_sam_lora/cityscapes.png"
+                                                 alt="Cityscapes examples"/>
+                                            <img src="assets/projects_assets/few_shot_sam_lora/soccer.png"
+                                                 alt="Soccer examples"/>
+                                            <img src="assets/projects_assets/few_shot_sam_lora/segment+anything.avif"
+                                                 alt="Segment Anything variants"/>
                                         </div>
                                     </div>
                                 </details>
@@ -683,10 +1604,12 @@
 
                         <!-- CelebrityLook -->
                         <article class="card" data-tags="img,cv,mobile" data-fit="contain">
-                            <video class="media" src="assets/projects_assets/CelebryLook/celebrityLook_demo.mp4" autoplay muted loop playsinline></video>
+                            <video class="media" src="assets/projects_assets/CelebryLook/celebrityLook_demo.mp4"
+                                   autoplay muted loop playsinline></video>
                             <div class="card-body">
                                 <h3>CelebrityLook — Mobile Face Transform</h3>
-                                <p>On‑device face stylization with a distilled StyleGAN2 and CLIP‑to‑StyleGAN latent alignment; ~30fps on modern phones.</p>
+                                <p>On-device face stylization with a distilled StyleGAN2 and CLIP-to-StyleGAN latent
+                                    alignment; ~30fps on modern phones.</p>
                                 <div class="tag-row">
                                     <span class="tag t-mobile">Edge device</span>
                                     <span class="tag t-img">GAN</span>
@@ -696,13 +1619,24 @@
                                     <span class="tag t-mobile">T2I</span>
                                 </div>
                                 <div class="project-links">
-                                    <a class="contact" target="_blank" href="https://github.com/amit154154/CelebrityLook"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://github.com/amit154154/CelebrityLook"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff"
+                                                alt="GitHub Repo"
+                                        />
+                                    </a>
                                 </div>
                                 <details class="more">
                                     <summary>Read more</summary>
                                     <div class="more-body">
                                         <h4>Summary</h4>
-                                        <p>Edge app that performs GAN inversion and text‑conditioned editing directly on device, using latent aligment of clip and style gan W+ space.</p>
+                                        <p>Edge app that performs GAN inversion and text-conditioned editing directly on
+                                            device, using latent aligment of clip and style gan W+ space.</p>
                                     </div>
                                 </details>
                             </div>
@@ -710,10 +1644,12 @@
 
                         <!-- PopYou — FastGAN -->
                         <article class="card" data-tags="img,cv" data-fit="contain">
-                            <img class="media" src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.png" alt="FastGAN sample"/>
+                            <img class="media" src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.png"
+                                 alt="FastGAN sample"/>
                             <div class="card-body">
                                 <h3>PopYou — FastGAN + CLIP</h3>
-                                <p>Multi‑stage pipeline with FastGAN and CLIP inversion for promptable Funko‑style synthesis.</p>
+                                <p>Multi-stage pipeline with FastGAN and CLIP inversion for promptable Funko-style
+                                    synthesis.</p>
                                 <div class="tag-row">
                                     <span class="tag t-img">GAN</span>
                                     <span class="tag t-img">CLIP Inversion</span>
@@ -722,13 +1658,23 @@
                                     <span class="tag t-img">T2I</span>
                                 </div>
                                 <div class="project-links">
-                                    <a class="contact" target="_blank" href="https://github.com/amit154154/PopYou"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://github.com/amit154154/PopYou"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff"
+                                                alt="GitHub Repo"
+                                        />
+                                    </a>
                                 </div>
                                 <details class="more">
                                     <summary>Read more</summary>
                                     <div class="more-body">
                                         <h4>Summary</h4>
-                                        <p>GAN‑based Funko synthesis with CLIP‑guided text/image editing paths.</p>
+                                        <p>GAN-based Funko synthesis with CLIP-guided text/image editing paths.</p>
                                     </div>
                                 </details>
                             </div>
@@ -736,22 +1682,35 @@
 
                         <!-- MusicGen LoRA -->
                         <article class="card" data-tags="aud" data-fit="contain">
-                            <img class="media" src="assets/projects_assets/musicgen_finetune/musigen_look.png" alt="Audio waveform placeholder" onerror="this.style.display='none'"/>
+                            <img class="media" src="assets/projects_assets/musicgen_finetune/musigen_look.png"
+                                 alt="Audio waveform placeholder" onerror="this.style.display='none'"/>
                             <div class="card-body">
                                 <h3>MusicGen — Genre LoRA</h3>
-                                <p>LoRA‑adapts <strong>MusicGen</strong> for genre‑specific generation while keeping prompt controllability.</p>
+                                <p>LoRA-adapts <strong>MusicGen</strong> for genre-specific generation while keeping
+                                    prompt controllability.</p>
                                 <div class="tag-row">
                                     <span class="tag t-aud">LoRA</span>
                                     <span class="tag t-aud">music generation</span>
                                 </div>
                                 <div class="project-links">
-                                    <a class="contact" target="_blank" href="https://github.com/amit154154/musicgen_finetune"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://github.com/amit154154/musicgen_finetune"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff"
+                                                alt="GitHub Repo"
+                                        />
+                                    </a>
                                 </div>
                                 <details class="more">
                                     <summary>Read more</summary>
                                     <div class="more-body">
                                         <h4>Summary</h4>
-                                        <p>Low‑rank adapters bias generation toward a target style and evaluate alignment distributionally.</p>
+                                        <p>Low-rank adapters bias generation toward a target style and evaluate
+                                            alignment distributionally.</p>
                                     </div>
                                 </details>
                             </div>
@@ -759,23 +1718,53 @@
 
                         <!-- KoalaReadingAI Podcast -->
                         <article class="card" data-tags="aud,nlp" data-fit="contain">
-                            <video class="media" src="assets/projects_assets/koala_reading_ai/compressed_koala_reading_ai_gif.mp4" autoplay muted loop playsinline></video>
+                            <video class="media"
+                                   src="assets/projects_assets/koala_reading_ai/compressed_koala_reading_ai_gif.mp4"
+                                   autoplay muted loop playsinline></video>
                             <div class="card-body">
                                 <h3>KoalaReadingAI — AI Papers as a Podcast</h3>
-                                <p>Pipeline that turns AI research papers into short audio episodes and publishes to Spotify and YouTube.</p>
+                                <p>Pipeline that turns AI research papers into short audio episodes and publishes to
+                                    Spotify and YouTube.</p>
                                 <div class="tag-row">
                                     <span class="tag t-aud">TTS</span>
                                 </div>
-                                <div class="project-links">
-                                    <a class="contact" target="_blank" href="https://github.com/amit154154/KoalaReadingPapers"><img src="assets/contact_icons/github-icon.png"/>Repo</a>
+                                <div class="project-links" style="margin-top:10px">
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/Spotify-Listen-1DB954?style=for-the-badge&logo=spotify&logoColor=ffffff"
+                                                alt="Listen on Spotify"
+                                        />
+                                    </a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/YouTube-Channel-FF0000?style=for-the-badge&logo=youtube&logoColor=ffffff"
+                                                alt="Watch on YouTube"
+                                        />
+                                    </a>
                                 </div>
                                 <details class="more">
                                     <summary>Read more</summary>
                                     <div class="more-body">
                                         <h4>Listen</h4>
                                         <div class="contacts" style="margin-top:10px">
-                                            <a class="contact" target="_blank" href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1"><img src="assets/contact_icons/Spotify-icon.png" alt="Spotify"/>Spotify</a>
-                                            <a class="contact" target="_blank" href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA"><img src="assets/contact_icons/youtube-icon.png" alt="YouTube"/>YouTube</a>
+                                            <a class="contact" target="_blank"
+                                               href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1"><img
+                                                    src="assets/contact_icons/Spotify-icon.png"
+                                                    alt="Spotify"/>Spotify</a>
+                                            <a class="contact" target="_blank"
+                                               href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA"><img
+                                                    src="assets/contact_icons/youtube-icon.png"
+                                                    alt="YouTube"/>YouTube</a>
                                         </div>
                                     </div>
                                 </details>
@@ -790,27 +1779,35 @@
 
     <!-- Zotero Reading -->
     <section id="reading" class="section">
-      <div class="container">
-        <div class="title"><span class="chip">Reading</span><h2>What I’ve been reading lately</h2></div>
-        <div id="zoteroGrid" class="grid cols-2"></div>
-      </div>
-    </section>
-    <!-- CONTACT -->
-    <section id="contact" class="section">
         <div class="container">
-            <div class="title"><span class="chip">Say hi</span><h2>Contact</h2></div>
-            <div class="card"><div class="card-body">
-                <div class="contacts">
-                    <a class="contact" href="mailto:amit1541541@gmail.com"><img src="assets/contact_icons/email-icon.png" alt="Email"/>amit1541541@gmail.com</a>
-                    <a class="contact" target="_blank" href="https://www.linkedin.com/in/amit-israeli-aa4a30242/"><img src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn"/>LinkedIn</a>
-                    <a class="contact" target="_blank" href="https://github.com/amit154154"><img src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
-                    <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli"><img src="assets/contact_icons/huggingface-icon.png" alt="Hugging Face"/>Hugging Face</a>
-                </div>
-            </div></div>
+            <div class="title"><span class="chip">Reading</span>
+                <h2>What I’ve been reading lately</h2></div>
+            <div id="zoteroGrid" class="grid cols-2"></div>
         </div>
     </section>
 
-
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="title"><span class="chip">Say hi</span>
+                <h2>Contact</h2></div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="contacts">
+                        <a class="contact" href="mailto:amit1541541@gmail.com"><img
+                                src="assets/contact_icons/email-icon.png" alt="Email"/>amit1541541@gmail.com</a>
+                        <a class="contact" target="_blank"
+                           href="https://www.linkedin.com/in/amit-israeli-aa4a30242/"><img
+                                src="assets/contact_icons/linkedin-icon.png" alt="LinkedIn"/>LinkedIn</a>
+                        <a class="contact" target="_blank" href="https://github.com/amit154154"><img
+                                src="assets/contact_icons/github-icon.png" alt="GitHub"/>GitHub</a>
+                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli"><img
+                                src="assets/contact_icons/huggingface-icon.png" alt="Hugging Face"/>Hugging Face</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <footer>© 2025 Amit Israeli. All rights aren't reserved.</footer>
@@ -820,8 +1817,13 @@
     const root = document.documentElement;
     const themeBtn = document.getElementById('themeToggle');
     const setTheme = (mode) => {
-        if (mode === 'light') { root.classList.add('light'); localStorage.setItem('theme','light'); }
-        else { root.classList.remove('light'); localStorage.setItem('theme','dark'); }
+        if (mode === 'light') {
+            root.classList.add('light');
+            localStorage.setItem('theme', 'light');
+        } else {
+            root.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+        }
     }
     setTheme(localStorage.getItem('theme') || 'dark');
     themeBtn.addEventListener('click', () => {
@@ -831,7 +1833,9 @@
 
     // CV click analytics
     const cvBtn = document.getElementById('cvBtn');
-    cvBtn?.addEventListener('click', () => { gtag('event','cv_download_click',{ event_category:'CV', value:1 }); });
+    cvBtn?.addEventListener('click', () => {
+        gtag('event', 'cv_download_click', {event_category: 'CV', value: 1});
+    });
 
     // Smooth anchors + open Projects on click
     document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -842,9 +1846,9 @@
                 const el = document.querySelector(id);
                 if (!el) return;
                 if (id === '#projects') {
-                    document.querySelector('#projects details.projects-collapsible')?.setAttribute('open','');
+                    document.querySelector('#projects details.projects-collapsible')?.setAttribute('open', '');
                 }
-                el.scrollIntoView({ behavior:'smooth' });
+                el.scrollIntoView({behavior: 'smooth'});
             }
         });
     });
@@ -852,192 +1856,267 @@
     // GSAP reveal
     gsap.registerPlugin(ScrollTrigger);
     gsap.utils.toArray('.card, .profile, .hero-card').forEach(el => {
-        gsap.fromTo(el, { y:24, opacity:0 }, { y:0, opacity:1, duration:.6, ease:'power2.out', scrollTrigger:{ trigger:el, start:'top 85%' } });
+        gsap.fromTo(el, {y: 24, opacity: 0}, {
+            y: 0,
+            opacity: 1,
+            duration: .6,
+            ease: 'power2.out',
+            scrollTrigger: {trigger: el, start: 'top 85%'}
+        });
     });
 
     // Animated panels for both .more and the Projects collapsible
-    (function(){
+    (function () {
         const items = document.querySelectorAll('details.more, details.projects-collapsible');
         items.forEach(d => {
             const body = d.querySelector('.more-body, .projects-body');
             if (!body) return;
-            if (d.open) { body.style.display='block'; body.style.height='auto'; }
-            else { body.style.display='none'; body.style.height='0px'; }
+            if (d.open) {
+                body.style.display = 'block';
+                body.style.height = 'auto';
+            } else {
+                body.style.display = 'none';
+                body.style.height = '0px';
+            }
             d.addEventListener('toggle', () => {
                 const isOpen = d.open;
                 if (isOpen) {
-                    body.style.display='block'; body.style.height='0px';
-                    requestAnimationFrame(() => { body.style.height = body.scrollHeight + 'px'; });
-                    const onEnd = () => { if (d.open) body.style.height='auto'; body.removeEventListener('transitionend', onEnd); };
+                    body.style.display = 'block';
+                    body.style.height = '0px';
+                    requestAnimationFrame(() => {
+                        body.style.height = body.scrollHeight + 'px';
+                    });
+                    const onEnd = () => {
+                        if (d.open) body.style.height = 'auto';
+                        body.removeEventListener('transitionend', onEnd);
+                    };
                     body.addEventListener('transitionend', onEnd);
                 } else {
-                    const h = body.scrollHeight; body.style.height = h + 'px';
-                    requestAnimationFrame(() => { body.style.height='0px'; });
-                    const onEnd = () => { if (!d.open) body.style.display='none'; body.removeEventListener('transitionend', onEnd); };
+                    const h = body.scrollHeight;
+                    body.style.height = h + 'px';
+                    requestAnimationFrame(() => {
+                        body.style.height = '0px';
+                    });
+                    const onEnd = () => {
+                        if (!d.open) body.style.display = 'none';
+                        body.removeEventListener('transitionend', onEnd);
+                    };
                     body.addEventListener('transitionend', onEnd);
                 }
             });
         });
     })();
 
-    // Experience timeline progress (subtle, pro)
-    (function(){
+    // Experience timeline progress
+    (function () {
         const tl = document.querySelector('.timeline');
-        if(!tl) return;
-        function update(){
+        if (!tl) return;
+
+        function update() {
             const r = tl.getBoundingClientRect();
             const vh = window.innerHeight;
-            const start = Math.max(0, vh*0.15 - r.top);
-            const denom = r.height + vh*0.3;
-            const pct = Math.min(1, Math.max(0, (start)/(denom)));
-            tl.style.setProperty('--progress', (pct*100)+'%');
+            const start = Math.max(0, vh * 0.15 - r.top);
+            const denom = r.height + vh * 0.3;
+            const pct = Math.min(1, Math.max(0, (start) / (denom)));
+            tl.style.setProperty('--progress', (pct * 100) + '%');
         }
+
         update();
-        ['scroll','resize'].forEach(ev=>window.addEventListener(ev, update, {passive:true}));
+        ['scroll', 'resize'].forEach(ev => window.addEventListener(ev, update, {passive: true}));
     })();
 
     // PopYou2 live preview
-    (function(){
+    (function () {
         const nameSel = document.getElementById('py2_name');
         const charSel = document.getElementById('py2_char');
-        const actSel  = document.getElementById('py2_action');
-        const img     = document.getElementById('py2_image');
+        const actSel = document.getElementById('py2_action');
+        const img = document.getElementById('py2_image');
         if (!(nameSel && charSel && actSel && img)) return;
-        function updateFunko(){
+
+        function updateFunko() {
             const filename = `${nameSel.value}_${charSel.value}_${actSel.value}.png`;
             const path = `assets/projects_assets/PopYou2/generated_images/${filename}`;
             img.classList.add('fade-out');
             setTimeout(() => {
-                img.src = path; img.classList.remove('fade-out');
-                if (typeof gtag === 'function') { gtag('event','funko_pop_selection',{ event_category:'PopYou2', event_label:`${nameSel.value}_${charSel.value}_${actSel.value}`, value:1 }); }
+                img.src = path;
+                img.classList.remove('fade-out');
+                if (typeof gtag === 'function') {
+                    gtag('event', 'funko_pop_selection', {
+                        event_category: 'PopYou2',
+                        event_label: `${nameSel.value}_${charSel.value}_${actSel.value}`,
+                        value: 1
+                    });
+                }
             }, 140);
         }
+
         [nameSel, charSel, actSel].forEach(el => el.addEventListener('change', updateFunko));
     })();
+
+    // Tom & Jerry checkpoint selector
+    (function () {
+        const root = document.querySelector('.tj-checkpoints[data-tj-root]');
+        if (!root) return;
+
+        const img = root.querySelector('[data-tj-image]');
+        const caption = root.querySelector('[data-tj-caption]');
+        const buttons = Array.from(root.querySelectorAll('.tj-step'));
+
+        const basePath = 'assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/';
+        const sources = {
+            base: {
+                src: basePath + 'tomjerry_base_seed69420.gif',
+                text: 'Base model: off-style 224×224 sample before LoRA fine-tuning.'
+            },
+            '000100': {
+                src: basePath + 'tomjerry_lora_step000100_seed69420.gif',
+                text: 'Step 100: early adaptation, still noisy and far from the target style.'
+            },
+            '001000': {
+                src: basePath + 'tomjerry_lora_step001000_seed69420.gif',
+                text: 'Step 1k: clearer outlines and more Tom &amp; Jerry-like motion emerging.'
+            },
+            '002000': {
+                src: basePath + 'tomjerry_lora_step002000_seed69420.gif',
+                text: 'Step 2k: stronger style alignment, more stable colors and shapes.'
+            },
+            '005000': {
+                src: basePath + 'tomjerry_lora_step005000_seed69420.gif',
+                text: 'Step 5k: motion and style are close to the target cartoons.'
+            },
+            '007500': {
+                src: basePath + 'tomjerry_lora_step007500_seed69420.gif',
+                text: 'Step 7.5k: fine details and expressions refining.'
+            },
+            '010000': {
+                src: basePath + 'tomjerry_lora_step010000_seed69420.gif',
+                text: 'Step 10k: final LoRA checkpoint used for most samples.'
+            }
+        };
+
+        function setStep(stepKey) {
+            const entry = sources[stepKey];
+            if (!entry) return;
+            buttons.forEach(b => b.classList.toggle('active', b.getAttribute('data-step') === stepKey));
+            img.src = entry.src;
+            caption.innerHTML = entry.text;
+        }
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.getAttribute('data-step');
+                setStep(key);
+            });
+        });
+    })();
 </script>
+
 <script>
-  // ========= CONFIG =========
-  // Your numeric Zotero user ID:
-  const ZOTERO_USER_ID = 14752305;
+    // ========= CONFIG =========
+    const ZOTERO_USER_ID = 14752305;
+    const USE_PUBLICATIONS = false;
+    const ZOTERO_LIMIT = 6;
+    const API_KEY = "xLyBY0TSNUFjSE8lQsDvJuCg";
 
-  // true -> use "My Publications" (public), false -> use full personal library
-  // (set false + provide API_KEY if your library is private)
-  const USE_PUBLICATIONS = false;
-
-  // How many items to show
-  const ZOTERO_LIMIT = 6;
-
-  // OPTIONAL: only needed for private libraries
-  // (Don’t commit real keys; keep in local .env or replace at deploy)
-  const API_KEY = "xLyBY0TSNUFjSE8lQsDvJuCg";
-
-  // ========= SKELETON =========
-  (function initZoteroSkeleton(){
-    const g = document.getElementById('zoteroGrid');
-    if(!g) return;
-    g.innerHTML = Array.from({length: ZOTERO_LIMIT}).map(() =>
-      `<article class="card"><div class="card-body">
+    (function initZoteroSkeleton() {
+        const g = document.getElementById('zoteroGrid');
+        if (!g) return;
+        g.innerHTML = Array.from({length: ZOTERO_LIMIT}).map(() =>
+            `<article class="card"><div class="card-body">
          <div class="paper-skel" style="height:18px;width:80%"></div>
          <div class="paper-skel" style="height:14px;width:60%"></div>
        </div></article>`
-    ).join('');
-  })();
+        ).join('');
+    })();
 
-  // ========= HELPERS =========
-  function fmtAuthors(creators){
-    if(!Array.isArray(creators) || creators.length === 0) return '';
-    const names = creators.map(c =>
-      c.lastName ? `${c.lastName}${c.firstName ? ' ' + c.firstName[0] + '.' : ''}` : (c.name || '')
-    ).filter(Boolean);
-    return names.slice(0,4).join(', ') + (names.length > 4 ? ' et al.' : '');
-  }
-
-  function firstLink(it) {
-    const d = it?.data || {};
-    if (d.DOI) return `https://doi.org/${d.DOI}`;
-    if (d.url) return d.url;
-    const alt = it?.links?.alternate?.href;
-    return alt || '';
-  }
-
-  function renderZotero(items){
-    const grid = document.getElementById('zoteroGrid');
-    if(!grid) return;
-
-    // Filter out notes/attachments client-side (safer than URL params)
-    const cleaned = (items || [])
-      .filter(it => {
-        const t = it?.data?.itemType;
-        return t !== 'note' && t !== 'attachment';
-      })
-      .slice(0, ZOTERO_LIMIT);
-
-    if (cleaned.length === 0) {
-      grid.innerHTML = `<p class="paper-meta">No recent items found${USE_PUBLICATIONS ? ' in “My Publications”' : ''}.</p>`;
-      return;
+    function fmtAuthors(creators) {
+        if (!Array.isArray(creators) || creators.length === 0) return '';
+        const names = creators.map(c =>
+            c.lastName ? `${c.lastName}${c.firstName ? ' ' + c.firstName[0] + '.' : ''}` : (c.name || '')
+        ).filter(Boolean);
+        return names.slice(0, 4).join(', ') + (names.length > 4 ? ' et al.' : '');
     }
 
-    grid.innerHTML = cleaned.map(it => {
-      const d = it.data || {};
-      const year  = (d.date || '').match(/\d{4}/)?.[0] || '';
-      const venue = d.publicationTitle || d.conferenceName || d.bookTitle || '';
-      const link  = firstLink(it);
-      const title = d.title || 'Untitled';
-      return `
+    function firstLink(it) {
+        const d = it?.data || {};
+        if (d.DOI) return `https://doi.org/${d.DOI}`;
+        if (d.url) return d.url;
+        const alt = it?.links?.alternate?.href;
+        return alt || '';
+    }
+
+    function renderZotero(items) {
+        const grid = document.getElementById('zoteroGrid');
+        if (!grid) return;
+
+        const cleaned = (items || [])
+            .filter(it => {
+                const t = it?.data?.itemType;
+                return t !== 'note' && t !== 'attachment';
+            })
+            .slice(0, ZOTERO_LIMIT);
+
+        if (cleaned.length === 0) {
+            grid.innerHTML = `<p class="paper-meta">No recent items found${USE_PUBLICATIONS ? ' in “My Publications”' : ''}.</p>`;
+            return;
+        }
+
+        grid.innerHTML = cleaned.map(it => {
+            const d = it.data || {};
+            const year = (d.date || '').match(/\d{4}/)?.[0] || '';
+            const venue = d.publicationTitle || d.conferenceName || d.bookTitle || '';
+            const link = firstLink(it);
+            const title = d.title || 'Untitled';
+            return `
         <article class="card">
           <div class="card-body">
             <h3>${title}</h3>
             <p class="paper-meta">
-              ${fmtAuthors(d.creators)}${year ? ' · ' + year : ''}${venue ? ' · <span class="paper-venue">'+venue+'</span>' : ''}
+              ${fmtAuthors(d.creators)}${year ? ' · ' + year : ''}${venue ? ' · <span class="paper-venue">' + venue + '</span>' : ''}
             </p>
             <div class="project-links" style="margin-top:10px">
               ${link ? `<a class="contact" target="_blank" rel="noopener" href="${link}">Open</a>` : ''}
             </div>
           </div>
         </article>`;
-    }).join('');
-  }
+        }).join('');
+    }
 
-  function handleFail(e){
-    console.error(e);
-    const grid = document.getElementById('zoteroGrid');
-    if (grid) {
-      grid.innerHTML = `<p class="paper-meta">
+    function handleFail(e) {
+        console.error(e);
+        const grid = document.getElementById('zoteroGrid');
+        if (grid) {
+            grid.innerHTML = `<p class="paper-meta">
         Couldn’t load Zotero. ${USE_PUBLICATIONS
-          ? 'Try switching USE_PUBLICATIONS=false if you don’t use “My Publications”.'
-          : 'If your library is private, set API_KEY so we can authenticate.'}
+                ? 'Try switching USE_PUBLICATIONS=false if you don’t use “My Publications”.'
+                : 'If your library is private, set API_KEY so we can authenticate.'}
       </p>`;
+        }
     }
-  }
 
-  // ========= LOAD =========
-  async function loadZotero() {
-    const base = `https://api.zotero.org/users/${ZOTERO_USER_ID}${USE_PUBLICATIONS ? '/publications' : ''}/items/top`;
-    const qs = new URLSearchParams({
-      limit: String(ZOTERO_LIMIT),
-      sort: 'dateAdded',
-      direction: 'desc',
-      format: 'json'
-    });
+    async function loadZotero() {
+        const base = `https://api.zotero.org/users/${ZOTERO_USER_ID}${USE_PUBLICATIONS ? '/publications' : ''}/items/top`;
+        const qs = new URLSearchParams({
+            limit: String(ZOTERO_LIMIT),
+            sort: 'dateAdded',
+            direction: 'desc',
+            format: 'json'
+        });
 
-    const url = `${base}?${qs.toString()}`;
+        const url = `${base}?${qs.toString()}`;
+        const headers = {'Zotero-API-Version': '3'};
+        if (API_KEY && !USE_PUBLICATIONS) headers['Zotero-API-Key'] = API_KEY;
 
-    // Build headers. Key only if provided.
-    const headers = { 'Zotero-API-Version': '3' };
-    if (API_KEY && !USE_PUBLICATIONS) headers['Zotero-API-Key'] = API_KEY;
-
-    const res = await fetch(url, { headers, cache: 'no-store', mode: 'cors' });
-    if (!res.ok) {
-      // 403 means private library without/with wrong key; 404 if wrong user; 400 if bad params
-      throw new Error(`Zotero API error: ${res.status}`);
+        const res = await fetch(url, {headers, cache: 'no-store', mode: 'cors'});
+        if (!res.ok) {
+            throw new Error(`Zotero API error: ${res.status}`);
+        }
+        const items = await res.json();
+        renderZotero(items);
     }
-    const items = await res.json();
-    renderZotero(items);
-  }
 
-  // Start after DOM ready
-  if (document.readyState !== 'loading') loadZotero().catch(handleFail);
-  else document.addEventListener('DOMContentLoaded', () => loadZotero().catch(handleFail));
+    if (document.readyState !== 'loading') loadZotero().catch(handleFail);
+    else document.addEventListener('DOMContentLoaded', () => loadZotero().catch(handleFail));
 </script>
 </body>
 </html>
