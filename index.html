@@ -96,9 +96,14 @@
     }
 
     .container {
-        width: min(1200px, 92%);
+        width: min(1550px, 94%);
         margin: 0 auto
     }
+    @media (min-width: 1600px) {
+    .container {
+        width: min(1550px, 90%);
+    }
+}
 
     :focus-visible {
         outline: 2px solid var(--brand1);
@@ -1358,6 +1363,145 @@
                 <div class="projects-body">
                     <div class="grid cols-2" id="projectGrid">
 
+                        <!-- Sana-Video — Tom & Jerry LoRA -->
+                        <article class="card" data-tags="img,cv" data-fit="contain">
+                            <img
+                                    class="media"
+                                    src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_lora_step010000_seed69420.gif"
+                                    alt="SANA-Video Tom & Jerry LoRA sample"
+                            />
+                            <div class="card-body">
+                                <h3>Tom &amp; Jerry Generation — SANA-Video</h3>
+                                <p>
+                                    Fine-tuning <strong>SANA-Video 2B</strong> with LoRA to generate
+                                    <strong>Tom &amp; Jerry–style animations at 224×224</strong>, starting from a
+                                    class-only LoRA
+                                    and moving toward <strong>scene-aware, text-conditioned control</strong>. The focus
+                                    is on
+                                    making long, readable cartoons run comfortably on a single consumer GPU rather than
+                                    a lab-scale setup.
+                                </p>
+                                <div class="tag-row">
+                                    <span class="tag t-tinytts">T2V LoRA</span>
+                                    <span class="tag t-embed">VLM + VLLM</span>
+                                    <span class="tag t-viz">Diffusion video model</span>
+                                </div>
+
+                                <div class="project-links">
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://amit154154.github.io/Sana-Simplified/"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/Project_Site-Tom_%26_Jerry_Research_Log-7b5cff?style=for-the-badge&logo=google-chrome&logoColor=white"
+                                                alt="Project site – Tom &amp; Jerry research log"
+                                        />
+                                    </a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://github.com/amit154154/Sana-Simplified"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/GitHub-Sana_Simplified-181717?style=for-the-badge&logo=github&logoColor=ffffff"
+                                                alt="GitHub – Sana Simplified"
+                                        />
+                                    </a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://huggingface.co/AmitIsraeli/sanavideo-tomjerry-lora-r16-v1"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/HuggingFace-sanavideo--tomjerry--lora--r16--v1-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=000000"
+                                                alt="Hugging Face – sanavideo-tomjerry-lora-r16-v1"
+                                        />
+                                    </a>
+                                    <a
+                                            class="badge-link"
+                                            target="_blank"
+                                            rel="noopener"
+                                            href="https://wandb.ai/amit154154/sana-video-tomjerry"
+                                    >
+                                        <img
+                                                src="https://img.shields.io/badge/Weights_&_Biases-Tom_%26_Jerry%20Runs-2c8ebb?style=for-the-badge&logo=weightsandbiases&logoColor=white"
+                                                alt="Weights &amp; Biases – Tom &amp; Jerry runs"
+                                        />
+                                    </a>
+                                </div>
+
+                                <details class="more" style="margin-top:10px">
+                                    <summary>Read more</summary>
+                                    <div class="more-body">
+                                        <h4>Versioned training roadmap</h4>
+                                        <ul>
+                                            <li>
+                                                <strong>V1 – Class-only LoRA @ 224×224.</strong>
+                                                Freeze the base SANA-Video 2B backbone and train LoRA on all linear
+                                                layers,
+                                                using a <em>single Tom &amp; Jerry class prompt</em> over ~16k cached 5s
+                                                clips
+                                                (81-frame latents) with a flow-matching objective.
+                                            </li>
+                                            <li>
+                                                <strong>V2 – Scene-aware LoRA with VLM labels.</strong>
+                                                Use <code>Qwen3-VL</code> served via <code>vLLM</code> to generate
+                                                structured
+                                                scene descriptions (ENVIRONMENT / CHARACTERS / PROPS / ACTION / CAMERA)
+                                                per clip,
+                                                encode them, and condition SANA-Video on <em>per-clip text prompts</em>
+                                                to recover
+                                                more fine-grained control while staying at 224×224.
+                                            </li>
+                                        </ul>
+
+                                        <h4>V1 checkpoint progression</h4>
+                                        <p>
+                                            Same seed and class prompt; only the LoRA checkpoint changes. This makes it
+                                            easy to see
+                                            how the model gradually snaps into a consistent Tom &amp; Jerry look.
+                                        </p>
+                                        <div class="tj-checkpoints" data-tj-root>
+                                            <div class="tj-steps">
+                                                <button class="tj-step active" data-step="base">Base</button>
+                                                <button class="tj-step" data-step="000100">100</button>
+                                                <button class="tj-step" data-step="001000">1k</button>
+                                                <button class="tj-step" data-step="002000">2k</button>
+                                                <button class="tj-step" data-step="005000">5k</button>
+                                                <button class="tj-step" data-step="007500">7.5k</button>
+                                                <button class="tj-step" data-step="010000">10k</button>
+                                            </div>
+                                            <div class="tj-display">
+                                                <img
+                                                        data-tj-image
+                                                        src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_base_seed69420.gif"
+                                                        alt="Tom &amp; Jerry checkpoint preview"
+                                                />
+                                            </div>
+                                            <p class="tj-caption" data-tj-caption>
+                                                Base model: off-style 224×224 sample before LoRA fine-tuning.
+                                            </p>
+                                        </div>
+
+                                        <h4>Future directions</h4>
+                                        <p>
+                                            Next steps include <strong>distillation</strong>, <strong>pruning</strong>,
+                                            and
+                                            <strong>quantization</strong> to make the model more deployable, plus more
+                                            systematic
+                                            evaluation (identity consistency, motion quality) and exploring RL-style
+                                            post-training
+                                            to better align generations with scene descriptions.
+                                        </p>
+                                    </div>
+                                </details>
+                            </div>
+                        </article>
+
                         <!-- Sana Simplified Image & Zoom Control -->
                         <article class="card" data-tags="img,cv" data-fit="contain">
                             <img
@@ -1378,6 +1522,12 @@
                                     while
                                     keeping identity and style consistent.
                                 </p>
+                                <div class="tag-row">
+                                    <span class="tag t-tinytts">T2I</span>
+                                    <span class="tag t-embed">diffusion</span>
+                                    <span class="tag t-viz">controlnet and img2img condition</span>
+                                    <span class="tag t-viz">3d rendering</span>
+                                </div>
                                 <div class="project-links">
                                     <a
                                             class="badge-link"
@@ -1440,103 +1590,6 @@
                                                 </figcaption>
                                             </figure>
                                         </div>
-                                    </div>
-                                </details>
-                            </div>
-                        </article>
-
-                        <!-- Sana-Video — Tom & Jerry LoRA -->
-                        <article class="card" data-tags="img,cv" data-fit="contain">
-                            <img
-                                    class="media"
-                                    src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_lora_step010000_seed69420.gif"
-                                    alt="SANA-Video Tom & Jerry LoRA sample"
-                            />
-                            <div class="card-body">
-                                <h3>Tom &amp; Jerry generation - Sana Video</h3>
-                                <p>
-                                    Using SANA-Video 2B to efficiently generate Tom & Jerry–style animations at 224×224,
-                                    experimenting with off-native resolution training and inference. The goal is to
-                                    optimize SANA-Video for high-quality 224×224 clips that run comfortably on
-                                    consumer-grade GPUs.
-                                </p>
-                                <div class="project-links">
-                                    <a
-                                            class="badge-link"
-                                            target="_blank"
-                                            rel="noopener"
-                                            href="https://github.com/amit154154/Sana-Simplified"
-                                    >
-                                        <img
-                                                src="https://img.shields.io/badge/GitHub-Sana_Simplified-181717?style=for-the-badge&logo=github&logoColor=ffffff"
-                                                alt="GitHub – Sana Simplified"
-                                        />
-                                    </a>
-                                    <a
-                                            class="badge-link"
-                                            target="_blank"
-                                            rel="noopener"
-                                            href="https://huggingface.co/AmitIsraeli/sanavideo-tomjerry-lora-r16-v1"
-                                    >
-                                        <img
-                                                src="https://img.shields.io/badge/HuggingFace-sanavideo--tomjerry--lora--r16--v1-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=000000"
-                                                alt="Hugging Face – sanavideo-tomjerry-lora-r16-v1"
-                                        />
-                                    </a>
-                                    <a
-                                            class="badge-link"
-                                            target="_blank"
-                                            rel="noopener"
-                                            href="https://wandb.ai/amit154154/sana-video-tomjerry"
-                                    >
-                                        <img
-                                                src="https://img.shields.io/badge/Weights_&_Biases-Tom_%26_Jerry%20Runs-2c8ebb?style=for-the-badge&logo=weightsandbiases&logoColor=white"
-                                                alt="Weights &amp; Biases – Tom &amp; Jerry runs"
-                                        />
-                                    </a>
-                                </div>
-                                <details class="more" style="margin-top:10px">
-                                    <summary>Read more</summary>
-                                    <div class="more-body">
-                                        <h4>V1 Class Training Setup</h4>
-                                        <ul>
-                                            <li>Base model: <code>SANA-Video_2B_480p_diffusers</code></li>
-                                            <li>Resolution: <strong>224×224</strong>, clip length: <strong>81
-                                                frames</strong></li>
-                                            <li>LoRA rank 16 on all linear layers in the diffusion transformer</li>
-                                            <li>Single Tom &amp; Jerry style class prompt, AdamW on LoRA parameters
-                                                only
-                                            </li>
-                                        </ul>
-                                        <h4>Checkpoint progression</h4>
-                                        <p>Same seed and prompt, scroll through checkpoints with the selector wheel:</p>
-                                        <div class="tj-checkpoints" data-tj-root>
-                                            <div class="tj-steps">
-                                                <button class="tj-step active" data-step="base">Base</button>
-                                                <button class="tj-step" data-step="000100">100</button>
-                                                <button class="tj-step" data-step="001000">1k</button>
-                                                <button class="tj-step" data-step="002000">2k</button>
-                                                <button class="tj-step" data-step="005000">5k</button>
-                                                <button class="tj-step" data-step="007500">7.5k</button>
-                                                <button class="tj-step" data-step="010000">10k</button>
-                                            </div>
-                                            <div class="tj-display">
-                                                <img
-                                                        data-tj-image
-                                                        src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_base_seed69420.gif"
-                                                        alt="Tom &amp; Jerry checkpoint preview"
-                                                />
-                                            </div>
-                                            <p class="tj-caption" data-tj-caption>
-                                                Base model: off-style 224×224 sample before LoRA fine-tuning.
-                                            </p>
-                                        </div>
-                                        <h4>Text-conditioned probes</h4>
-                                        <p>
-                                            After training, the same LoRA is tested with multiple prompts (night scenes,
-                                            staircase chases, outdoor pranks, etc.) to see how much text controllability
-                                            remains
-                                        </p>
                                     </div>
                                 </details>
                             </div>
