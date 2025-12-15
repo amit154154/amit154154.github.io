@@ -1439,7 +1439,12 @@
         line-height: 1.5;
     }
 </style>
-
+<script>
+  document.querySelectorAll('img:not([loading])').forEach(img => {
+    img.loading = 'lazy';
+    img.decoding = 'async';
+  });
+</script>
 <script>
     if (location.hostname === "amit154154.github.io") {
         (function (c, l, a, r, i, t, y) {
@@ -1547,10 +1552,13 @@
             img.src = url;
         }
 
-        examples.forEach((ex) => {
-            checkURL(ex.base);
-            checkURL(ex.lora);
-        });
+        const DEBUG_BA = false; // set true only when debugging missing paths
+        if (DEBUG_BA) {
+            examples.forEach((ex) => {
+                checkURL(ex.base);
+                checkURL(ex.lora);
+            });
+        }
 
         let idx = 0;
 
@@ -2000,11 +2008,16 @@
 
                             <div class="ba-wrap" data-ba>
                                 <img class="ba-img" data-ba-base
-                                     src="assets/first_experimant_assets/cowboy_base.jpg"
-                                     alt="Base example"/>
+                                     src="assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_base.jpg"
+                                     alt="Base example"
+                                     loading="lazy"
+                                     decoding="async"/>
+
                                 <img class="ba-img ba-overlay" data-ba-overlay
-                                     src="assets/first_experimant_assets/cowboy_lora.jpg"
-                                     alt="ES-LoRA example"/>
+                                     src="assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_lora.jpg"
+                                     alt="ES-LoRA example"
+                                     loading="lazy"
+                                     decoding="async"/>
 
                                 <div class="ba-badges">
                                     <div class="ba-badge">← <strong>Base</strong></div>
@@ -2250,6 +2263,8 @@
                                                     <img
                                                             src="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.jpeg"
                                                             alt="Reference zero-zoom view"
+                                                            loading="lazy"
+                                                            decoding="async"
                                                     />
                                                 </a>
                                                 <figcaption>Reference zero-zoom render (zoom_0)</figcaption>
@@ -2260,6 +2275,8 @@
                                                     <img
                                                             src="assets/projects_assets/siglip_zoom_sana/video_example_zoom.gif"
                                                             alt="Zoom controller sweep example"
+                                                            loading="lazy"
+                                                            decoding="async"
                                                     />
                                                 </a>
                                                 <figcaption>Model-generated zoom sweep as the zoom token moves from 0 →
@@ -2387,7 +2404,9 @@
                                         </ul>
                                         <div class="media-strip">
                                             <img src="assets/projects_assets/token_budget_cot/token_budget_predictor.png"
-                                                 alt="Token budget predictor diagram"/>
+                                                 alt="Token budget predictor diagram"
+                                                 loading="lazy"
+                                                 decoding="async"/>
                                         </div>
                                     </div>
                                 </details>
@@ -2513,13 +2532,19 @@
                                             methods</p>
                                         <div class="media-strip">
                                             <img src="assets/projects_assets/few_shot_sam_lora/coco.png"
-                                                 alt="COCO few-shot examples"/>
+                                                 alt="COCO few-shot examples" loading="lazy"
+                                                 decoding="async"/>
                                             <img src="assets/projects_assets/few_shot_sam_lora/cityscapes.png"
-                                                 alt="Cityscapes examples"/>
+                                                 alt="Cityscapes examples" loading="lazy"
+                                                 decoding="async"/>
                                             <img src="assets/projects_assets/few_shot_sam_lora/soccer.png"
-                                                 alt="Soccer examples"/>
+                                                 alt="Soccer examples"
+                                                 loading="lazy"
+                                                 decoding="async"/>
                                             <img src="assets/projects_assets/few_shot_sam_lora/segment+anything.avif"
-                                                 alt="Segment Anything variants"/>
+                                                 alt="Segment Anything variants"
+                                                 loading="lazy"
+                                                 decoding="async"/>
                                         </div>
                                     </div>
                                 </details>
@@ -3116,3 +3141,4 @@
 </script>
 </body>
 </html>
+
