@@ -27,40 +27,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
           rel="stylesheet"/>
 </head>
-
-<script>
-    if (location.hostname === "amit154154.github.io") {
-        (function (c, l, a, r, i, t, y) {
-            c[a] = c[a] || function () {
-                (c[a].q = c[a].q || []).push(arguments)
-            };
-            t = l.createElement(r);
-            t.async = 1;
-            t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0];
-            y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "u32v1t3fq9");
-    }
-</script>
-
-<body>
-<nav class="nav">
-    <div class="container nav-inner">
-        <div class="brand">
-            <img src="assets/koala_looking.png" alt="Koala"/>
-            <span>Amit Israeli — <span class="accent">Research Engineer</span></span>
-        </div>
-        <div class="nav-links">
-            <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-            <button id="themeToggle" class="toggle" aria-label="Toggle theme">
-                <img src="assets/theme_toggle_icon.png" alt="Theme"/>
-            </button>
-        </div>
-    </div>
-</nav>
 <style>
     :root {
         --bg: #0b0e12;
@@ -99,11 +65,12 @@
         width: min(1550px, 94%);
         margin: 0 auto
     }
+
     @media (min-width: 1600px) {
-    .container {
-        width: min(1550px, 90%);
+        .container {
+            width: min(1550px, 90%);
+        }
     }
-}
 
     :focus-visible {
         outline: 2px solid var(--brand1);
@@ -1075,6 +1042,23 @@
         color: var(--muted);
     }
 
+    /* ===== Tom & Jerry checkpoint preview sizing (make it smaller) ===== */
+    #current .tj-checkpoints {
+        max-width: 560px; /* limits the whole checkpoint widget width */
+        margin: 10px auto 0; /* centers it */
+    }
+
+    #current .tj-display {
+        max-height: 260px; /* caps the preview box height */
+    }
+
+    #current .tj-display img {
+        width: 100%;
+        height: 260px; /* same as box cap */
+        object-fit: contain; /* keep aspect ratio, no cropping */
+        display: block;
+    }
+
     /* Tom & Jerry checkpoint selector */
     .tj-checkpoints {
         margin-top: 8px;
@@ -1131,7 +1115,557 @@
         font-size: 12px;
         color: var(--muted);
     }
+
+    /* ===== Current Project sizing ===== */
+    .current-project .grid {
+        max-width: 900px; /* overall width */
+        margin: 0 auto;
+    }
+
+    .current-project .media {
+        max-height: 360px; /* cap the GIF height */
+        width: 100%;
+        object-fit: contain;
+        background: #000;
+    }
+
+    /* optional: slightly tighter spacing */
+    .current-project .card-body {
+        padding: 14px;
+    }
+
+    /* ===== ES-EGGROLL widgets (benchmark + before/after) ===== */
+
+    .mini-metrics {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(0, 0, 0, .28);
+        border: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .mini-title {
+        font-weight: 800;
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+
+    .mini-note {
+        font-size: 12px;
+        opacity: .85;
+        margin-bottom: 10px;
+    }
+
+    .mini-table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, .10);
+        background: rgba(12, 16, 28, .55);
+    }
+
+    table.mini-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 680px;
+        font-size: 13px;
+    }
+
+    table.mini-table th,
+    table.mini-table td {
+        padding: 10px 10px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    table.mini-table th:first-child,
+    table.mini-table td:first-child {
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    table.mini-table thead {
+        background: rgba(12, 16, 28, .85);
+    }
+
+    table.mini-table tbody tr:nth-child(even) {
+        background: rgba(255, 255, 255, .03);
+    }
+
+    .delta-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        margin-right: 6px;
+        border: 1px solid rgba(255, 255, 255, .12);
+        background: rgba(255, 255, 255, .06);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+
+    .delta-pill.pos {
+        color: #34d399;
+        border-color: rgba(52, 211, 153, .35);
+        background: rgba(52, 211, 153, .08);
+    }
+
+    /* Before/After gallery */
+    .ba-gallery {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(0, 0, 0, .22);
+        border: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .btn-mini {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, .14);
+        background: rgba(12, 16, 28, .55);
+        color: inherit;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .btn-mini:hover {
+        border-color: rgba(255, 255, 255, .28);
+    }
+
+    .ba-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .ba-prompt {
+        flex: 1 1 420px;
+        min-width: 260px;
+        background: rgba(12, 16, 28, .55);
+        border: 1px solid rgba(255, 255, 255, .10);
+        border-radius: 14px;
+        padding: 10px;
+    }
+
+    .ba-label {
+        font-size: 11px;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        opacity: .8;
+        margin-bottom: 6px;
+    }
+
+    .ba-text {
+        margin: 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.55;
+        background: rgba(0, 0, 0, .35);
+        border: 1px solid rgba(255, 255, 255, .10);
+        border-radius: 12px;
+        padding: 10px;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .ba-actions {
+        margin-top: 8px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .ba-tip {
+        font-size: 12px;
+        opacity: .8;
+    }
+
+    .ba-nav {
+        flex: 0 0 auto;
+        min-width: 240px;
+        background: rgba(12, 16, 28, .55);
+        border: 1px solid rgba(255, 255, 255, .10);
+        border-radius: 14px;
+        padding: 10px;
+    }
+
+    .ba-nav-title {
+        font-size: 11px;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        opacity: .8;
+        margin-bottom: 6px;
+    }
+
+    .ba-nav-count {
+        font-size: 12px;
+        margin-bottom: 10px;
+        opacity: .9;
+    }
+
+    .ba-nav-controls {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .ba-dots {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+
+    .ba-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, .18);
+        background: rgba(0, 0, 0, .25);
+        cursor: pointer;
+    }
+
+    .ba-dot.active {
+        border-color: rgba(255, 190, 0, .55);
+        background: rgba(255, 190, 0, .22);
+        box-shadow: 0 0 16px rgba(255, 190, 0, .18);
+    }
+
+    .ba-wrap {
+        position: relative;
+        margin-top: 10px;
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, .14);
+        background: #000;
+    }
+
+    .ba-img {
+        width: 100%;
+        display: block;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    .ba-overlay {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        clip-path: inset(0 0 0 50%);
+    }
+
+    .ba-divider {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        background: rgba(255, 190, 0, .75);
+        box-shadow: 0 0 18px rgba(255, 190, 0, .28);
+        pointer-events: none;
+    }
+
+    .ba-handle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: rgba(12, 16, 28, .9);
+        border: 1px solid rgba(255, 190, 0, .45);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, .55);
+        display: grid;
+        place-items: center;
+        font-size: 16px;
+        pointer-events: none;
+    }
+
+    .ba-range {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: ew-resize;
+    }
+
+    .ba-badges {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        pointer-events: none;
+    }
+
+    .ba-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        border: 1px solid rgba(255, 255, 255, .14);
+        background: rgba(0, 0, 0, .45);
+        backdrop-filter: blur(6px);
+    }
+
+    .ba-badge strong {
+        color: rgba(255, 190, 0, 1);
+        font-weight: 800;
+    }
+
+    .ba-footnote {
+        margin-top: 8px;
+        font-size: 12px;
+        opacity: .8;
+        line-height: 1.5;
+    }
 </style>
+
+<script>
+    if (location.hostname === "amit154154.github.io") {
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () {
+                (c[a].q = c[a].q || []).push(arguments)
+            };
+            t = l.createElement(r);
+            t.async = 1;
+            t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0];
+            y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "u32v1t3fq9");
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const gallery = document.querySelector("[data-ba-gallery]");
+        if (!gallery) {
+            console.warn("[BA] No [data-ba-gallery] found. Add it to your HTML wrapper div.");
+            return;
+        }
+
+        const examples = [
+            {
+                name: "Neon egg roll (Will Smith)",
+                prompt:
+                    "Will Smith eating an egg roll on a neon-lit street in Tokyo at night, cinematic, shallow depth of field, 35mm photography",
+                base: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/will_smith_base.jpg",
+                lora: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/will_smith_lora.jpg",
+            },
+            {
+                name: "Spaghetti cowboy",
+                prompt:
+                    "spaghetti sculpture of a lone cowboy riding into the sunset, entire cowboy and horse made out of spaghetti, cinematic wide shot",
+                base: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_base.jpg",
+                lora: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_lora.jpg",
+            },
+            {
+                name: "Eyes close-up",
+                prompt:
+                    "a close-up of human eyes with detailed eyelashes and reflections, ultra realistic",
+                base: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/human_eyes_base.jpg",
+                lora: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/human_eyes_lora.jpg",
+            },
+            {
+                name: "Dragon around skyscraper",
+                prompt:
+                    "a dragon curled around a skyscraper in a modern city, overcast sky, realistic",
+                base: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/dragon_before.jpg",
+                lora: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/drageon_after.jpg",
+            },
+            {
+                name: "Hand + crystal",
+                prompt:
+                    "a hyper-detailed shot of a hand holding a translucent crystal, complex light refractions on a dark background, studio photography style",
+                base: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/hand_crystel_base.jpg",
+                lora: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/hand_crystel_lora.jpg",
+            },
+            {
+                name: "Tiny astronaut on coffee cup",
+                prompt:
+                    "a tiny astronaut sitting on the rim of a coffee cup on a wooden desk, shallow depth of field, soft morning window light, ultra realistic, high detail on textures and reflections",
+                base: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/astronat_base.jpg",
+                lora: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/astronat_lora.jpg",
+            },
+            {
+                name: "Butterfly glass cat",
+                prompt: "a cat with butterfly wings, its whole body is made of translucent glass",
+                base: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/butterflycat_base.jpg",
+                lora: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/butterflycat_lora.jpg",
+            },
+            {
+                name: "Submarine",
+                prompt: "a submarine",
+                base: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/submarine_base.jpg",
+                lora: "/assets/projects_assets/EGGROLL_T2I/first_experimant_assets/submarine_lora.jpg",
+            },
+        ];
+        // --- Grab elements ---
+        const el = {
+            prompt: gallery.querySelector("[data-ba-prompt]"),
+            count: gallery.querySelector("[data-ba-count]"),
+            baseImg: gallery.querySelector("[data-ba-base]"),
+            overlayImg: gallery.querySelector("[data-ba-overlay]"),
+            prevBtn: gallery.querySelector("[data-ba-prev]"),
+            nextBtn: gallery.querySelector("[data-ba-next]"),
+            copyBtn: gallery.querySelector("[data-ba-copy]"),
+            dots: gallery.querySelector("[data-ba-dots]"),
+            range: gallery.querySelector("[data-ba-range]"),
+            divider: gallery.querySelector("[data-ba-divider]"),
+            handle: gallery.querySelector("[data-ba-handle]"),
+        };
+
+        // --- Validate required elements ---
+        const required = ["prompt", "count", "baseImg", "overlayImg", "range"];
+        required.forEach((k) => {
+            if (!el[k]) console.warn(`[BA] Missing element: ${k} (selector uses data attribute)`);
+        });
+
+        // --- Check images actually load (PATH / CASE issues show up here) ---
+        function checkURL(url) {
+            const img = new Image();
+            img.onload = () => console.log("[BA] OK image:", url);
+            img.onerror = () => console.error("[BA] FAIL image (path/case):", url);
+            img.src = url;
+        }
+
+        examples.forEach((ex) => {
+            checkURL(ex.base);
+            checkURL(ex.lora);
+        });
+
+        let idx = 0;
+
+        function setSlider(v) {
+            const clamped = Math.max(0, Math.min(100, Number(v)));
+            if (el.overlayImg) el.overlayImg.style.clipPath = `inset(0 0 0 ${clamped}%)`;
+            if (el.divider) el.divider.style.left = `${clamped}%`;
+            if (el.handle) el.handle.style.left = `${clamped}%`;
+        }
+
+        function renderDots() {
+            if (!el.dots) return;
+            el.dots.innerHTML = "";
+            examples.forEach((ex, i) => {
+                const b = document.createElement("button");
+                b.type = "button";
+                b.className = "ba-dot" + (i === idx ? " active" : "");
+                b.title = ex.name;
+                b.addEventListener("click", () => {
+                    idx = i;
+                    update();
+                });
+                el.dots.appendChild(b);
+            });
+        }
+
+        function update() {
+            const ex = examples[idx];
+
+            if (el.prompt) el.prompt.textContent = ex.prompt;
+            if (el.count) el.count.textContent = `${idx + 1} / ${examples.length}`;
+
+            if (el.baseImg) {
+                el.baseImg.src = ex.base;
+                el.baseImg.alt = `Base: ${ex.name}`;
+            }
+            if (el.overlayImg) {
+                el.overlayImg.src = ex.lora;
+                el.overlayImg.alt = `ES-LoRA: ${ex.name}`;
+            }
+
+            if (el.range) {
+                el.range.value = 50;
+                setSlider(50);
+            }
+
+            if (el.dots) {
+                [...el.dots.querySelectorAll(".ba-dot")].forEach((d, i) =>
+                    d.classList.toggle("active", i === idx)
+                );
+            }
+        }
+
+        function prev() {
+            idx = (idx - 1 + examples.length) % examples.length;
+            update();
+        }
+
+        function next() {
+            idx = (idx + 1) % examples.length;
+            update();
+        }
+
+        if (el.range) {
+            el.range.addEventListener("input", (e) => setSlider(e.target.value));
+        }
+        if (el.prevBtn) el.prevBtn.addEventListener("click", prev);
+        if (el.nextBtn) el.nextBtn.addEventListener("click", next);
+
+        if (el.copyBtn) {
+            el.copyBtn.addEventListener("click", async () => {
+                const ex = examples[idx];
+                try {
+                    await navigator.clipboard.writeText(ex.prompt);
+                    const old = el.copyBtn.textContent;
+                    el.copyBtn.textContent = "✅ Copied";
+                    setTimeout(() => (el.copyBtn.textContent = old), 900);
+                } catch (e) {
+                    console.warn("[BA] Clipboard failed:", e);
+                }
+            });
+        }
+
+        document.addEventListener("keydown", (e) => {
+            const tag = document.activeElement?.tagName?.toLowerCase?.() || "";
+            if (tag === "input" || tag === "textarea") return;
+            if (e.key === "ArrowLeft") prev();
+            if (e.key === "ArrowRight") next();
+        });
+
+        renderDots();
+        update();
+        console.log("[BA] Gallery initialized ✅");
+    });
+</script>
+
+<body>
+<nav class="nav">
+    <div class="container nav-inner">
+        <div class="brand">
+            <img src="assets/koala_looking.png" alt="Koala"/>
+            <span>Amit Israeli — <span class="accent">Research Engineer</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#experience">Experience</a>
+            <a href="#current">Projects</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <button id="themeToggle" class="toggle" aria-label="Toggle theme">
+                <img src="assets/theme_toggle_icon.png" alt="Theme"/>
+            </button>
+        </div>
+    </div>
+</nav>
+
 
 <!-- HERO -->
 <header class="hero">
@@ -1154,6 +1688,85 @@
 </header>
 
 <main>
+    <!-- ABOUT / PROFILE -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="title"><span class="chip">About</span>
+                <h2>Profile</h2></div>
+            <div class="profile">
+                <img class="avatar" src="assets/linkdin_profile_image_ghibli.png" alt="Amit Israeli"/>
+                <div>
+                    <p>
+                        I’m a hands-on <strong>Generative AI Research Engineer</strong> working across <strong>computer
+                        vision</strong> and
+                        <strong>NLP</strong>, with a soft spot for <strong>multimodal</strong> models and <strong>text-to-image</strong>/<strong>text-to-video</strong>
+                        diffusion. I like taking ideas from papers to real systems: building the data + training loops,
+                        running clean evals, and
+                        getting things to run on a single GPU (and sometimes on the edge).
+                    </p>
+                    <div class="contacts" style="margin-top:10px">
+                        <a class="contact" href="mailto:amit1541541@gmail.com">
+                            <span class="contact-icon mail">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="3" y="5" width="18" height="14" rx="3" ry="3" fill="none"
+                                          stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M5 7.5L12 12.5L19 7.5" fill="none" stroke="currentColor" stroke-width="1.6"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">Email</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
+                        <a class="contact" target="_blank" href="https://www.linkedin.com/in/amit-israeli-aa4a30242/">
+                            <span class="contact-icon linkedin">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="3" y="3" width="18" height="18" rx="3" ry="3" fill="none"
+                                          stroke="currentColor" stroke-width="1.6"/>
+                                    <circle cx="8" cy="9" r="1.4" fill="currentColor"/>
+                                    <path d="M8 11.5V17" stroke="currentColor" stroke-width="1.6"
+                                          stroke-linecap="round"/>
+                                    <path d="M11.5 17V12.3C11.5 11.3 12.3 10.5 13.3 10.5C14.4 10.5 15.2 11.3 15.2 12.3V17"
+                                          stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">LinkedIn</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
+                        <a class="contact" target="_blank" href="https://github.com/amit154154">
+                            <span class="contact-icon github">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M10 15.5c-.8.3-1.5 0-2-.7" stroke="currentColor" stroke-width="1.3"
+                                          stroke-linecap="round"/>
+                                    <path d="M14 15.5c.8.3 1.5 0 2-.7" stroke="currentColor" stroke-width="1.3"
+                                          stroke-linecap="round"/>
+                                    <path d="M9.2 10.2c1.9 1.3 3.7 1.3 5.6 0" stroke="currentColor" stroke-width="1.3"
+                                          stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">GitHub</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
+                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli">
+                            <span class="contact-icon hf">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <circle cx="12" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M9 10c.4-.5 1-.7 1.6-.7" stroke="currentColor" stroke-width="1.4"
+                                          stroke-linecap="round"/>
+                                    <path d="M15 10c-.4-.5-1-.7-1.6-.7" stroke="currentColor" stroke-width="1.4"
+                                          stroke-linecap="round"/>
+                                    <path d="M9 13c.7 1.1 1.7 1.7 3 1.7s2.3-.6 3-1.7" stroke="currentColor"
+                                          stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span class="contact-label">Hugging Face</span>
+                            <span class="contact-arrow">↗</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- EXPERIENCE -->
     <section id="experience" class="section">
         <div class="container">
@@ -1273,80 +1886,144 @@
         </div>
     </section>
 
-    <!-- ABOUT / PROFILE -->
-    <section id="about" class="section">
+    <!-- CURRENT PROJECT (always visible) -->
+    <section id="current" class="section current-project">
         <div class="container">
-            <div class="title"><span class="chip">About</span>
-                <h2>Profile</h2></div>
-            <div class="profile">
-                <img class="avatar" src="assets/linkdin_profile_image_ghibli.png" alt="Amit Israeli"/>
-                <div>
-                    <p>
-                        I work on <strong>AI research</strong> across <strong>computer vision</strong> and
-                        <strong>natural language</strong>, focusing on VLA , multi models , image/video generation and
-                        other
-                        cool domains (:.
-                    </p>
-                    <div class="contacts" style="margin-top:10px">
-                        <a class="contact" href="mailto:amit1541541@gmail.com">
-                            <span class="contact-icon mail">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <rect x="3" y="5" width="18" height="14" rx="3" ry="3" fill="none"
-                                          stroke="currentColor" stroke-width="1.6"/>
-                                    <path d="M5 7.5L12 12.5L19 7.5" fill="none" stroke="currentColor" stroke-width="1.6"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </span>
-                            <span class="contact-label">Email</span>
-                            <span class="contact-arrow">↗</span>
-                        </a>
-                        <a class="contact" target="_blank" href="https://www.linkedin.com/in/amit-israeli-aa4a30242/">
-                            <span class="contact-icon linkedin">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <rect x="3" y="3" width="18" height="18" rx="3" ry="3" fill="none"
-                                          stroke="currentColor" stroke-width="1.6"/>
-                                    <circle cx="8" cy="9" r="1.4" fill="currentColor"/>
-                                    <path d="M8 11.5V17" stroke="currentColor" stroke-width="1.6"
-                                          stroke-linecap="round"/>
-                                    <path d="M11.5 17V12.3C11.5 11.3 12.3 10.5 13.3 10.5C14.4 10.5 15.2 11.3 15.2 12.3V17"
-                                          stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                                </svg>
-                            </span>
-                            <span class="contact-label">LinkedIn</span>
-                            <span class="contact-arrow">↗</span>
-                        </a>
-                        <a class="contact" target="_blank" href="https://github.com/amit154154">
-                            <span class="contact-icon github">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/>
-                                    <path d="M10 15.5c-.8.3-1.5 0-2-.7" stroke="currentColor" stroke-width="1.3"
-                                          stroke-linecap="round"/>
-                                    <path d="M14 15.5c.8.3 1.5 0 2-.7" stroke="currentColor" stroke-width="1.3"
-                                          stroke-linecap="round"/>
-                                    <path d="M9.2 10.2c1.9 1.3 3.7 1.3 5.6 0" stroke="currentColor" stroke-width="1.3"
-                                          stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </span>
-                            <span class="contact-label">GitHub</span>
-                            <span class="contact-arrow">↗</span>
-                        </a>
-                        <a class="contact" target="_blank" href="https://huggingface.co/AmitIsraeli">
-                            <span class="contact-icon hf">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <circle cx="12" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/>
-                                    <path d="M9 10c.4-.5 1-.7 1.6-.7" stroke="currentColor" stroke-width="1.4"
-                                          stroke-linecap="round"/>
-                                    <path d="M15 10c-.4-.5-1-.7-1.6-.7" stroke="currentColor" stroke-width="1.4"
-                                          stroke-linecap="round"/>
-                                    <path d="M9 13c.7 1.1 1.7 1.7 3 1.7s2.3-.6 3-1.7" stroke="currentColor"
-                                          stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </span>
-                            <span class="contact-label">Hugging Face</span>
-                            <span class="contact-arrow">↗</span>
-                        </a>
+            <div class="title">
+                <span class="chip">Now</span>
+                <h2>Current Project</h2>
+            </div>
+
+            <!-- single-column so it feels “featured” -->
+            <div class="grid" style="grid-template-columns: 1fr; max-width: 1100px;">
+                <!-- ES-EGGROLL — Post-training T2I with Evolution Strategies -->
+                <article class="card" data-tags="img,nlp,cv" data-fit="contain">
+                    <div class="card-body">
+                        <h3>ES-EGGROLL — Post-training Text-to-Image with Evolution Strategies</h3>
+
+                        <p>
+                            An <strong>EGGROLL-style</strong> implementation of low-rank Evolution Strategies from
+                            <strong>“Evolution Strategies at the Hyperscale”</strong> (Sarkar et al., 2025), adapted for
+                            <strong>text-to-image alignment post-training</strong>.
+                            The base generator stays <strong>frozen</strong>, and we optimize only a
+                            <strong>LoRA</strong> adapter using
+                            <strong>black-box reward signals</strong> (e.g., <strong>PickScore</strong> as the
+                            objective), with
+                            <strong>CLIP / aesthetic / no-artifacts</strong> used as diagnostics.
+                            This enables fast iteration on alignment objectives at <strong>near inference
+                            throughput</strong>,
+                            without diffusion backprop.
+                            <strong>For extra details, results, and examples, visit the project website.</strong>
+                        </p>
+
+                        <div class="tag-row">
+                            <span class="tag t-nlp">Evolution Strategy</span>
+                            <span class="tag t-embed">RL</span>
+                            <span class="tag t-viz">text-to-image</span>
+                        </div>
+
+                        <div class="project-links">
+                            <a class="badge-link" target="_blank" rel="noopener"
+                               href="https://amit154154.github.io/HyperscaleES_T2I/">
+                                <img src="https://img.shields.io/badge/Project-HyperscaleES__T2I-ffcc4d?style=for-the-badge&logo=google-chrome&logoColor=000000"
+                                     alt="Project – HyperscaleES_T2I"/>
+                            </a>
+                        </div>
+
+                        <div class="mini-metrics">
+                            <div class="mini-title">Benchmark snapshot (PartiPrompts · overall means)</div>
+                            <div class="mini-note">
+                                One image per prompt · same seeds across models · deltas relative to SanaOneStep_Base.
+                            </div>
+
+                            <div class="mini-table-wrap">
+                                <table class="mini-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Model</th>
+                                        <th>aesthetic ↑</th>
+                                        <th>CLIP text ↑</th>
+                                        <th>no artifacts ↑</th>
+                                        <th>PickScore ↑</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><strong>SanaOneStep_Base</strong></td>
+                                        <td>0.5978</td>
+                                        <td>0.6592</td>
+                                        <td>0.3859</td>
+                                        <td>22.3220</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>SanaOneStep_eggroll</strong></td>
+                                        <td>0.5975</td>
+                                        <td><span class="delta-pill pos">+0.0019</span>0.6611</td>
+                                        <td><span class="delta-pill pos">+0.0040</span>0.3899</td>
+                                        <td><span class="delta-pill pos">+0.1793</span>22.5013</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>SanaTwoStep_Base</strong></td>
+                                        <td>0.5965</td>
+                                        <td>0.6614</td>
+                                        <td>0.3926</td>
+                                        <td>22.8059</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Interactive before/after (Base vs ES-LoRA) -->
+                        <div class="ba-gallery" data-ba-gallery>
+                            <div class="ba-top">
+                                <div class="ba-prompt">
+                                    <div class="ba-label">Prompt</div>
+                                    <pre class="ba-text" data-ba-prompt></pre>
+                                    <div class="ba-actions">
+                                        <button class="btn-mini" type="button" data-ba-copy>📋 Copy prompt</button>
+                                        <span class="ba-tip">Tip: use ← / → to switch examples</span>
+                                    </div>
+                                </div>
+
+                                <div class="ba-nav">
+                                    <div class="ba-nav-title">Example</div>
+                                    <div class="ba-nav-count" data-ba-count>1 / 1</div>
+                                    <div class="ba-nav-controls">
+                                        <button class="btn-mini" type="button" data-ba-prev>← Prev</button>
+                                        <button class="btn-mini" type="button" data-ba-next>Next →</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="ba-dots" data-ba-dots aria-label="Example selector"></div>
+
+                            <div class="ba-wrap" data-ba>
+                                <img class="ba-img" data-ba-base
+                                     src="assets/first_experimant_assets/cowboy_base.jpg"
+                                     alt="Base example"/>
+                                <img class="ba-img ba-overlay" data-ba-overlay
+                                     src="assets/first_experimant_assets/cowboy_lora.jpg"
+                                     alt="ES-LoRA example"/>
+
+                                <div class="ba-badges">
+                                    <div class="ba-badge">← <strong>Base</strong></div>
+                                    <div class="ba-badge"><strong>ES-LoRA</strong> →</div>
+                                </div>
+
+                                <div class="ba-divider" data-ba-divider></div>
+                                <div class="ba-handle" data-ba-handle>⇆</div>
+                                <input class="ba-range" data-ba-range type="range" min="0" max="100" value="50"
+                                       aria-label="Compare Base vs ES-LoRA"/>
+                            </div>
+
+                            <div class="ba-footnote">
+                                Drag horizontally (or use arrow keys on the slider) to reveal more of the ES-trained
+                                LoRA result.
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </article>
             </div>
         </div>
     </section>
@@ -1357,7 +2034,7 @@
             <details class="projects-collapsible" id="projectsDetails">
                 <summary class="projects-summary">
                     <span class="chip">Selected</span>
-                    <h2 style="margin:0">Projects</h2>
+                    <h2 style="margin:0">Other Projects</h2>
                     <span class="projects-hint">Click to expand</span>
                 </summary>
                 <div class="projects-body">
