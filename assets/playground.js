@@ -1280,3 +1280,403 @@ const PG = (() => {
         say('🎉 certified convergence');
     });
 })();
+
+/* ===================================================================
+   FEATURE: KONAMI → OVERFIT MODE
+   ↑ ↑ ↓ ↓ ← → ← → B A — the page memorizes noise: everything jitters
+   until you apply weight decay. Also triggered by `konami` in the
+   terminal (for touch devices). Auto early-stops after 25s.
+   ==================================================================*/
+(() => {
+    const SEQ = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+                 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let buf = [], active = false, victims = [], regBtn = null, stopTimer = 0;
+
+    function overfit() {
+        if (active) return;
+        active = true;
+        PG.award('konami');
+        PG.track('konami');
+        victims = [...document.querySelectorAll(
+            '.project-card, .about-card, .featured-card, .contact-card, .xp-card, ' +
+            '.section-head h2, .hero h1, .btn, .contact, .filter-chip, .brand-mark, .icon-btn'
+        )];
+        victims.forEach(el => {
+            el.style.setProperty('--ofr', ((Math.random() - .5) * 2.4).toFixed(2) + 'deg');
+            el.style.setProperty('--oftx', ((Math.random() - .5) * 5).toFixed(1) + 'px');
+            el.style.setProperty('--ofty', ((Math.random() - .5) * 4).toFixed(1) + 'px');
+            el.style.setProperty('--ofd', (.28 + Math.random() * .4).toFixed(2) + 's');
+            el.classList.add('pg-overfit-el');
+        });
+        PG.toast({
+            icon: '⚠️', title: 'Severe overfit detected',
+            sub: 'train loss 0.0001 · val loss 47.3 — the model memorized your keystrokes', ms: 5200
+        });
+        regBtn = document.createElement('button');
+        regBtn.className = 'pg-regularize';
+        regBtn.type = 'button';
+        regBtn.innerHTML = '🧊 apply weight decay <span style="opacity:.65">(λ = 0.01)</span>';
+        regBtn.addEventListener('click', () => regularize(true));
+        document.body.appendChild(regBtn);
+        regBtn.focus();
+        stopTimer = setTimeout(() => regularize(false), 25000);
+    }
+
+    function regularize(byUser) {
+        if (!active) return;
+        active = false;
+        clearTimeout(stopTimer);
+        victims.forEach(el => {
+            el.classList.remove('pg-overfit-el');
+            ['--ofr', '--oftx', '--ofty', '--ofd'].forEach(p => el.style.removeProperty(p));
+        });
+        victims = [];
+        regBtn?.remove();
+        regBtn = null;
+        if (byUser) {
+            PG.award('regularized');
+            PG.toast({ icon: '🧊', title: 'Weight decay applied', sub: 'val loss 0.021 — generalization restored' });
+        } else {
+            PG.toast({ icon: '⏱', title: 'Early stopping triggered', sub: 'patience exceeded — weights rolled back' });
+        }
+    }
+
+    document.addEventListener('keydown', e => {
+        const tag = (document.activeElement?.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+        buf.push(e.key.length === 1 ? e.key.toLowerCase() : e.key);
+        if (buf.length > SEQ.length) buf.shift();
+        if (SEQ.every((k, i) => buf[i] === k)) { buf = []; overfit(); }
+    });
+    document.addEventListener('pg:konami', overfit);
+})();
+
+/* ===================================================================
+   FEATURE: HIDDEN TERMINAL
+   Press ` / ~ anywhere (or use the hub button) for koala-shell.
+   ==================================================================*/
+(() => {
+    let term = null, out = null, input = null, restoreFocus = null;
+    const history = [];
+    let histIdx = -1;
+
+    const LINKS = {
+        github:   'https://github.com/amit154154',
+        linkedin: 'https://www.linkedin.com/in/amit-israeli-aa4a30242/',
+        hf:       'https://huggingface.co/AmitIsraeli',
+        spotify:  'https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1',
+        cv:       'assets/AmitIsraeliCV_15_20_2025.pdf',
+        wix:      'https://www.wix.com'
+    };
+
+    function esc(s) {
+        return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    }
+    function print(html, cls) {
+        const p = document.createElement('p');
+        p.className = 'pg-term-line' + (cls ? ' ' + cls : '');
+        p.innerHTML = html;
+        out.appendChild(p);
+        out.scrollTop = out.scrollHeight;
+        return p;
+    }
+
+    function build() {
+        term = document.createElement('div');
+        term.className = 'pg-term';
+        term.setAttribute('role', 'dialog');
+        term.setAttribute('aria-label', 'Hidden terminal');
+        term.innerHTML =
+            `<div class="pg-term-head">
+                 <span class="pg-term-dot"></span>
+                 <span>guest@amit154154.github.io — koala-shell</span>
+                 <button class="pg-term-close" type="button" aria-label="Close terminal">[esc] close</button>
+             </div>
+             <div class="pg-term-out" aria-live="polite"></div>
+             <div class="pg-term-input-row">
+                 <span class="pg-term-prompt" aria-hidden="true">➜ ~</span>
+                 <input class="pg-term-input" type="text" spellcheck="false" autocomplete="off"
+                        aria-label="Terminal command input"/>
+             </div>`;
+        document.body.appendChild(term);
+        out = term.querySelector('.pg-term-out');
+        input = term.querySelector('.pg-term-input');
+        term.querySelector('.pg-term-close').addEventListener('click', close);
+        term.addEventListener('click', () => input.focus());
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                const cmd = input.value;
+                input.value = '';
+                run(cmd);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (history.length) {
+                    histIdx = Math.max(0, histIdx < 0 ? history.length - 1 : histIdx - 1);
+                    input.value = history[histIdx];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (histIdx >= 0) {
+                    histIdx++;
+                    if (histIdx >= history.length) { histIdx = -1; input.value = ''; }
+                    else input.value = history[histIdx];
+                }
+            }
+        });
+        print('<span class="t-dim">koala-shell 1.0 — type <b>help</b> to see what this thing can do.</span>');
+    }
+
+    function open() {
+        if (!term) build();
+        restoreFocus = document.activeElement;
+        term.classList.add('open');
+        setTimeout(() => input.focus(), 80);
+        PG.award('terminal');
+        PG.track('terminal_opened');
+    }
+    function close() {
+        if (!term) return;
+        term.classList.remove('open');
+        if (restoreFocus && restoreFocus.focus) restoreFocus.focus();
+    }
+    const isOpen = () => term && term.classList.contains('open');
+
+    function train() {
+        print('initializing <b>koala-net-7B</b> on the eucalyptus corpus…');
+        const epochs = [
+            ['epoch 1/4', 2.3026], ['epoch 2/4', 0.8714],
+            ['epoch 3/4', 0.1932], ['epoch 4/4', 0.0231]
+        ];
+        epochs.forEach(([name, loss], i) => {
+            setTimeout(() => {
+                const bars = '█'.repeat((i + 1) * 5) + '░'.repeat(20 - (i + 1) * 5);
+                print(`<span class="t-dim">${name}</span> ${bars} <span class="t-ok">loss ${loss.toFixed(4)}</span>`);
+                if (i === epochs.length - 1) {
+                    setTimeout(() => print('<span class="t-ok">converged ✓</span> deploying to github pages… done.'), 420);
+                }
+            }, 450 * (i + 1));
+        });
+    }
+
+    const COMMANDS = {
+        help() {
+            print([
+                '<span class="t-dim">available commands:</span>',
+                '  <b>whoami</b>          identity check',
+                '  <b>ls</b> [projects]   look around',
+                '  <b>cat koala.txt</b>   meet the mascot',
+                '  <b>train</b>           fit something',
+                '  <b>open</b> &lt;target&gt;   github · linkedin · hf · spotify · cv',
+                '  <b>achievements</b>    progress report',
+                '  <b>theme</b>           flip dark/light',
+                '  <b>koala</b>           summon the koala back',
+                '  <b>konami</b>          (touch-friendly cheat code)',
+                '  <b>clear</b> · <b>exit</b>    housekeeping',
+                '  <span class="t-dim">…and the classics. sudo exists.</span>'
+            ].join('\n'));
+        },
+        whoami() { print('guest <span class="t-dim">(gpu access: denied · eucalyptus access: granted)</span>'); },
+        pwd() { print('/home/guest/portfolio'); },
+        date() { print(new Date().toString() + ' <span class="t-dim">(time flies when loss decreases)</span>'); },
+        ls(arg) {
+            if (arg === 'projects') {
+                const names = [...document.querySelectorAll('#projectGrid .project-card h3')]
+                    .map(h => '  ' + esc(h.textContent.trim()));
+                print(names.join('\n') || '  (no projects here — try the real site)');
+            } else if (arg === 'secrets' || arg === 'secrets/') {
+                print('<span class="t-warn">permission denied</span> — secrets/ is koala-readable only.');
+            } else {
+                print('about/  experience/  projects/  reading/  contact/  koala.txt  <span class="t-dim">secrets/</span>');
+            }
+        },
+        cat(arg) {
+            if ((arg || '').startsWith('koala')) {
+                print(['  ʕ •ᴥ•ʔ   koala.txt', '  ------', '  role: mascot, morale, QA',
+                       '  motto: do more with less (parameters)',
+                       '  tip: i react to scrolling. and clicking. and naps.'].join('\n'));
+            } else print(`cat: ${esc(arg || '')}: no such file <span class="t-dim">(try koala.txt)</span>`);
+        },
+        train, fit: train,
+        open(arg) {
+            if (LINKS[arg]) {
+                window.open(LINKS[arg], '_blank', 'noopener');
+                print(`opening <span class="t-ok">${arg}</span> ↗`);
+            } else {
+                print('open &lt;target&gt; — targets: ' + Object.keys(LINKS).join(' · '));
+            }
+        },
+        achievements() {
+            print('<span class="t-dim">progress report:</span>');
+            const got = PG.store.get('ach', {});
+            const total = PG.achievementCount();
+            print(Object.keys(got).length + ' / ' + total + ' unlocked — open the 🏆 in the nav for details.');
+        },
+        theme() {
+            document.getElementById('themeToggle')?.click();
+            print('theme flipped. <span class="t-dim">your retinas, your rules.</span>');
+        },
+        koala() {
+            PG.store.set('koalaHidden', false);
+            document.dispatchEvent(new CustomEvent('pg:koala-return'));
+            print('koala restored. <span class="t-ok">it forgives you.</span>');
+        },
+        konami() {
+            print('<span class="t-warn">injecting noise into the weights…</span>');
+            setTimeout(() => document.dispatchEvent(new CustomEvent('pg:konami')), 400);
+        },
+        clear() { out.innerHTML = ''; },
+        exit: close,
+        sudo(arg, rest) {
+            if (arg === 'make_cooler') {
+                print('[sudo] password for guest: ······');
+                setTimeout(() => {
+                    print('<span class="t-ok">access granted.</span> fans: 100%. RGB: enabled. site temperature: −3°C.');
+                    print('<span class="t-ok">you found root.</span>');
+                    PG.award('rootAccess');
+                    PG.burst(innerWidth / 2, innerHeight / 2, { count: 70, power: 8 });
+                }, 500);
+            } else if (arg === 'rm' || (arg === '' && !rest)) {
+                print('usage: sudo make_cooler');
+            } else {
+                print('guest is not in the sudoers file. <span class="t-warn">this incident will be reported (to the koala).</span>');
+            }
+        },
+        make_cooler() { print('<span class="t-warn">permission denied</span> — cooling requires sudo.'); },
+        rm(arg, rest) {
+            if ((arg + ' ' + rest).includes('-rf')) print('nice try. <span class="t-ok">the koala keeps backups.</span>');
+            else print('rm: refusing to delete a perfectly good portfolio.');
+        },
+        echo(arg, rest) { print(esc([arg, rest].filter(Boolean).join(' ')) || ''); }
+    };
+
+    function run(raw) {
+        const cmd = raw.trim();
+        print(`<span class="t-dim">➜ ~</span> ${esc(cmd)}`);
+        if (!cmd) return;
+        history.push(cmd);
+        histIdx = -1;
+        const [name, arg = '', ...restArr] = cmd.split(/\s+/);
+        const fn = COMMANDS[name.toLowerCase()];
+        if (fn) fn(arg.toLowerCase(), restArr.join(' '));
+        else print(`command not found: ${esc(name)} <span class="t-dim">— try help</span>`);
+        PG.track('terminal_cmd', { event_label: name.toLowerCase() });
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && isOpen()) { close(); return; }
+        if (e.key !== '`' && e.key !== '~') return;
+        const tag = (document.activeElement?.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+        e.preventDefault();
+        isOpen() ? close() : open();
+    });
+    document.addEventListener('pg:open-terminal', open);
+})();
+
+/* ===================================================================
+   FEATURE: ATTENTION MAP OVER THE HEADLINE
+   Hover-hold (or touch-hold) the hero h1: the cursor becomes the
+   query, the words become keys, and softmax does the rest.
+   ==================================================================*/
+(() => {
+    const h1 = document.querySelector('.hero h1');
+    if (!h1) return;
+
+    // tokenize once, preserving the styled ampersand
+    const frag = document.createDocumentFragment();
+    [...h1.childNodes].forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            node.textContent.split(/(\s+)/).forEach(part => {
+                if (!part) return;
+                if (/^\s+$/.test(part)) frag.appendChild(document.createTextNode(part));
+                else {
+                    const s = document.createElement('span');
+                    s.className = 'attn-tok';
+                    s.textContent = part;
+                    frag.appendChild(s);
+                }
+            });
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            node.classList.add('attn-tok');
+            frag.appendChild(node);
+        }
+    });
+    h1.replaceChildren(frag);
+    const toks = [...h1.querySelectorAll('.attn-tok')];
+
+    let live = false, holdTimer = 0, chip = null, centers = [];
+    let C = PG.colors();
+    PG.onTheme(c => { C = c; });
+
+    const accentRgb = () => {
+        // tokens come as #rrggbb — parse once per call (cheap, rare)
+        const hex = C.accent.replace('#', '');
+        const n = parseInt(hex.length === 3 ? hex.split('').map(c => c + c).join('') : hex, 16);
+        return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    };
+
+    function activate() {
+        if (live) return;
+        live = true;
+        h1.classList.add('attn-live');
+        centers = toks.map(t => {
+            const r = t.getBoundingClientRect();
+            return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+        });
+        chip = document.createElement('div');
+        chip.className = 'attn-chip';
+        chip.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(chip);
+        PG.award('attention');
+        PG.track('attention_map');
+    }
+
+    function deactivate() {
+        clearTimeout(holdTimer);
+        if (!live) return;
+        live = false;
+        h1.classList.remove('attn-live');
+        toks.forEach(t => {
+            t.style.backgroundColor = '';
+            t.style.transform = '';
+        });
+        chip?.remove();
+        chip = null;
+    }
+
+    function update(e) {
+        if (!live) return;
+        const SIGMA = 95;
+        const scores = centers.map(c => {
+            const d2 = (c.x - e.clientX) ** 2 + (c.y - e.clientY) ** 2;
+            return Math.exp(-d2 / (2 * SIGMA * SIGMA));
+        });
+        const sum = scores.reduce((a, b) => a + b, 0) || 1;
+        const [r, g, b] = accentRgb();
+        let top = 0;
+        scores.forEach((s, i) => {
+            const w = s / sum;
+            if (w > scores[top] / sum) top = i;
+            const alpha = Math.min(.85, w * toks.length * .45);
+            toks[i].style.backgroundColor = `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
+            if (!PG.reduced()) toks[i].style.transform = `scale(${1 + w * .35})`;
+        });
+        const wTop = scores[top] / sum;
+        chip.textContent = `attn(q, k${top}) = ${wTop.toFixed(2)}`;
+        chip.style.left = (e.clientX + 14) + 'px';
+        chip.style.top = (e.clientY - 34) + 'px';
+    }
+
+    h1.addEventListener('pointerenter', e => {
+        clearTimeout(holdTimer);
+        holdTimer = setTimeout(() => { activate(); update(e); }, 600);
+    });
+    h1.addEventListener('pointermove', e => { if (live) update(e); });
+    h1.addEventListener('pointerleave', deactivate);
+    h1.addEventListener('pointerdown', e => {
+        clearTimeout(holdTimer);
+        holdTimer = setTimeout(() => { activate(); update(e); }, 420);
+    });
+    h1.addEventListener('pointerup', () => { if (!live) clearTimeout(holdTimer); });
+    window.addEventListener('scroll', deactivate, { passive: true });
+})();
