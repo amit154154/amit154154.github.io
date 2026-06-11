@@ -557,15 +557,17 @@ a:hover { color: var(--txt); }
     content: "";
     position: absolute;
     left: 0; top: 0; right: 0;
-    height: 0;
+    height: var(--rail-h, 0%);
     background: var(--accent);
     transition: height .8s cubic-bezier(.2,.8,.2,1);
 }
-.xp.in-view .xp-rail::after { height: 100%; }
+.xp.in-view { --rail-h: 100%; }
+.xp.is-current { --rail-h: 100%; }
 .xp.is-current .xp-rail::after {
-    height: 100%;
     box-shadow: 0 0 18px var(--accent-ring);
 }
+/* scrub mode (ScrollTrigger drives --rail-h per frame) */
+.timeline.rail-scrub .xp-rail::after { transition: none; }
 
 .xp-card {
     position: relative;
@@ -1334,6 +1336,17 @@ footer {
    PLAYGROUND LAYER — shared chrome (trophy, toasts, hub, confetti)
    ==================================================================*/
 [hidden] { display: none !important; }
+
+/* training stat in the nav: loss ticks down as you read */
+.train-stat {
+    font: 600 10.5px/1 var(--f-mono);
+    color: var(--muted);
+    letter-spacing: .08em;
+    white-space: nowrap;
+    padding: 0 6px;
+}
+.train-stat b { color: var(--accent); font-weight: 600; }
+@media (max-width: 860px) { .train-stat { display: none; } }
 
 .trophy-btn { position: relative; }
 .trophy-count {

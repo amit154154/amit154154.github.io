@@ -1680,3 +1680,123 @@ const PG = (() => {
     h1.addEventListener('pointerup', () => { if (!live) clearTimeout(holdTimer); });
     window.addEventListener('scroll', deactivate, { passive: true });
 })();
+
+/* ===================================================================
+   FEATURE: MICRO-INTERACTIONS
+   Timeline rails draw with scroll (ScrollTrigger scrub), project
+   cards get magnetic tilt (fine pointers only), section headings
+   decode in once, and the nav shows a training stat that ticks the
+   loss down as you read.
+   ==================================================================*/
+(() => {
+    /* ---- timeline rail scrub (falls back to the existing IO fill) ---- */
+    function railScrub() {
+        if (!(window.gsap && window.ScrollTrigger) || PG.reduced()) return;
+        const tl = document.getElementById('timeline');
+        if (!tl) return;
+        gsap.registerPlugin(ScrollTrigger);
+        tl.classList.add('rail-scrub');
+        tl.querySelectorAll('.xp').forEach(xp => {
+            gsap.fromTo(xp, { '--rail-h': '0%' }, {
+                '--rail-h': '100%',
+                ease: 'none',
+                scrollTrigger: { trigger: xp, start: 'top 88%', end: 'bottom 52%', scrub: .4 }
+            });
+        });
+    }
+    // GSAP loads with defer before this file; double-check anyway
+    if (window.gsap && window.ScrollTrigger) railScrub();
+    else window.addEventListener('load', railScrub);
+
+    /* ---- magnetic tilt on project cards ---- */
+    if (matchMedia('(pointer: fine)').matches && !PG.reduced()) {
+        document.querySelectorAll('#projectGrid .project-card').forEach(card => {
+            let rx = 0, ry = 0, tx = 0, ty = 0, raf = 0, active = false;
+            function frame() {
+                rx += (tx - rx) * .18;
+                ry += (ty - ry) * .18;
+                if (!active && Math.abs(rx) < .05 && Math.abs(ry) < .05) {
+                    card.style.transform = '';
+                    card.style.transition = '';
+                    raf = 0;
+                    return;
+                }
+                card.style.transform =
+                    `perspective(900px) translateY(-3px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+                raf = requestAnimationFrame(frame);
+            }
+            card.addEventListener('pointerenter', () => {
+                active = true;
+                card.style.transition = 'box-shadow .25s ease, border-color .25s ease';
+                if (!raf) raf = requestAnimationFrame(frame);
+            });
+            card.addEventListener('pointermove', e => {
+                const r = card.getBoundingClientRect();
+                const px = (e.clientX - r.left) / r.width - .5;
+                const py = (e.clientY - r.top) / r.height - .5;
+                tx = -py * 5.5;
+                ty = px * 6.5;
+            });
+            card.addEventListener('pointerleave', () => {
+                active = false;
+                tx = 0; ty = 0;
+            });
+        });
+    }
+
+    /* ---- one-time decode effect on section headings ---- */
+    if (!PG.reduced()) {
+        const GLYPHS = '01<>/{}[]#$%&*+=~';
+        const heads = document.querySelectorAll('.section-head h2');
+        const decode = el => {
+            const final = el.textContent;
+            const t0 = performance.now();
+            const DUR = 520;
+            (function step(t) {
+                const p = Math.min(1, (t - t0) / DUR);
+                const settled = Math.floor(p * final.length);
+                el.textContent = final.slice(0, settled) +
+                    [...final.slice(settled)].map(c =>
+                        /\s/.test(c) ? c : GLYPHS[(Math.random() * GLYPHS.length) | 0]).join('');
+                if (p < 1) requestAnimationFrame(step);
+                else el.textContent = final;
+            })(t0);
+        };
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(en => {
+                if (en.isIntersecting) {
+                    io.unobserve(en.target);
+                    decode(en.target);
+                }
+            });
+        }, { threshold: .6 });
+        heads.forEach(h => io.observe(h));
+    }
+
+    /* ---- nav training stat ---- */
+    const stat = document.getElementById('trainStat');
+    if (stat) {
+        const sections = document.querySelectorAll('main > section, header.hero');
+        let pending = false;
+        function update() {
+            pending = false;
+            const h = document.documentElement;
+            const total = h.scrollHeight - h.clientHeight;
+            const p = total > 0 ? h.scrollTop / total : 0;
+            const loss = 2.31 * Math.pow(1 - p, 2.2) + .018;
+            let ep = 0;
+            // sections are position:relative inside main, so offsetTop is
+            // main-relative — use viewport coordinates instead
+            sections.forEach(s => { if (s.getBoundingClientRect().top <= innerHeight * .35) ep++; });
+            stat.textContent = '';
+            stat.append(`ep ${ep}/${sections.length} · loss `);
+            const b = document.createElement('b');
+            b.textContent = loss.toFixed(3);
+            stat.appendChild(b);
+        }
+        window.addEventListener('scroll', () => {
+            if (!pending) { pending = true; requestAnimationFrame(update); }
+        }, { passive: true });
+        update();
+    }
+})();
