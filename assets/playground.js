@@ -585,3 +585,363 @@ const PG = (() => {
         startLive();
     }
 })();
+/* ===================================================================
+   FEATURE: DESCENT — a playable gradient-descent simulator
+   You are the optimizer: SGD + momentum on a 1-D loss landscape with
+   local-minima traps. Score = epochs to reach the global minimum.
+   Inits on any [data-descent-root] (projects card here, 404 page too).
+   ==================================================================*/
+(() => {
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    const shuffle = arr => {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = (Math.random() * (i + 1)) | 0;
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    };
+
+    function makeLandscape() {
+        const N = 480;
+        const slots = shuffle([.12, .32, .52, .72, .9]).slice(0, 3)
+            .map(c => clamp(c + (Math.random() - .5) * .06, .07, .94))
+            .sort((a, b) => a - b);
+        const gi = (Math.random() * 3) | 0;
+        const dips = slots.map((c, i) => ({
+            c,
+            depth: i === gi ? .62 + Math.random() * .15 : .24 + Math.random() * .18,
+            v: .0018 + Math.random() * .0042   // gaussian variance
+        }));
+        const bowlC = .5 + (Math.random() - .5) * .2;
+        const raw = [];
+        for (let i = 0; i <= N; i++) {
+            const x = i / N;
+            let y = 1.15 * (x - bowlC) ** 2 + .25;
+            dips.forEach(d => { y -= d.depth * Math.exp(-((x - d.c) ** 2) / (2 * d.v)); });
+            raw.push(y);
+        }
+        const mn = Math.min(...raw), mx = Math.max(...raw);
+        const ys = raw.map(y => .06 + .86 * (y - mn) / (mx - mn));
+        let gIdx = 0;
+        ys.forEach((y, i) => { if (y < ys[gIdx]) gIdx = i; });
+        return { N, ys, xg: gIdx / N };
+    }
+
+    function initDescent(rootEl) {
+        const frame = rootEl.querySelector('[data-descent-frame]');
+        const canvas = rootEl.querySelector('.descent-canvas');
+        if (!frame || !canvas) return;
+        const ctx = canvas.getContext('2d');
+        const $ = sel => rootEl.querySelector(sel);
+        const ui = {
+            epoch: $('[data-descent-epoch]'),
+            loss: $('[data-descent-loss]'),
+            status: $('[data-descent-status]'),
+            overlay: $('[data-descent-overlay]'),
+            overlaySub: $('[data-descent-overlay-sub]'),
+            start: $('[data-descent-start]'),
+            lr: $('[data-descent-lr]'),
+            lrVal: $('[data-descent-lrval]'),
+            mo: $('[data-descent-mo]'),
+            moVal: $('[data-descent-moval]'),
+            reset: $('[data-descent-reset]'),
+            best: $('[data-descent-best]')
+        };
+
+        const SIM_MS = 80, GSCALE = .045;
+        let land = makeLandscape();
+        let W = 0, H = 0, dpr = 1;
+        let state = 'idle';           // idle | running | won | dead
+        let x = 0, v = 0, prevX = 0, epochs = 0;
+        let acc = 0, lastT = 0, winTicks = 0, stuckTicks = 0, stuckShown = false;
+        let trail = [], parts = [], death = null;
+        let C = PG.colors();
+
+        function fAt(px) {
+            if (px < 0) return land.ys[0] - px * 1.8;
+            if (px > 1) return land.ys[land.N] + (px - 1) * 1.8;
+            const t = px * land.N;
+            const i = Math.min(land.N - 1, t | 0);
+            const fr = t - i;
+            return land.ys[i] * (1 - fr) + land.ys[i + 1] * fr;
+        }
+        const gradAt = px => (fAt(px + 1 / land.N) - fAt(px - 1 / land.N)) * land.N / 2;
+
+        const lrVal = () => Math.pow(10, parseFloat(ui.lr.value));
+        const moVal = () => parseFloat(ui.mo.value);
+
+        function fmtLr() {
+            const lr = lrVal();
+            ui.lrVal.textContent = lr >= 1 ? lr.toFixed(2) : lr.toFixed(3);
+            ui.moVal.textContent = moVal().toFixed(2);
+        }
+
+        function startPos() {
+            // begin on an outer slope, away from the global minimum
+            return land.xg > .5 ? .05 + Math.random() * .1 : .85 + Math.random() * .1;
+        }
+
+        function showBest() {
+            const list = PG.store.get('gd.best', []);
+            ui.best.textContent = list.length ? `pb ${list.join(' · ')} epochs` : '';
+        }
+
+        function setStatus(msg, color) {
+            ui.status.textContent = msg;
+            ui.status.style.color = color || '';
+        }
+
+        /* ---- coordinate mapping ---- */
+        const PADX = 18, PADT = 30, PADB = 26;
+        const toPx = wx => PADX + wx * (W - 2 * PADX);
+        const toPy = f => PADT + (1 - clamp(f, 0, 1)) * (H - PADT - PADB);
+
+        function resize() {
+            const r = frame.getBoundingClientRect();
+            if (!r.width || !r.height) return;
+            dpr = Math.min(2, window.devicePixelRatio || 1);
+            W = r.width; H = r.height;
+            canvas.width = Math.round(W * dpr);
+            canvas.height = Math.round(H * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            draw(performance.now());
+        }
+
+        /* ---- simulation ---- */
+        function step() {
+            prevX = x;
+            const g = gradAt(x);
+            v = moVal() * v - lrVal() * g * GSCALE;
+            x += v;
+            epochs++;
+            trail.push({ x: prevX, life: 1 });
+            if (trail.length > 18) trail.shift();
+
+            if (Math.abs(v) > .38 || x < -.7 || x > 1.7) return die();
+
+            const nearGlobal = Math.abs(x - land.xg) < .025;
+            if (nearGlobal && Math.abs(v) < .0045) {
+                if (++winTicks >= 8) return win();
+            } else winTicks = 0;
+
+            if (!nearGlobal && Math.abs(v) < .003 && Math.abs(g) < .35) {
+                if (++stuckTicks >= 14 && !stuckShown) {
+                    stuckShown = true;
+                    setStatus('stuck in a local minimum — nudge it');
+                }
+            } else { stuckTicks = 0; if (stuckShown && Math.abs(v) > .01) { stuckShown = false; setStatus(''); } }
+        }
+
+        function win() {
+            state = 'won';
+            setStatus(`converged in ${epochs} epochs 🎉`);
+            const list = PG.store.get('gd.best', []);
+            const isPb = !list.length || epochs < list[0];
+            list.push(epochs);
+            list.sort((a, b) => a - b);
+            PG.store.set('gd.best', list.slice(0, 3));
+            showBest();
+            if (isPb) setStatus(`converged in ${epochs} epochs — new personal best 🏆`);
+            const r = canvas.getBoundingClientRect();
+            PG.burst(r.left + toPx(x), r.top + toPy(fAt(x)), { count: 60, power: 7 });
+            PG.award('gdConverge');
+            PG.track('descent_converged', { value: epochs });
+            document.dispatchEvent(new CustomEvent('pg:celebrate', { detail: { game: 'descent' } }));
+            setTimeout(() => {
+                ui.start.textContent = '▶ run it back';
+                ui.overlaySub.textContent = `${epochs} epochs — can you do it in fewer?`;
+                ui.overlay.classList.remove('hidden');
+                loop.setEnabled(false);
+            }, 1600);
+        }
+
+        function die() {
+            state = 'dead';
+            death = { t0: performance.now(), x0: toPx(clamp(x, -.05, 1.05)), y0: toPy(fAt(clamp(x, -.05, 1.05))), dir: Math.sign(v) || 1 };
+            setStatus('diverged — loss is NaN now. nice.', 'var(--accent-3)');
+            ui.loss.textContent = 'loss NaN';
+            if (!PG.reduced()) {
+                frame.classList.add('descent-shake');
+                setTimeout(() => frame.classList.remove('descent-shake'), 500);
+            }
+            PG.award('gdDiverge');
+            PG.track('descent_diverged', { value: epochs });
+            setTimeout(() => {
+                ui.start.textContent = '▶ try a smaller step';
+                ui.overlaySub.textContent = 'the loss left the chart. lower the lr — or embrace chaos.';
+                ui.overlay.classList.remove('hidden');
+                loop.setEnabled(false);
+            }, 1300);
+        }
+
+        function begin(fresh) {
+            if (fresh) land = makeLandscape();
+            x = startPos(); prevX = x; v = 0;
+            epochs = 0; winTicks = 0; stuckTicks = 0; stuckShown = false;
+            trail = []; parts = []; death = null;
+            acc = 0; lastT = 0;
+            state = 'running';
+            setStatus('');
+            ui.overlay.classList.add('hidden');
+            loop.setEnabled(true);
+            PG.track('descent_start');
+        }
+
+        function nudge(dir) {
+            if (state !== 'running') return;
+            v += dir * .035;
+            epochs += 3;   // nudges aren't free
+            stuckShown = false;
+            setStatus('');
+            const bx = toPx(clamp(x, 0, 1)), by = toPy(fAt(clamp(x, 0, 1)));
+            for (let i = 0; i < 7; i++) {
+                parts.push({
+                    x: bx, y: by,
+                    vx: -dir * (1 + Math.random() * 2.2),
+                    vy: -(.5 + Math.random() * 1.8),
+                    life: 1
+                });
+            }
+        }
+
+        /* ---- rendering ---- */
+        function draw(t) {
+            if (!W) return;
+            C = PG.colors();
+            ctx.clearRect(0, 0, W, H);
+
+            // faint grid
+            ctx.globalAlpha = C.light ? .07 : .05;
+            ctx.strokeStyle = C.txt;
+            ctx.lineWidth = 1;
+            for (let gx = PADX; gx < W; gx += 36) {
+                ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke();
+            }
+            for (let gy = PADT; gy < H; gy += 36) {
+                ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+            }
+
+            // landscape fill + line
+            ctx.globalAlpha = 1;
+            const path = new Path2D();
+            for (let i = 0; i <= land.N; i += 2) {
+                const px = toPx(i / land.N), py = toPy(land.ys[i]);
+                i === 0 ? path.moveTo(px, py) : path.lineTo(px, py);
+            }
+            const fill = new Path2D(path);
+            fill.lineTo(toPx(1), H); fill.lineTo(toPx(0), H); fill.closePath();
+            const grad = ctx.createLinearGradient(0, PADT, 0, H);
+            grad.addColorStop(0, C.accent + '00');
+            grad.addColorStop(1, C.accent + (C.light ? '14' : '20'));
+            ctx.fillStyle = grad;
+            ctx.fill(fill);
+            ctx.strokeStyle = C.accent;
+            ctx.globalAlpha = .85;
+            ctx.lineWidth = 2;
+            ctx.stroke(path);
+
+            // global-minimum flag (waves gently while running)
+            const fx = toPx(land.xg), fy = toPy(fAt(land.xg));
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = C.accent3;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(fx, fy - 2); ctx.lineTo(fx, fy - 24); ctx.stroke();
+            const wave = state === 'running' && !PG.reduced() ? Math.sin(t / 260) * 2.5 : 0;
+            ctx.fillStyle = C.accent3;
+            ctx.beginPath();
+            ctx.moveTo(fx, fy - 24);
+            ctx.lineTo(fx + 13, fy - 20 + wave);
+            ctx.lineTo(fx, fy - 15);
+            ctx.closePath();
+            ctx.fill();
+
+            // trail
+            trail.forEach((tr, i) => {
+                tr.life *= .94;
+                ctx.globalAlpha = tr.life * .35;
+                ctx.fillStyle = C.accent2;
+                ctx.beginPath();
+                ctx.arc(toPx(clamp(tr.x, -.05, 1.05)), toPy(fAt(tr.x)), 2 + i * .12, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // nudge particles
+            parts = parts.filter(p => p.life > 0);
+            parts.forEach(p => {
+                p.x += p.vx; p.y += p.vy; p.vy += .12; p.life -= .045;
+                ctx.globalAlpha = Math.max(0, p.life) * .8;
+                ctx.fillStyle = C.accent2;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2); ctx.fill();
+            });
+
+            // ball (the optimizer)
+            ctx.globalAlpha = 1;
+            if (state === 'dead' && death) {
+                const k = (t - death.t0) / 1000;
+                const bx = death.x0 + death.dir * k * 240;
+                const by = death.y0 - 320 * k + 560 * k * k;
+                ctx.save();
+                ctx.translate(bx, by);
+                ctx.rotate(k * 9);
+                ctx.fillStyle = C.accent2;
+                ctx.beginPath(); ctx.arc(0, 0, Math.max(1, 7 - k * 3), 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+                ctx.globalAlpha = Math.max(0, 1 - k);
+                ctx.fillStyle = C.accent3;
+                ctx.font = `700 ${16 + k * 18}px ${getComputedStyle(document.documentElement).getPropertyValue('--f-mono') || 'monospace'}`;
+                ctx.textAlign = 'center';
+                ctx.fillText('NaN', death.x0, death.y0 - 30 - k * 50);
+            } else {
+                const ix = state === 'running' ? prevX + (x - prevX) * clamp(acc / SIM_MS, 0, 1) : x;
+                const cx = clamp(ix, -.05, 1.05);
+                const bx = toPx(cx), by = toPy(fAt(cx)) - 6;
+                const stretch = 1 + Math.min(.55, Math.abs(v) * 11);
+                const ang = Math.atan2(toPy(fAt(cx + .02)) - toPy(fAt(cx - .02)), toPx(cx + .02) - toPx(cx - .02));
+                ctx.save();
+                ctx.translate(bx, by);
+                ctx.rotate(ang);
+                ctx.scale(stretch, 1 / stretch);
+                const bg = ctx.createRadialGradient(-2, -2, 1, 0, 0, 8);
+                bg.addColorStop(0, C.accent2);
+                bg.addColorStop(1, C.accent);
+                ctx.fillStyle = bg;
+                ctx.beginPath(); ctx.arc(0, 0, 7, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        function tick(t) {
+            if (state === 'running') {
+                if (!lastT) lastT = t;
+                acc += Math.min(200, t - lastT);
+                lastT = t;
+                while (acc > SIM_MS && state === 'running') { step(); acc -= SIM_MS; }
+                ui.epoch.textContent = `epoch ${String(epochs).padStart(3, '0')}`;
+                if (state !== 'dead') ui.loss.textContent = `loss ${fAt(clamp(x, -.05, 1.05)).toFixed(4)}`;
+            }
+            draw(t);
+        }
+
+        /* ---- wiring ---- */
+        const loop = PG.makeLoop(frame, tick);
+        loop.setEnabled(false);
+
+        ui.start.addEventListener('click', () => begin(state === 'won' || state === 'dead' ? false : true));
+        ui.reset.addEventListener('click', () => {
+            state = 'idle';
+            begin(true);
+        });
+        rootEl.querySelectorAll('[data-descent-nudge]').forEach(btn =>
+            btn.addEventListener('click', () => nudge(parseInt(btn.dataset.nudge, 10))));
+        [ui.lr, ui.mo].forEach(el => el.addEventListener('input', fmtLr));
+
+        new ResizeObserver(() => resize()).observe(frame);
+        PG.onTheme(() => draw(performance.now()));
+        fmtLr();
+        showBest();
+        resize();
+    }
+
+    document.querySelectorAll('[data-descent-root]').forEach(initDescent);
+})();

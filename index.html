@@ -1438,6 +1438,73 @@ footer {
     pointer-events: none;
 }
 
+/* ===================================================================
+   PLAYGROUND — Descent (gradient descent mini-game)
+   ==================================================================*/
+.descent-frame { background: var(--bg-2); }
+.descent-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.descent-hud {
+    position: absolute; top: 10px; left: 12px; right: 12px;
+    display: flex; justify-content: space-between;
+    font: 600 10.5px/1 var(--f-mono);
+    color: var(--muted);
+    letter-spacing: .1em; text-transform: uppercase;
+    pointer-events: none;
+}
+.descent-status {
+    position: absolute; bottom: 9px; left: 10px; right: 10px;
+    text-align: center;
+    font: 600 11px/1.4 var(--f-mono);
+    color: var(--accent-2);
+    pointer-events: none;
+    letter-spacing: .04em;
+}
+.descent-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    background: color-mix(in oklab, var(--bg) 38%, transparent);
+    backdrop-filter: blur(2.5px);
+    -webkit-backdrop-filter: blur(2.5px);
+    transition: opacity .25s ease, visibility .25s;
+}
+.descent-overlay.hidden { opacity: 0; visibility: hidden; }
+.descent-overlay-sub {
+    margin: 0; padding: 0 16px;
+    font: 500 11px/1.5 var(--f-mono);
+    color: var(--txt-2);
+    letter-spacing: .05em;
+    text-align: center;
+}
+.descent-controls { display: flex; flex-direction: column; gap: 8px; }
+.descent-slider {
+    display: flex; align-items: center; gap: 12px;
+    font: 500 12px/1 var(--f-mono);
+    color: var(--muted);
+}
+.descent-slider .descent-label {
+    min-width: 138px;
+    display: flex; justify-content: space-between; gap: 8px;
+}
+.descent-slider code { color: var(--accent); font-family: var(--f-mono); }
+.descent-slider input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); cursor: ew-resize; }
+.descent-btns { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.descent-best {
+    margin-left: auto;
+    font: 500 10.5px/1.4 var(--f-mono);
+    color: var(--muted);
+    letter-spacing: .04em;
+}
+@keyframes descent-shake {
+    10%, 90% { transform: translate(-2px, 0); }
+    20%, 80% { transform: translate(3px, -1px); }
+    30%, 50%, 70% { transform: translate(-5px, 1px); }
+    40%, 60% { transform: translate(5px, 0); }
+}
+.descent-shake { animation: descent-shake .45s both; }
+@media (prefers-reduced-motion: reduce) {
+    .descent-shake { animation: none; }
+}
+
 /* Reduced motion: kill ambient playground animation */
 @media (prefers-reduced-motion: reduce) {
     .pg-toast, .pg-toast.out { animation: none; }
@@ -1854,6 +1921,7 @@ footer {
                 <button class="filter-chip" data-filter="nlp">NLP / VLM</button>
                 <button class="filter-chip" data-filter="aud">Audio</button>
                 <button class="filter-chip" data-filter="mobile">Edge</button>
+                <button class="filter-chip" data-filter="play">Playground</button>
             </div>
 
             <div class="projects-grid" id="projectGrid">
@@ -2237,6 +2305,50 @@ footer {
                             <a class="badge-link" target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA">
                                 <img src="https://img.shields.io/badge/YouTube-Channel-FF0000?style=for-the-badge&logo=youtube&logoColor=ffffff" alt="YouTube"/>
                             </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Playground: Descent (gradient descent mini-game) -->
+                <article class="project-card reveal play-card" data-tags="play" data-descent-root>
+                    <div class="media-frame descent-frame" data-descent-frame>
+                        <canvas class="descent-canvas" aria-hidden="true"></canvas>
+                        <div class="descent-hud" aria-hidden="true">
+                            <span data-descent-epoch>epoch 000</span>
+                            <span data-descent-loss>loss —</span>
+                        </div>
+                        <div class="descent-status" data-descent-status aria-live="polite"></div>
+                        <div class="descent-overlay" data-descent-overlay>
+                            <button class="btn btn-primary" data-descent-start type="button">▶ Start descent</button>
+                            <p class="descent-overlay-sub" data-descent-overlay-sub>guide the optimizer to the global minimum</p>
+                        </div>
+                    </div>
+                    <div class="project-body">
+                        <h3>Descent — you are the optimizer</h3>
+                        <p>
+                            SGD with momentum, played by hand. Pick a learning rate, roll the ball to the
+                            <strong>flagged global minimum</strong> — local minima are traps, and too much lr ends in NaN.
+                        </p>
+                        <div class="descent-controls">
+                            <label class="descent-slider">
+                                <span class="descent-label">lr <code data-descent-lrval>0.080</code></span>
+                                <input type="range" data-descent-lr min="-3" max="0.4" step="0.01" value="-1.1" aria-label="Learning rate (log scale)"/>
+                            </label>
+                            <label class="descent-slider">
+                                <span class="descent-label">momentum <code data-descent-moval>0.70</code></span>
+                                <input type="range" data-descent-mo min="0" max="0.97" step="0.01" value="0.70" aria-label="Momentum"/>
+                            </label>
+                            <div class="descent-btns">
+                                <button class="btn-mini" data-descent-nudge="-1" type="button">⟵ nudge</button>
+                                <button class="btn-mini" data-descent-nudge="1" type="button">nudge ⟶</button>
+                                <button class="btn-mini" data-descent-reset type="button">↺ new landscape</button>
+                                <span class="descent-best" data-descent-best></span>
+                            </div>
+                        </div>
+                        <div class="tag-row">
+                            <span class="tag tag-accent">Interactive</span>
+                            <span class="tag">SGD + momentum</span>
+                            <span class="tag">score = epochs</span>
                         </div>
                     </div>
                 </article>
