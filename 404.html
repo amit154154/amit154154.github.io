@@ -1,62 +1,391 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <title>Page Not Found</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    * {
-      line-height: 1.2;
-      margin: 0;
-    }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>404 — dropped(out) · Amit Israeli</title>
+    <meta name="description" content="This page got dropped(out). Play a round of gradient descent instead."/>
+    <meta name="robots" content="noindex"/>
+    <link rel="icon" type="image/png" href="/icon.png"/>
 
-    html {
-      color: #888;
-      display: table;
-      font-family: sans-serif;
-      height: 100%;
-      text-align: center;
-      width: 100%;
-    }
+    <!-- theme before paint -->
+    <script>
+        try { if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light'); } catch (e) {}
+    </script>
 
-    body {
-      display: table-cell;
-      vertical-align: middle;
-      margin: 2em auto;
-    }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 
-    h1 {
-      color: #555;
-      font-size: 2em;
-      font-weight: 400;
-    }
+    <!-- Playground (shared with the homepage — the Descent game inits here) -->
+    <script src="/assets/playground.js" defer></script>
 
-    p {
-      margin: 0 auto;
-      width: 280px;
-    }
+<style>
+/* ===================================================================
+   DESIGN TOKENS (mirrors index.html)
+   ==================================================================*/
+:root {
+    --bg:           #08090d;
+    --bg-2:         #0c0e14;
+    --surface:      #10131c;
+    --surface-2:    #161a26;
+    --surface-3:    #1c2030;
+    --border:       rgba(255,255,255,.07);
+    --border-2:     rgba(255,255,255,.12);
+    --border-3:     rgba(255,255,255,.18);
+    --txt:          #e9ecf4;
+    --txt-2:        #c2c8d6;
+    --muted:        #8c93a8;
+    --muted-2:      #626a7e;
+    --accent:       #7c8cff;
+    --accent-2:     #4ad7d6;
+    --accent-3:     #f4b860;
+    --accent-soft:  rgba(124,140,255,.12);
+    --accent-ring:  rgba(124,140,255,.35);
+    --grad-1:       linear-gradient(135deg, #7c8cff 0%, #4ad7d6 100%);
+    --shadow-1:     0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.25);
+    --shadow-2:     0 10px 30px rgba(0,0,0,.45);
+    --shadow-glow:  0 0 0 1px var(--border-2), 0 12px 40px rgba(124,140,255,.12);
+    --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 20px; --r-pill: 999px;
+    --f-sans:    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --f-display: 'Space Grotesk', 'Inter', sans-serif;
+    --f-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.light {
+    --bg:           #f7f8fc;
+    --bg-2:         #ffffff;
+    --surface:      #ffffff;
+    --surface-2:    #f4f6fb;
+    --surface-3:    #eef0f7;
+    --border:       rgba(10,15,30,.08);
+    --border-2:     rgba(10,15,30,.14);
+    --border-3:     rgba(10,15,30,.22);
+    --txt:          #0f1422;
+    --txt-2:        #2a3145;
+    --muted:        #58607a;
+    --muted-2:      #8089a0;
+    --accent:       #4f5dff;
+    --accent-2:     #0ea5a3;
+    --accent-soft:  rgba(79,93,255,.10);
+    --accent-ring:  rgba(79,93,255,.30);
+    --shadow-1:     0 1px 2px rgba(20,30,60,.05), 0 4px 14px rgba(20,30,60,.06);
+    --shadow-2:     0 10px 30px rgba(20,30,60,.08);
+    --shadow-glow:  0 0 0 1px var(--border-2), 0 12px 40px rgba(79,93,255,.10);
+}
 
-    @media only screen and (max-width: 280px) {
+/* ===================================================================
+   BASE
+   ==================================================================*/
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+    margin: 0;
+    font: 15px/1.65 var(--f-sans);
+    color: var(--txt);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(900px 600px at 50% -10%, rgba(124,140,255,.10), transparent 60%),
+        radial-gradient(700px 500px at 85% 90%, rgba(74,215,214,.07), transparent 60%);
+}
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+[hidden] { display: none !important; }
 
-      body,
-      p {
-        width: 95%;
-      }
+.btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 18px;
+    border-radius: var(--r-pill);
+    font: 600 14px/1 var(--f-sans);
+    cursor: pointer; border: none; user-select: none;
+    transition: transform .15s ease, background .2s ease;
+}
+.btn-primary { background: var(--txt); color: var(--bg); }
+.btn-primary:hover { transform: translateY(-1px); }
+.btn-ghost { background: var(--surface); color: var(--txt); border: 1px solid var(--border-2); }
+.btn-ghost:hover { background: var(--surface-2); }
+.btn-mini {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 12px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--border-2);
+    background: var(--surface-2);
+    color: var(--txt-2);
+    font: 600 12px/1 var(--f-sans);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+.btn-mini:hover { background: var(--surface-3); color: var(--txt); }
 
-      h1 {
-        font-size: 1.5em;
-        margin: 0 0 0.3em;
-      }
+/* ===================================================================
+   404 LAYOUT
+   ==================================================================*/
+.nf-wrap {
+    position: relative;
+    min-height: 100%;
+    width: min(720px, 92%);
+    margin: 0 auto;
+    padding: 40px 0 60px;
+    display: flex; flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+}
+.nf-brand {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 10px;
+    font: 700 14px/1.2 var(--f-sans);
+    margin-bottom: 18px;
+}
+.nf-brand img {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    border: 1px solid var(--border-2);
+    background: var(--surface-2);
+}
+.nf-brand:hover { color: var(--accent); }
+.nf-code {
+    display: flex; align-items: center; gap: 6px;
+    font: 700 clamp(64px, 14vw, 110px)/1 var(--f-mono);
+    letter-spacing: .02em;
+    background: var(--grad-1);
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+    user-select: none;
+}
+.nf-code img {
+    width: clamp(58px, 12vw, 96px);
+    height: clamp(58px, 12vw, 96px);
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
+    animation: nf-bob 3.5s ease-in-out infinite;
+}
+@keyframes nf-bob { 50% { transform: translateY(-7px) rotate(3deg); } }
+.nf-wrap h1 {
+    margin: 0;
+    font: 600 clamp(22px, 4vw, 32px)/1.25 var(--f-display);
+    letter-spacing: -.02em;
+}
+.nf-sub {
+    margin: 0;
+    max-width: 52ch;
+    color: var(--muted);
+    font: 500 12.5px/1.7 var(--f-mono);
+}
+.nf-sub b { color: var(--txt-2); font-weight: 600; }
 
-    }
-  </style>
+/* the game card */
+.nf-game {
+    width: 100%;
+    margin-top: 18px;
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    box-shadow: var(--shadow-glow);
+    overflow: hidden;
+    text-align: left;
+}
+.nf-game .descent-frame {
+    position: relative;
+    aspect-ratio: 16/9;
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border);
+}
+.nf-game-body { padding: 16px 18px 18px; }
+
+.nf-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+.nf-tip { margin: 6px 0 0; color: var(--muted-2); font: 500 11px/1.5 var(--f-mono); letter-spacing: .05em; }
+
+/* ===================================================================
+   DESCENT GAME (mirrors index.html styles)
+   ==================================================================*/
+.descent-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.descent-hud {
+    position: absolute; top: 10px; left: 12px; right: 12px;
+    display: flex; justify-content: space-between;
+    font: 600 10.5px/1 var(--f-mono);
+    color: var(--muted);
+    letter-spacing: .1em; text-transform: uppercase;
+    pointer-events: none;
+}
+.descent-status {
+    position: absolute; bottom: 9px; left: 10px; right: 10px;
+    text-align: center;
+    font: 600 11px/1.4 var(--f-mono);
+    color: var(--accent-2);
+    pointer-events: none;
+    letter-spacing: .04em;
+}
+.descent-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    background: color-mix(in oklab, var(--bg) 38%, transparent);
+    backdrop-filter: blur(2.5px);
+    -webkit-backdrop-filter: blur(2.5px);
+    transition: opacity .25s ease, visibility .25s;
+}
+.descent-overlay.hidden { opacity: 0; visibility: hidden; }
+.descent-overlay-sub {
+    margin: 0; padding: 0 16px;
+    font: 500 11px/1.5 var(--f-mono);
+    color: var(--txt-2);
+    letter-spacing: .05em;
+    text-align: center;
+}
+.descent-controls { display: flex; flex-direction: column; gap: 8px; }
+.descent-slider {
+    display: flex; align-items: center; gap: 12px;
+    font: 500 12px/1 var(--f-mono);
+    color: var(--muted);
+}
+.descent-slider .descent-label { min-width: 138px; display: flex; justify-content: space-between; gap: 8px; }
+.descent-slider code { color: var(--accent); font-family: var(--f-mono); }
+.descent-slider input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); cursor: ew-resize; }
+.descent-btns { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.descent-best { margin-left: auto; font: 500 10.5px/1.4 var(--f-mono); color: var(--muted); letter-spacing: .04em; }
+@keyframes descent-shake {
+    10%, 90% { transform: translate(-2px, 0); }
+    20%, 80% { transform: translate(3px, -1px); }
+    30%, 50%, 70% { transform: translate(-5px, 1px); }
+    40%, 60% { transform: translate(5px, 0); }
+}
+.descent-shake { animation: descent-shake .45s both; }
+
+/* ===================================================================
+   SHARED PLAYGROUND CHROME (toasts, confetti, terminal)
+   ==================================================================*/
+.pg-toasts {
+    position: fixed; bottom: 18px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 90;
+    display: flex; flex-direction: column; gap: 8px;
+    width: min(420px, calc(100vw - 32px));
+    pointer-events: none;
+}
+.pg-toast {
+    display: flex; gap: 12px; align-items: center;
+    padding: 12px 16px;
+    border-radius: var(--r-lg);
+    background: color-mix(in oklab, var(--surface) 92%, transparent);
+    border: 1px solid var(--border-2);
+    box-shadow: var(--shadow-2);
+    backdrop-filter: blur(10px);
+    animation: pg-toast-in .45s cubic-bezier(.2,1.4,.4,1) both;
+}
+.pg-toast.pg-toast-award { border-color: var(--accent-ring); box-shadow: var(--shadow-glow); }
+.pg-toast.out { animation: pg-toast-out .3s ease both; }
+.pg-toast-icon { font-size: 20px; flex-shrink: 0; }
+.pg-toast-title { display: block; font: 600 13px/1.35 var(--f-sans); color: var(--txt); }
+.pg-toast-sub { display: block; font: 400 11px/1.4 var(--f-mono); color: var(--muted); margin-top: 2px; }
+@keyframes pg-toast-in { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes pg-toast-out { to { opacity: 0; transform: translateY(8px); } }
+.pg-burst-canvas { position: fixed; inset: 0; z-index: 110; width: 100vw; height: 100vh; pointer-events: none; }
+
+.pg-term {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    z-index: 95;
+    height: min(46vh, 420px);
+    display: flex; flex-direction: column;
+    background: color-mix(in oklab, var(--bg) 94%, transparent);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--accent-ring);
+    box-shadow: 0 -18px 50px rgba(0,0,0,.4);
+    font: 13px/1.6 var(--f-mono);
+    color: var(--txt-2);
+    transform: translateY(102%);
+    transition: transform .3s cubic-bezier(.2,.9,.3,1);
+}
+.pg-term.open { transform: none; }
+.pg-term-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px; letter-spacing: .06em;
+}
+.pg-term-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent-2); opacity: .8; }
+.pg-term-close { margin-left: auto; background: none; border: none; color: var(--muted); cursor: pointer; font: inherit; }
+.pg-term-close:hover { color: var(--txt); }
+.pg-term-out { flex: 1; overflow-y: auto; padding: 12px 16px 4px; white-space: pre-wrap; word-break: break-word; }
+.pg-term-out a { color: var(--accent); text-decoration: underline; }
+.pg-term-out .t-dim { color: var(--muted); }
+.pg-term-out .t-ok { color: var(--accent-2); }
+.pg-term-out .t-warn { color: var(--accent-3); }
+.pg-term-line { margin: 0; }
+.pg-term-input-row { display: flex; align-items: center; gap: 8px; padding: 8px 16px 12px; }
+.pg-term-prompt { color: var(--accent-2); flex-shrink: 0; }
+.pg-term-input { flex: 1; background: none; border: none; outline: none; color: var(--txt); font: inherit; caret-color: var(--accent-2); }
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .nf-code img { animation: none; }
+    .descent-shake { animation: none; }
+    .pg-toast, .pg-toast.out { animation: none; }
+    .pg-term { transition: none; }
+}
+</style>
 </head>
-
 <body>
-  <h1>Page Not Found</h1>
-  <p>Sorry, but the page you were trying to view does not exist.</p>
-</body>
 
+<main class="nf-wrap">
+    <a class="nf-brand" href="/">
+        <img src="/assets/koala_192.png" alt=""/>
+        Amit Israeli
+    </a>
+
+    <div class="nf-code" aria-label="404">4<img src="/assets/cursor_192.png" alt="0"/>4</div>
+
+    <h1>This page got dropped(out).</h1>
+    <p class="nf-sub">
+        <b>p(drop) = 1.0</b> for this URL — the activation you're looking for never fired.<br/>
+        while you're here, the optimizer could use a hand:
+    </p>
+
+    <!-- Descent — same game as the homepage, courtesy of /assets/playground.js -->
+    <section class="nf-game" data-descent-root aria-label="Gradient descent mini-game">
+        <div class="descent-frame" data-descent-frame>
+            <canvas class="descent-canvas" aria-hidden="true"></canvas>
+            <div class="descent-hud" aria-hidden="true">
+                <span data-descent-epoch>epoch 000</span>
+                <span data-descent-loss>loss —</span>
+            </div>
+            <div class="descent-status" data-descent-status aria-live="polite"></div>
+            <div class="descent-overlay" data-descent-overlay>
+                <button class="btn btn-primary" data-descent-start type="button">▶ Start descent</button>
+                <p class="descent-overlay-sub" data-descent-overlay-sub>guide the optimizer to the global minimum</p>
+            </div>
+        </div>
+        <div class="nf-game-body">
+            <div class="descent-controls">
+                <label class="descent-slider">
+                    <span class="descent-label">lr <code data-descent-lrval>0.080</code></span>
+                    <input type="range" data-descent-lr min="-3" max="0.4" step="0.01" value="-1.1" aria-label="Learning rate (log scale)"/>
+                </label>
+                <label class="descent-slider">
+                    <span class="descent-label">momentum <code data-descent-moval>0.70</code></span>
+                    <input type="range" data-descent-mo min="0" max="0.97" step="0.01" value="0.70" aria-label="Momentum"/>
+                </label>
+                <div class="descent-btns">
+                    <button class="btn-mini" data-descent-nudge="-1" type="button">⟵ nudge</button>
+                    <button class="btn-mini" data-descent-nudge="1" type="button">nudge ⟶</button>
+                    <button class="btn-mini" data-descent-reset type="button">↺ new landscape</button>
+                    <span class="descent-best" data-descent-best></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="nf-actions">
+        <a class="btn btn-primary" href="/">← Back to the homepage</a>
+        <a class="btn btn-ghost" href="/#projects">See the projects</a>
+    </div>
+    <p class="nf-tip">tip: the ~ key works here too</p>
+</main>
+
+</body>
 </html>
-<!-- IE needs 512+ bytes: https://docs.microsoft.com/archive/blogs/ieinternals/friendly-http-error-pages -->

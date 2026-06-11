@@ -1365,7 +1365,7 @@ const PG = (() => {
         linkedin: 'https://www.linkedin.com/in/amit-israeli-aa4a30242/',
         hf:       'https://huggingface.co/AmitIsraeli',
         spotify:  'https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1',
-        cv:       'assets/AmitIsraeliCV_15_20_2025.pdf',
+        cv:       '/assets/AmitIsraeliCV_15_20_2025.pdf',   // root-absolute: the terminal also runs on /404 paths
         wix:      'https://www.wix.com'
     };
 
