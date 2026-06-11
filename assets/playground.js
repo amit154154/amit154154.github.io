@@ -945,3 +945,170 @@ const PG = (() => {
 
     document.querySelectorAll('[data-descent-root]').forEach(initDescent);
 })();
+
+/* ===================================================================
+   FEATURE: REAL OR GENERATED? — paper-title quiz
+   Half the deck is real published ML research; half was written by a
+   language model for this site. 12 rounds, streaks, stamp verdicts.
+   ==================================================================*/
+(() => {
+    const root = document.querySelector('[data-rg-root]');
+    if (!root) return;
+
+    // Real, published papers — title, venue, year (all verifiable).
+    const REAL = [
+        { t: 'Attention Is All You Need', src: 'NeurIPS 2017' },
+        { t: 'One Pixel Attack for Fooling Deep Neural Networks', src: 'IEEE TEVC 2019' },
+        { t: 'The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks', src: 'ICLR 2019' },
+        { t: 'Adversarial Examples Are Not Bugs, They Are Features', src: 'NeurIPS 2019' },
+        { t: 'Weight Agnostic Neural Networks', src: 'NeurIPS 2019' },
+        { t: 'Neural Ordinary Differential Equations', src: 'NeurIPS 2018' },
+        { t: 'Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets', src: 'arXiv 2022' },
+        { t: 'Deep Image Prior', src: 'CVPR 2018' },
+        { t: 'The Hardware Lottery', src: 'CACM 2021' },
+        { t: 'Pay Attention to MLPs', src: 'NeurIPS 2021' },
+        { t: 'Intriguing Properties of Neural Networks', src: 'ICLR 2014' },
+        { t: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale', src: 'ICLR 2021' }
+    ];
+    // Hallucinated by a language model, on purpose, for this game.
+    const GEN = [
+        { t: 'Dropout Is All You Don\'t Need: Stochastic Absence as a Training Signal' },
+        { t: 'Et Tu, Adam? On the Quiet Betrayal of Adaptive Learning Rates' },
+        { t: 'Latent Space Tourism: Zero-Shot Sightseeing in Frozen Diffusion Models' },
+        { t: 'Overfitting as a Service: Memorization-First Architectures for Small Data' },
+        { t: 'Schrödinger\'s Batch: Superposition Sampling for Undecided Optimizers' },
+        { t: 'You Only Look Eleven Times: Redundant Detection for the Anxious' },
+        { t: 'Gradient Descent Considered as a Hike: Topographic Regularization with Trail Mix' },
+        { t: 'Loss Is a Social Construct: Post-Structuralist Objectives for Vision Transformers' },
+        { t: 'Backpropagation Through Vibes: Mood Embeddings at Scale' },
+        { t: 'BERT, but Louder: Volume as an Inductive Bias' },
+        { t: 'Stochastic Parrots Can Tango: Choreographic Alignment of Language Models' },
+        { t: 'The Bitter Lesson 2: Sweetened Variants for Small Compute' }
+    ];
+
+    const $ = sel => root.querySelector(sel);
+    const ui = {
+        stage: $('[data-rg-stage]'),
+        title: $('[data-rg-title]'),
+        count: $('[data-rg-count]'),
+        streak: $('[data-rg-streak]'),
+        stamp: $('[data-rg-stamp]'),
+        stampText: $('[data-rg-stamp-text]'),
+        verdict: $('[data-rg-verdict]'),
+        overlay: $('[data-rg-overlay]'),
+        overlaySub: $('[data-rg-overlay-sub]'),
+        start: $('[data-rg-start]'),
+        actions: $('[data-rg-actions]'),
+        best: $('[data-rg-best]')
+    };
+    const guessBtns = root.querySelectorAll('[data-rg-guess]');
+
+    const ROUNDS = 12;
+    let deck = [], i = 0, score = 0, streak = 0, bestStreak = 0, busy = false;
+
+    const shuffle = arr => {
+        const a = [...arr];
+        for (let k = a.length - 1; k > 0; k--) {
+            const j = (Math.random() * (k + 1)) | 0;
+            [a[k], a[j]] = [a[j], a[k]];
+        }
+        return a;
+    };
+
+    function showBest() {
+        const b = PG.store.get('rg.best', null);
+        ui.best.textContent = b ? `pb ${b.score}/${ROUNDS} · best streak ${b.streak}` : '';
+    }
+
+    function startRun() {
+        deck = shuffle([
+            ...shuffle(REAL).slice(0, ROUNDS / 2).map(p => ({ ...p, real: true })),
+            ...shuffle(GEN).slice(0, ROUNDS / 2).map(p => ({ ...p, real: false }))
+        ]);
+        i = 0; score = 0; streak = 0; bestStreak = 0; busy = false;
+        ui.overlay.classList.add('hidden');
+        ui.actions.hidden = false;
+        ui.verdict.textContent = '';
+        PG.track('rg_start');
+        showRound();
+    }
+
+    function showRound() {
+        const card = deck[i];
+        ui.title.textContent = `“${card.t}”`;
+        ui.count.textContent = `${String(i + 1).padStart(2, '0')} / ${ROUNDS}`;
+        ui.streak.textContent = streak >= 3 ? `streak ${streak} 🔥` : (streak ? `streak ${streak}` : '');
+        ui.stamp.classList.remove('show', 'real', 'gen');
+        ui.verdict.textContent = '';
+        guessBtns.forEach(b => b.disabled = false);
+        busy = false;
+    }
+
+    function guess(saidReal) {
+        if (busy || i >= deck.length) return;
+        busy = true;
+        guessBtns.forEach(b => b.disabled = true);
+        const card = deck[i];
+        const correct = saidReal === card.real;
+
+        ui.stamp.classList.add(card.real ? 'real' : 'gen');
+        ui.stampText.textContent = card.real ? 'REAL' : 'GENERATED';
+        ui.stamp.classList.add('show');
+        ui.verdict.textContent = (correct ? '✓ ' : '✗ ') +
+            (card.real ? `published — ${card.src}` : 'hallucinated by a language model for this site');
+        ui.verdict.style.color = correct ? 'var(--accent-2)' : 'var(--accent-3)';
+
+        if (correct) {
+            score++;
+            streak++;
+            bestStreak = Math.max(bestStreak, streak);
+            if (streak >= 8) PG.award('rgSharp');
+        } else {
+            streak = 0;
+            if (!card.real) PG.award('rgFooled');
+            if (!PG.reduced()) {
+                ui.stage.classList.add('descent-shake');
+                setTimeout(() => ui.stage.classList.remove('descent-shake'), 500);
+            }
+        }
+        ui.streak.textContent = streak >= 3 ? `streak ${streak} 🔥` : (streak ? `streak ${streak}` : '');
+
+        i++;
+        setTimeout(i >= ROUNDS ? finish : showRound, 1450);
+    }
+
+    function finish() {
+        ui.actions.hidden = true;
+        ui.stamp.classList.remove('show');
+        ui.title.textContent = '';
+        ui.verdict.textContent = '';
+        const pct = score / ROUNDS;
+        const line =
+            pct >= .85 ? 'deepfake-detector material. we should talk.' :
+            pct >= .6  ? 'a solid discriminator — the generator needs more steps.' :
+            pct >= .4  ? 'the generator is winning. it only needed to fool you once.' :
+                         'fully fooled. the GAN has reached equilibrium.';
+        ui.start.textContent = '▶ run it back';
+        ui.overlaySub.innerHTML =
+            `<strong>${score} / ${ROUNDS}</strong> · best streak ${bestStreak}<br>${line}`;
+        ui.overlay.classList.remove('hidden');
+
+        const prev = PG.store.get('rg.best', null);
+        if (!prev || score > prev.score || (score === prev.score && bestStreak > prev.streak)) {
+            PG.store.set('rg.best', { score, streak: bestStreak });
+        }
+        showBest();
+        PG.award('rgDone');
+        PG.track('rg_finished', { value: score });
+        if (pct >= .6) {
+            const r = ui.stage.getBoundingClientRect();
+            PG.burst(r.left + r.width / 2, r.top + r.height / 2, { count: 45 });
+            document.dispatchEvent(new CustomEvent('pg:celebrate', { detail: { game: 'rg' } }));
+        }
+    }
+
+    ui.start.addEventListener('click', startRun);
+    guessBtns.forEach(b =>
+        b.addEventListener('click', () => guess(b.dataset.rgGuess === 'real')));
+    showBest();
+})();

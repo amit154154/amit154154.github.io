@@ -1505,6 +1505,71 @@ footer {
     .descent-shake { animation: none; }
 }
 
+/* ===================================================================
+   PLAYGROUND — Real or Generated? (paper-title quiz)
+   ==================================================================*/
+.rg-stage {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    background:
+        radial-gradient(110% 100% at 50% 0%, var(--accent-soft), transparent 55%),
+        var(--bg-2);
+    padding: 34px 22px 30px;
+}
+.rg-hud {
+    position: absolute; top: 10px; left: 12px; right: 12px;
+    display: flex; justify-content: space-between;
+    font: 600 10.5px/1 var(--f-mono);
+    color: var(--muted);
+    letter-spacing: .1em; text-transform: uppercase;
+    pointer-events: none;
+}
+.rg-title {
+    margin: 0;
+    font: 600 clamp(14px, 1.4vw, 17.5px)/1.5 var(--f-display);
+    color: var(--txt);
+    text-align: center;
+    text-wrap: balance;
+    max-width: 42ch;
+}
+.rg-verdict {
+    position: absolute; bottom: 9px; left: 12px; right: 12px;
+    margin: 0;
+    text-align: center;
+    font: 600 10.5px/1.4 var(--f-mono);
+    color: var(--muted);
+    letter-spacing: .05em;
+    min-height: 14px;
+}
+.rg-stamp {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    pointer-events: none;
+}
+.rg-stamp span {
+    font: 800 19px/1 var(--f-mono);
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 10px 16px;
+    border: 3px solid currentColor;
+    border-radius: 8px;
+    background: color-mix(in oklab, var(--bg) 72%, transparent);
+    opacity: 0;
+    transform: rotate(-10deg) scale(2.4);
+}
+.rg-stamp.real { color: var(--accent-2); }
+.rg-stamp.gen { color: var(--accent-3); }
+.rg-stamp.show span { animation: rg-stamp-in .28s cubic-bezier(.2,1.5,.4,1) both; }
+@keyframes rg-stamp-in {
+    from { opacity: 0; transform: rotate(-10deg) scale(2.4); }
+    to   { opacity: 1; transform: rotate(-10deg) scale(1); }
+}
+.rg-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.rg-btn { font-size: 13px; padding: 10px 16px; }
+.rg-btn:disabled { opacity: .55; cursor: default; }
+@media (prefers-reduced-motion: reduce) {
+    .rg-stamp.show span { animation: none; opacity: 1; transform: rotate(-10deg) scale(1); }
+}
+
 /* Reduced motion: kill ambient playground animation */
 @media (prefers-reduced-motion: reduce) {
     .pg-toast, .pg-toast.out { animation: none; }
@@ -2349,6 +2414,40 @@ footer {
                             <span class="tag tag-accent">Interactive</span>
                             <span class="tag">SGD + momentum</span>
                             <span class="tag">score = epochs</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Playground: Real or Generated? (paper-title quiz) -->
+                <article class="project-card reveal play-card" data-tags="play" data-rg-root>
+                    <div class="media-frame rg-stage" data-rg-stage>
+                        <div class="rg-hud" aria-hidden="true">
+                            <span data-rg-count></span>
+                            <span data-rg-streak></span>
+                        </div>
+                        <p class="rg-title" data-rg-title aria-live="polite"></p>
+                        <div class="rg-stamp" data-rg-stamp aria-hidden="true"><span data-rg-stamp-text></span></div>
+                        <p class="rg-verdict" data-rg-verdict aria-live="polite"></p>
+                        <div class="descent-overlay" data-rg-overlay>
+                            <button class="btn btn-primary" data-rg-start type="button">▶ Start · 12 titles</button>
+                            <p class="descent-overlay-sub" data-rg-overlay-sub>real ML papers vs. titles a model made up — can you tell?</p>
+                        </div>
+                    </div>
+                    <div class="project-body">
+                        <h3>Real or Generated?</h3>
+                        <p>
+                            The deepfake-detection problem, reduced to its purest form: ML paper titles.
+                            Half are real published research. Half were <strong>hallucinated by a language model</strong> for this site.
+                        </p>
+                        <div class="rg-actions" data-rg-actions hidden>
+                            <button class="btn-mini rg-btn" data-rg-guess="real" type="button">📄 Real paper</button>
+                            <button class="btn-mini rg-btn" data-rg-guess="gen" type="button">🤖 Generated</button>
+                        </div>
+                        <p class="descent-best" data-rg-best></p>
+                        <div class="tag-row">
+                            <span class="tag tag-accent">Interactive</span>
+                            <span class="tag">Discriminator: you</span>
+                            <span class="tag">streak counter</span>
                         </div>
                     </div>
                 </article>
