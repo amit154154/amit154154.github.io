@@ -1112,3 +1112,171 @@ const PG = (() => {
         b.addEventListener('click', () => guess(b.dataset.rgGuess === 'real')));
     showBest();
 })();
+
+/* ===================================================================
+   FEATURE: KOALA COMPANION
+   A small koala lives in the corner. It breathes, sleeps when you go
+   idle, ducks when you scroll too fast, gets excited near the projects
+   grid, celebrates finished games, and opens the easter-egg hub after
+   five clicks. Dismissible; remembers the dismissal.
+   ==================================================================*/
+(() => {
+    if (!document.getElementById('projectGrid')) return;   // index only
+
+    const IDLE_MS = 30000;
+    const QUIPS = [
+        'eucalyptus is all you need',
+        'i run on-device. no cloud, just naps',
+        'my attention span is exactly one token',
+        'press ~ — i won\'t tell anyone',
+        'low loss, lower energy',
+        'i was trained on 100% organic leaves',
+        'the 404 page is underrated. just saying'
+    ];
+
+    let pal, img, bubble, bubbleTimer = 0, quipIdx = (Math.random() * QUIPS.length) | 0;
+    let clicks = 0, idleTimer = 0, sleeping = false;
+    let lastScrollY = window.scrollY, lastScrollT = 0, duckUntil = 0, lastWhoa = 0, lastExcite = 0;
+
+    function build() {
+        pal = document.createElement('div');
+        pal.className = 'koala-pal' + (PG.reduced() ? '' : ' breathe');
+        pal.innerHTML =
+            `<button class="koala-btn" type="button" aria-label="Koala companion — it reacts to things. Click it.">
+                 <img src="assets/koala_192.png" alt="" width="64" height="64"/>
+             </button>
+             <span class="koala-bubble" aria-hidden="true"></span>
+             <button class="koala-dismiss" type="button" aria-label="Dismiss the koala">✕</button>`;
+        document.body.appendChild(pal);
+        img = pal.querySelector('img');
+        bubble = pal.querySelector('.koala-bubble');
+
+        pal.querySelector('.koala-btn').addEventListener('click', onClick);
+        pal.querySelector('.koala-dismiss').addEventListener('click', () => {
+            pal.classList.add('hidden');
+            PG.store.set('koalaHidden', true);
+            PG.track('koala_dismissed');
+        });
+        armIdle();
+    }
+
+    function say(text, ms) {
+        if (!pal) return;
+        bubble.textContent = text;
+        pal.classList.add('talk');
+        clearTimeout(bubbleTimer);
+        bubbleTimer = setTimeout(() => pal.classList.remove('talk'), ms || 2600);
+    }
+
+    function hop() {
+        if (PG.reduced() || !pal) return;
+        pal.classList.remove('hop');
+        void pal.offsetWidth;           // restart the animation
+        pal.classList.add('hop');
+    }
+
+    function excitedFace(ms) {
+        if (!img) return;
+        img.src = 'assets/cursor_192.png';
+        setTimeout(() => { img.src = 'assets/koala_192.png'; }, ms || 4500);
+    }
+
+    function onClick() {
+        wake();
+        clicks++;
+        if (clicks === 5) {
+            PG.award('koala5');
+            say('fine. here\'s everything 🗝️', 1800);
+            hop();
+            setTimeout(PG.openHub, 700);
+            return;
+        }
+        if (clicks === 4) { say('one more click and i open the vault…'); hop(); return; }
+        if (clicks > 5 && clicks % 5 === 0) { PG.openHub(); return; }
+        say(QUIPS[quipIdx++ % QUIPS.length]);
+        if (clicks % 2) hop();
+    }
+
+    /* ---- sleep / wake ---- */
+    function armIdle() {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+            sleeping = true;
+            pal.classList.add('sleep');
+            pal.classList.remove('breathe');
+            say('💤', 60000);
+        }, IDLE_MS);
+    }
+    function wake() {
+        if (sleeping) {
+            sleeping = false;
+            pal.classList.remove('sleep', 'talk');
+            if (!PG.reduced()) pal.classList.add('breathe');
+        }
+        armIdle();
+    }
+    let lastActivity = 0;
+    function onActivity() {
+        const now = Date.now();
+        if (now - lastActivity < 900) return;
+        lastActivity = now;
+        wake();
+    }
+
+    /* ---- fast-scroll duck ---- */
+    function onScroll() {
+        onActivity();
+        const now = performance.now();
+        const dt = now - lastScrollT;
+        if (dt > 0 && dt < 220) {
+            const v = Math.abs(window.scrollY - lastScrollY) / dt * 1000;
+            if (v > 2400 && !PG.reduced()) {
+                pal.classList.add('duck');
+                duckUntil = now + 450;
+                setTimeout(() => {
+                    if (performance.now() >= duckUntil) {
+                        pal.classList.remove('duck');
+                        if (Date.now() - lastWhoa > 30000) {
+                            lastWhoa = Date.now();
+                            setTimeout(() => say('whoa. easy on the scroll wheel'), 380);
+                        }
+                    }
+                }, 500);
+            }
+        }
+        lastScrollY = window.scrollY;
+        lastScrollT = now;
+    }
+
+    /* ---- init (respect a remembered dismissal) ---- */
+    if (!PG.store.get('koalaHidden', false)) build();
+    document.addEventListener('pg:koala-return', () => {
+        if (!pal) build();
+        pal.classList.remove('hidden');
+        say('i\'m back. i knew you\'d cave');
+    });
+
+    ['pointermove', 'keydown', 'touchstart'].forEach(ev =>
+        document.addEventListener(ev, onActivity, { passive: true }));
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    /* ---- reactions ---- */
+    const projects = document.getElementById('projects');
+    if (projects) {
+        new IntersectionObserver(entries => {
+            if (!pal || pal.classList.contains('hidden')) return;
+            if (entries.some(en => en.isIntersecting) && Date.now() - lastExcite > 90000) {
+                lastExcite = Date.now();
+                excitedFace();
+                hop();
+                say('ooh. this is my favorite section');
+            }
+        }, { threshold: .18 }).observe(projects);
+    }
+    document.addEventListener('pg:celebrate', () => {
+        if (!pal || pal.classList.contains('hidden')) return;
+        excitedFace(3000);
+        hop();
+        say('🎉 certified convergence');
+    });
+})();
