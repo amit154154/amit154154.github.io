@@ -1787,7 +1787,7 @@ const PG = (() => {
             let ep = 0;
             // sections are position:relative inside main, so offsetTop is
             // main-relative — use viewport coordinates instead
-            sections.forEach(s => { if (s.getBoundingClientRect().top <= innerHeight * .35) ep++; });
+            sections.forEach(s => { if (s.getBoundingClientRect().top <= innerHeight * .6) ep++; });
             stat.textContent = '';
             stat.append(`ep ${ep}/${sections.length} · loss `);
             const b = document.createElement('b');
