@@ -33,6 +33,7 @@ const PG = (() => {
                 accent3: v('--accent-3', '#f4b860'),
                 txt:     v('--txt', '#e9ecf4'),
                 muted:   v('--muted', '#8c93a8'),
+                mono:    v('--f-mono', 'monospace'),
                 light:   root.classList.contains('light')
             };
         }
@@ -66,6 +67,17 @@ const PG = (() => {
         }
     }
 
+    /* ---- tiny shared math helpers ---- */
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    function shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = (Math.random() * (i + 1)) | 0;
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
     /* ---- rAF loop that pauses off-screen and on hidden tabs ---- */
     function makeLoop(watchEl, tick) {
         let rafId = 0, running = false, visible = false, enabled = true;
@@ -96,15 +108,14 @@ const PG = (() => {
         };
     }
 
-    /* ---- toast system ---- */
-    let toastWrap = null;
+    /* ---- toast system ----
+       The aria-live container exists from page load: screen readers only
+       announce additions to live regions that were already in the tree. */
+    const toastWrap = document.createElement('div');
+    toastWrap.className = 'pg-toasts';
+    toastWrap.setAttribute('aria-live', 'polite');
+    document.body.appendChild(toastWrap);
     function toast(opts) {
-        if (!toastWrap) {
-            toastWrap = document.createElement('div');
-            toastWrap.className = 'pg-toasts';
-            toastWrap.setAttribute('aria-live', 'polite');
-            document.body.appendChild(toastWrap);
-        }
         const el = document.createElement('div');
         el.className = 'pg-toast' + (opts.cls ? ' ' + opts.cls : '');
         el.innerHTML =
@@ -202,7 +213,19 @@ const PG = (() => {
             document.dispatchEvent(new CustomEvent('pg:koala-return'));
         });
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && hub.classList.contains('open')) closeHub();
+            if (!hub.classList.contains('open')) return;
+            if (e.key === 'Escape') { closeHub(); return; }
+            // minimal focus trap — the dialog is aria-modal
+            if (e.key === 'Tab') {
+                const focusables = [...hub.querySelectorAll('button:not([hidden])')];
+                if (!focusables.length) return;
+                const first = focusables[0], last = focusables[focusables.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault(); last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault(); first.focus();
+                }
+            }
         });
     }
     function renderHub() {
@@ -276,6 +299,7 @@ const PG = (() => {
             burstCtx.clearRect(0, 0, innerWidth, innerHeight);
             burstParts = burstParts.filter(p => p.life > 0);
             if (!burstParts.length || document.hidden) {
+                burstParts = [];
                 burstCanvas.remove();
                 burstCanvas = null;
                 return;
@@ -303,7 +327,7 @@ const PG = (() => {
 
     return {
         reduced, onMotionChange, colors, onTheme, store, track,
-        makeLoop, toast, award, hasAward, openHub, burst,
+        makeLoop, toast, award, hasAward, openHub, burst, clamp, shuffle,
         achievementCount: () => ACH_KEYS.length
     };
 })();
@@ -328,7 +352,7 @@ const PG = (() => {
     const pointer = { x: -9e3, y: -9e3 };
     let pulses = [], rings = [];
     let epochs = 0, shownLoss = 2.3026, targetLoss = 2.3026;
-    let lastAmbient = 0, lastHud = 0, hinted = false;
+    let nextAmbientT = 0, lastHud = 0, hinted = false;
     let C = PG.colors();
     let live = false;
 
@@ -504,8 +528,8 @@ const PG = (() => {
         });
 
         // ambient forward pass: the model "thinks" on its own, gently
-        if (t - lastAmbient > 4200) {
-            lastAmbient = t + Math.random() * 1500;
+        if (t >= nextAmbientT) {
+            nextAmbientT = t + 4200 + Math.random() * 1500;
             firePulse(null, .3, false);
         }
 
@@ -529,6 +553,7 @@ const PG = (() => {
     function startLive() {
         if (live) return;
         live = true;
+        nextAmbientT = performance.now() + 3000;
         heroSection.addEventListener('pointermove', e => {
             const p = pointerToLocal(e);
             pointer.x = p.x; pointer.y = p.y;
@@ -559,11 +584,12 @@ const PG = (() => {
     }
 
     function staticFrame() {
-        // reduced motion: a single calm render, no loop, no handlers
+        // reduced motion: a single calm render, no loop
+        const amps = nodes.map(n => n.amp);
         nodes.forEach(n => { n.amp = 0; n.a = 0; });
         byLayer[2]?.forEach(n => { n.a = .4; });
         drawFrame(0);
-        nodes.forEach(n => { n.a = 0; });
+        nodes.forEach((n, i) => { n.amp = amps[i]; n.a = 0; });
         if (statEl) statEl.textContent = 'epoch 000 · loss 2.3026 · paused';
         if (hintEl) hintEl.style.opacity = '0';
     }
@@ -571,19 +597,26 @@ const PG = (() => {
     let loop = null;
     PG.onTheme(c => {
         C = c;
-        if (!live) staticFrameSafe();
+        if (PG.reduced() || !live) staticFrame();
     });
-    function staticFrameSafe() { if (PG.reduced()) staticFrame(); }
 
     new ResizeObserver(() => resize()).observe(host);
     resize();
 
-    if (PG.reduced()) {
-        staticFrame();
-        PG.onMotionChange(m => { if (!m) startLive(); });
-    } else {
-        startLive();
-    }
+    if (PG.reduced()) staticFrame();
+    else startLive();
+
+    // live prefers-reduced-motion flips, both directions
+    PG.onMotionChange(reducedNow => {
+        if (reducedNow) {
+            if (loop) loop.setEnabled(false);
+            staticFrame();
+        } else if (live) {
+            loop.setEnabled(true);
+        } else {
+            startLive();
+        }
+    });
 })();
 /* ===================================================================
    FEATURE: DESCENT — a playable gradient-descent simulator
@@ -592,14 +625,7 @@ const PG = (() => {
    Inits on any [data-descent-root] (projects card here, 404 page too).
    ==================================================================*/
 (() => {
-    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-    const shuffle = arr => {
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = (Math.random() * (i + 1)) | 0;
-            [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-        return arr;
-    };
+    const clamp = PG.clamp, shuffle = PG.shuffle;
 
     function makeLandscape() {
         const N = 480;
@@ -654,7 +680,8 @@ const PG = (() => {
         let state = 'idle';           // idle | running | won | dead
         let x = 0, v = 0, prevX = 0, epochs = 0;
         let acc = 0, lastT = 0, winTicks = 0, stuckTicks = 0, stuckShown = false;
-        let trail = [], parts = [], death = null;
+        let trail = [], parts = [], death = null, endTimer = 0;
+        let landPath = null, landFill = null;   // cached curve geometry
         let C = PG.colors();
 
         function fAt(px) {
@@ -696,6 +723,19 @@ const PG = (() => {
         const toPx = wx => PADX + wx * (W - 2 * PADX);
         const toPy = f => PADT + (1 - clamp(f, 0, 1)) * (H - PADT - PADB);
 
+        function rebuildPaths() {
+            if (!W) { landPath = landFill = null; return; }
+            landPath = new Path2D();
+            for (let i = 0; i <= land.N; i += 2) {
+                const px = toPx(i / land.N), py = toPy(land.ys[i]);
+                i === 0 ? landPath.moveTo(px, py) : landPath.lineTo(px, py);
+            }
+            landFill = new Path2D(landPath);
+            landFill.lineTo(toPx(1), H);
+            landFill.lineTo(toPx(0), H);
+            landFill.closePath();
+        }
+
         function resize() {
             const r = frame.getBoundingClientRect();
             if (!r.width || !r.height) return;
@@ -704,6 +744,7 @@ const PG = (() => {
             canvas.width = Math.round(W * dpr);
             canvas.height = Math.round(H * dpr);
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            rebuildPaths();
             draw(performance.now());
         }
 
@@ -747,7 +788,7 @@ const PG = (() => {
             PG.award('gdConverge');
             PG.track('descent_converged', { value: epochs });
             document.dispatchEvent(new CustomEvent('pg:celebrate', { detail: { game: 'descent' } }));
-            setTimeout(() => {
+            endTimer = setTimeout(() => {
                 ui.start.textContent = '▶ run it back';
                 ui.overlaySub.textContent = `${epochs} epochs — can you do it in fewer?`;
                 ui.overlay.classList.remove('hidden');
@@ -766,7 +807,7 @@ const PG = (() => {
             }
             PG.award('gdDiverge');
             PG.track('descent_diverged', { value: epochs });
-            setTimeout(() => {
+            endTimer = setTimeout(() => {
                 ui.start.textContent = '▶ try a smaller step';
                 ui.overlaySub.textContent = 'the loss left the chart. lower the lr — or embrace chaos.';
                 ui.overlay.classList.remove('hidden');
@@ -775,7 +816,8 @@ const PG = (() => {
         }
 
         function begin(fresh) {
-            if (fresh) land = makeLandscape();
+            clearTimeout(endTimer);          // a pending win/die overlay must not fire into the new run
+            if (fresh) { land = makeLandscape(); rebuildPaths(); }
             x = startPos(); prevX = x; v = 0;
             epochs = 0; winTicks = 0; stuckTicks = 0; stuckShown = false;
             trail = []; parts = []; death = null;
@@ -821,24 +863,18 @@ const PG = (() => {
                 ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
             }
 
-            // landscape fill + line
+            // landscape fill + line (geometry cached in rebuildPaths)
             ctx.globalAlpha = 1;
-            const path = new Path2D();
-            for (let i = 0; i <= land.N; i += 2) {
-                const px = toPx(i / land.N), py = toPy(land.ys[i]);
-                i === 0 ? path.moveTo(px, py) : path.lineTo(px, py);
-            }
-            const fill = new Path2D(path);
-            fill.lineTo(toPx(1), H); fill.lineTo(toPx(0), H); fill.closePath();
+            if (!landPath) rebuildPaths();
             const grad = ctx.createLinearGradient(0, PADT, 0, H);
             grad.addColorStop(0, C.accent + '00');
             grad.addColorStop(1, C.accent + (C.light ? '14' : '20'));
             ctx.fillStyle = grad;
-            ctx.fill(fill);
+            ctx.fill(landFill);
             ctx.strokeStyle = C.accent;
             ctx.globalAlpha = .85;
             ctx.lineWidth = 2;
-            ctx.stroke(path);
+            ctx.stroke(landPath);
 
             // global-minimum flag (waves gently while running)
             const fx = toPx(land.xg), fy = toPy(fAt(land.xg));
@@ -888,7 +924,7 @@ const PG = (() => {
                 ctx.restore();
                 ctx.globalAlpha = Math.max(0, 1 - k);
                 ctx.fillStyle = C.accent3;
-                ctx.font = `700 ${16 + k * 18}px ${getComputedStyle(document.documentElement).getPropertyValue('--f-mono') || 'monospace'}`;
+                ctx.font = `700 ${16 + k * 18}px ${C.mono}`;
                 ctx.textAlign = 'center';
                 ctx.fillText('NaN', death.x0, death.y0 - 30 - k * 50);
             } else {
@@ -933,7 +969,7 @@ const PG = (() => {
             begin(true);
         });
         rootEl.querySelectorAll('[data-descent-nudge]').forEach(btn =>
-            btn.addEventListener('click', () => nudge(parseInt(btn.dataset.nudge, 10))));
+            btn.addEventListener('click', () => nudge(parseInt(btn.dataset.descentNudge, 10))));
         [ui.lr, ui.mo].forEach(el => el.addEventListener('input', fmtLr));
 
         new ResizeObserver(() => resize()).observe(frame);
@@ -1004,16 +1040,8 @@ const PG = (() => {
     const guessBtns = root.querySelectorAll('[data-rg-guess]');
 
     const ROUNDS = 12;
+    const shuffle = PG.shuffle;
     let deck = [], i = 0, score = 0, streak = 0, bestStreak = 0, busy = false;
-
-    const shuffle = arr => {
-        const a = [...arr];
-        for (let k = a.length - 1; k > 0; k--) {
-            const j = (Math.random() * (k + 1)) | 0;
-            [a[k], a[j]] = [a[j], a[k]];
-        }
-        return a;
-    };
 
     function showBest() {
         const b = PG.store.get('rg.best', null);
@@ -1201,6 +1229,7 @@ const PG = (() => {
     function armIdle() {
         clearTimeout(idleTimer);
         idleTimer = setTimeout(() => {
+            if (!pal) return;
             sleeping = true;
             pal.classList.add('sleep');
             pal.classList.remove('breathe');
@@ -1217,6 +1246,7 @@ const PG = (() => {
     }
     let lastActivity = 0;
     function onActivity() {
+        if (!pal) return;               // koala dismissed in a previous session
         const now = Date.now();
         if (now - lastActivity < 900) return;
         lastActivity = now;
@@ -1225,6 +1255,7 @@ const PG = (() => {
 
     /* ---- fast-scroll duck ---- */
     function onScroll() {
+        if (!pal) return;
         onActivity();
         const now = performance.now();
         const dt = now - lastScrollT;
@@ -1512,7 +1543,14 @@ const PG = (() => {
             print(Object.keys(got).length + ' / ' + total + ' unlocked — open the 🏆 in the nav for details.');
         },
         theme() {
-            document.getElementById('themeToggle')?.click();
+            const btn = document.getElementById('themeToggle');
+            if (btn) btn.click();
+            else {
+                // 404 page has no toggle button — flip + persist directly
+                const light = !document.documentElement.classList.contains('light');
+                document.documentElement.classList.toggle('light', light);
+                try { localStorage.setItem('theme', light ? 'light' : 'dark'); } catch (e) {}
+            }
             print('theme flipped. <span class="t-dim">your retinas, your rules.</span>');
         },
         koala() {
@@ -1556,7 +1594,9 @@ const PG = (() => {
         history.push(cmd);
         histIdx = -1;
         const [name, arg = '', ...restArr] = cmd.split(/\s+/);
-        const fn = COMMANDS[name.toLowerCase()];
+        const key = name.toLowerCase();
+        // own-property check: `constructor` / `toString` are not commands
+        const fn = Object.prototype.hasOwnProperty.call(COMMANDS, key) ? COMMANDS[key] : null;
         if (fn) fn(arg.toLowerCase(), restArr.join(' '));
         else print(`command not found: ${esc(name)} <span class="t-dim">— try help</span>`);
         PG.track('terminal_cmd', { event_label: name.toLowerCase() });

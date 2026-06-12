@@ -321,12 +321,35 @@ a { color: inherit; text-decoration: none; }
 .pg-term-prompt { color: var(--accent-2); flex-shrink: 0; }
 .pg-term-input { flex: 1; background: none; border: none; outline: none; color: var(--txt); font: inherit; caret-color: var(--accent-2); }
 
+/* Konami overfit mode works here too (also via the terminal) */
+.pg-overfit-el { animation: pg-jitter var(--ofd, .4s) ease-in-out infinite alternate; }
+@keyframes pg-jitter {
+    from { transform: rotate(calc(var(--ofr, 1deg) * -1)) translate(calc(var(--oftx, 2px) * -1), var(--ofty, 1px)); }
+    to   { transform: rotate(var(--ofr, 1deg)) translate(var(--oftx, 2px), calc(var(--ofty, 1px) * -1)); }
+}
+.pg-regularize {
+    position: fixed; bottom: 76px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 88;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 22px;
+    border: 1px solid var(--accent-ring);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--txt);
+    font: 600 14px/1 var(--f-mono);
+    cursor: pointer;
+    box-shadow: var(--shadow-glow);
+}
+.pg-regularize:hover { background: var(--surface-2); }
+
 /* reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .nf-code img { animation: none; }
     .descent-shake { animation: none; }
     .pg-toast, .pg-toast.out { animation: none; }
     .pg-term { transition: none; }
+    .pg-overfit-el { animation: none; transform: rotate(var(--ofr, 1deg)); }
 }
 </style>
 </head>
