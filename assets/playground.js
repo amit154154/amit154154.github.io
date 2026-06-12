@@ -138,6 +138,7 @@ const PG = (() => {
         rgDone:      { icon: '🧪', name: 'Turing Tested',      desc: 'Finished a full round of Real or Generated.',       hint: 'Judge twelve paper titles.' },
         rgFooled:    { icon: '🤖', name: 'Fooled by AI',       desc: 'Called a machine-made paper title real.',           hint: 'The generator only needs to fool you once.' },
         rgSharp:     { icon: '🦅', name: 'Sharp Eye',          desc: 'Hit a streak of 8 in Real or Generated.',           hint: 'Eight correct calls in a row.' },
+        trumpBot:    { icon: '⚔️', name: 'Executive Order 9000', desc: 'Summoned the sword-bearing RoboTrump.',           hint: 'One Funko combination is… presidential.' },
         terminal:    { icon: '⌨️', name: 'Shell, Yeah',        desc: 'Found the hidden terminal.',                        hint: 'A key shaped like a wave: ~' },
         rootAccess:  { icon: '🔓', name: 'Root Access',        desc: 'sudo make_cooler. It worked.',                      hint: 'Some shell commands need sudo.' },
         konami:      { icon: '🌀', name: 'Overfitted',         desc: 'Memorized the training data. All of it.',           hint: '↑ ↑ ↓ ↓ … you know the rest.' },
@@ -1292,23 +1293,27 @@ const PG = (() => {
     window.addEventListener('scroll', onScroll, { passive: true });
 
     /* ---- reactions ---- */
-    const projects = document.getElementById('projects');
-    if (projects) {
+    [
+        ['projects', 'ooh. this is my favorite section'],
+        ['playground', 'we are SO back. let\'s play']
+    ].forEach(([id, line]) => {
+        const target = document.getElementById(id);
+        if (!target) return;
         new IntersectionObserver(entries => {
             if (!pal || pal.classList.contains('hidden')) return;
             if (entries.some(en => en.isIntersecting) && Date.now() - lastExcite > 90000) {
                 lastExcite = Date.now();
                 excitedFace();
                 hop();
-                say('ooh. this is my favorite section');
+                say(line);
             }
-        }, { threshold: .18 }).observe(projects);
-    }
-    document.addEventListener('pg:celebrate', () => {
+        }, { threshold: .18 }).observe(target);
+    });
+    document.addEventListener('pg:celebrate', e => {
         if (!pal || pal.classList.contains('hidden')) return;
         excitedFace(3000);
         hop();
-        say('🎉 certified convergence');
+        say(e.detail?.game === 'py2' ? 'i did NOT train it to do that' : '🎉 certified convergence');
     });
 })();
 
@@ -1510,14 +1515,15 @@ const PG = (() => {
         pwd() { print('/home/guest/portfolio'); },
         date() { print(new Date().toString() + ' <span class="t-dim">(time flies when loss decreases)</span>'); },
         ls(arg) {
-            if (arg === 'projects') {
-                const names = [...document.querySelectorAll('#projectGrid .project-card h3')]
+            if (arg === 'projects' || arg === 'playground') {
+                const grid = arg === 'projects' ? '#projectGrid' : '#playgroundGrid';
+                const names = [...document.querySelectorAll(`${grid} .project-card h3`)]
                     .map(h => '  ' + esc(h.textContent.trim()));
-                print(names.join('\n') || '  (no projects here — try the real site)');
+                print(names.join('\n') || `  (${arg} lives on the homepage — go there)`);
             } else if (arg === 'secrets' || arg === 'secrets/') {
                 print('<span class="t-warn">permission denied</span> — secrets/ is koala-readable only.');
             } else {
-                print('about/  experience/  projects/  reading/  contact/  koala.txt  <span class="t-dim">secrets/</span>');
+                print('about/  experience/  projects/  playground/  reading/  contact/  koala.txt  <span class="t-dim">secrets/</span>');
             }
         },
         cat(arg) {
@@ -1748,9 +1754,9 @@ const PG = (() => {
     if (window.gsap && window.ScrollTrigger) railScrub();
     else window.addEventListener('load', railScrub);
 
-    /* ---- magnetic tilt on project cards ---- */
+    /* ---- magnetic tilt on project + playground cards ---- */
     if (matchMedia('(pointer: fine)').matches && !PG.reduced()) {
-        document.querySelectorAll('#projectGrid .project-card').forEach(card => {
+        document.querySelectorAll('.projects-grid .project-card').forEach(card => {
             let rx = 0, ry = 0, tx = 0, ty = 0, raf = 0, active = false;
             function frame() {
                 rx += (tx - rx) * .18;
@@ -1839,4 +1845,62 @@ const PG = (() => {
         }, { passive: true });
         update();
     }
+})();
+
+/* ===================================================================
+   FEATURE: FUNKO FORGE — PopYou2 builder + the forbidden combination
+   Live outputs from the VAR text-to-image model. 36 pre-generated
+   combos. Exactly one of them is legendary.
+   ==================================================================*/
+(() => {
+    const root = document.querySelector('[data-py2-root]');
+    if (!root) return;
+    const nameSel = root.querySelector('#py2_name');
+    const charSel = root.querySelector('#py2_char');
+    const actSel = root.querySelector('#py2_action');
+    const img = root.querySelector('#py2_image');
+    const frame = root.querySelector('.py2-frame');
+    const stamp = root.querySelector('#py2_stamp');
+    if (!(nameSel && charSel && actSel && img && frame && stamp)) return;
+
+    const LEGEND = 'donald_trump_robot_holding_the_sword';
+    let toasted = false;   // toast once per page load; the achievement is once ever
+
+    function update() {
+        const combo = `${nameSel.value}_${charSel.value}_${actSel.value}`;
+        img.classList.remove('swap');
+        requestAnimationFrame(() => {
+            img.src = `assets/projects_assets/PopYou2/generated_images/${combo}.png`;
+            img.classList.add('swap');
+        });
+        PG.track('funko_pop_selection', { event_label: combo, value: 1 });
+        combo === LEGEND ? summon() : banish();
+    }
+
+    function summon() {
+        frame.classList.add('legend');
+        stamp.classList.add('show');
+        const r = frame.getBoundingClientRect();
+        const c = PG.colors();
+        PG.burst(r.left + r.width / 2, r.top + r.height / 2,
+            { count: 70, power: 7, colors: [c.accent3, '#ffd700', c.accent] });
+        if (!toasted) {
+            toasted = true;
+            PG.toast({
+                icon: '⚔️',
+                title: 'EXECUTIVE ORDER 9000',
+                sub: 'sword-bearing RoboTrump summoned. the model refuses to elaborate.',
+                ms: 5200
+            });
+        }
+        PG.award('trumpBot');
+        document.dispatchEvent(new CustomEvent('pg:celebrate', { detail: { game: 'py2' } }));
+    }
+
+    function banish() {
+        frame.classList.remove('legend');
+        stamp.classList.remove('show');
+    }
+
+    [nameSel, charSel, actSel].forEach(el => el.addEventListener('change', update));
 })();

@@ -1105,19 +1105,13 @@ details.more > summary:hover { background: rgba(124,140,255,.18); }
 }
 .zoom-item figcaption { margin-top: 6px; font-size: 12px; color: var(--muted); }
 
-/* Funko builder */
-.funko-builder {
-    margin-top: 12px;
-    padding: 14px;
-    border-radius: var(--r-lg);
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-}
+/* Funko builder (Funko Forge card in #playground) */
 .funko-sentence {
     display: flex; flex-wrap: wrap; gap: 6px;
+    align-items: center;
     font: 500 14px/1.7 var(--f-sans);
     color: var(--txt-2);
-    margin: 0 0 12px;
+    margin: 0;
 }
 .funko-sentence .hl {
     background: var(--grad-1);
@@ -1134,20 +1128,16 @@ details.more > summary:hover { background: rgba(124,140,255,.18); }
     transition: border-color .15s ease;
 }
 .select-modern:hover { border-color: var(--accent-ring); }
-.funko-image {
-    width: 100%;
-    max-width: 380px;
-    margin: 8px auto 0;
-    display: block;
-    border-radius: var(--r-md);
-    border: 1px solid var(--border);
-    background: #000;
-}
 .swap { animation: imgswap .3s ease both; }
 @keyframes imgswap {
     from { opacity: .1; transform: scale(.98); }
     to { opacity: 1; transform: scale(1); }
 }
+.py2-frame { background: #ffffff; }
+.py2-frame img { transition: transform .35s ease, filter .35s ease; }
+.py2-frame.legend img { filter: drop-shadow(0 0 22px rgba(244,184,96,.75)) saturate(1.15); }
+.py2-stamp { color: var(--accent-3); }
+.py2-hint { margin: 0; }
 
 /* ===================================================================
    READING (ZOTERO) — editorial list
@@ -1806,6 +1796,7 @@ footer {
             <a href="#experience">Experience</a>
             <a href="#featured">Work</a>
             <a href="#projects">Projects</a>
+            <a href="#playground">Playground</a>
             <a href="#reading">Reading</a>
             <a href="#contact" class="always-show">Contact</a>
         </div>
@@ -2194,7 +2185,6 @@ footer {
                 <button class="filter-chip" data-filter="nlp">NLP / VLM</button>
                 <button class="filter-chip" data-filter="aud">Audio</button>
                 <button class="filter-chip" data-filter="mobile">Edge</button>
-                <button class="filter-chip" data-filter="play">Playground</button>
             </div>
 
             <div class="projects-grid" id="projectGrid">
@@ -2417,38 +2407,7 @@ footer {
                                 <img src="https://img.shields.io/badge/HF-Space-FFCC4D?style=for-the-badge&logo=huggingface&logoColor=000000" alt="HF Space"/>
                             </a>
                         </div>
-                        <details class="more">
-                            <summary>Try the builder</summary>
-                            <div class="more-body">
-                                <h4>Live preview</h4>
-                                <p>Pick a name, character style, and action — the figure updates instantly.</p>
-                                <div class="funko-builder" id="py2_builder">
-                                    <div class="funko-sentence">
-                                        <span>A <span class="hl">Funko Pop figure</span> of</span>
-                                        <select id="py2_name" class="select-modern">
-                                            <option value="none">None</option>
-                                            <option value="donald_trump">Donald Trump</option>
-                                            <option value="johnny_depp">Johnny Depp</option>
-                                            <option value="oprah_winfrey">Oprah Winfrey</option>
-                                        </select>
-                                        <span>styled as a</span>
-                                        <select id="py2_char" class="select-modern">
-                                            <option value="none">None</option>
-                                            <option value="alien">Alien</option>
-                                            <option value="robot">Robot</option>
-                                        </select>
-                                        <span>performing</span>
-                                        <select id="py2_action" class="select-modern">
-                                            <option value="none">None</option>
-                                            <option value="playing_the_guitar">Playing the Guitar</option>
-                                            <option value="holding_the_sword">Holding the Sword</option>
-                                        </select>
-                                        <span>.</span>
-                                    </div>
-                                    <img id="py2_image" class="funko-image" src="assets/projects_assets/PopYou2/generated_images/none_none_none.png" alt="Funko preview"/>
-                                </div>
-                            </div>
-                        </details>
+                        <a class="btn-mini" href="#playground">▶ Try the live builder — in the Playground</a>
                     </div>
                 </article>
 
@@ -2582,8 +2541,29 @@ footer {
                     </div>
                 </article>
 
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PLAYGROUND ==================== -->
+    <section id="playground" class="section">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <span class="section-num" data-num="05">Playground</span>
+                    <h2>Toys that learn</h2>
+                    <p class="head-sub">
+                        Hands-on ML — drive an optimizer, out-judge a generator, and compose Funko Pops
+                        with my VAR model. Rumor has it not everything here is listed.
+                    </p>
+                </div>
+                <span class="section-head-side">Fully playable</span>
+            </div>
+
+            <div class="projects-grid" id="playgroundGrid">
+
                 <!-- Playground: Descent (gradient descent mini-game) -->
-                <article class="project-card reveal play-card" data-tags="play" data-descent-root>
+                <article class="project-card reveal play-card" data-descent-root>
                     <div class="media-frame descent-frame" data-descent-frame>
                         <canvas class="descent-canvas" aria-hidden="true"></canvas>
                         <div class="descent-hud" aria-hidden="true">
@@ -2627,7 +2607,7 @@ footer {
                 </article>
 
                 <!-- Playground: Real or Generated? (paper-title quiz) -->
-                <article class="project-card reveal play-card" data-tags="play" data-rg-root>
+                <article class="project-card reveal play-card" data-rg-root>
                     <div class="media-frame rg-stage" data-rg-stage>
                         <div class="rg-hud" aria-hidden="true">
                             <span data-rg-count></span>
@@ -2660,6 +2640,49 @@ footer {
                     </div>
                 </article>
 
+                <!-- Playground: Funko Forge (live PopYou2 outputs) -->
+                <article class="project-card reveal play-card" data-fit="contain" data-py2-root>
+                    <div class="media-frame py2-frame">
+                        <img id="py2_image" src="assets/projects_assets/PopYou2/generated_images/none_none_none.png" alt="Generated Funko preview"/>
+                        <div class="rg-stamp py2-stamp" id="py2_stamp" aria-hidden="true"><span>⚔️ ULTRA RARE</span></div>
+                    </div>
+                    <div class="project-body">
+                        <h3>Funko Forge — PopYou2, live</h3>
+                        <p>
+                            Real outputs from my <strong>VAR text-to-image</strong> model — compose the prompt,
+                            meet the figure. 36 combinations, zero GPUs harmed.
+                        </p>
+                        <div class="funko-sentence">
+                            <span>A <span class="hl">Funko Pop figure</span> of</span>
+                            <select id="py2_name" class="select-modern" aria-label="Character">
+                                <option value="none">None</option>
+                                <option value="donald_trump">Donald Trump</option>
+                                <option value="johnny_depp">Johnny Depp</option>
+                                <option value="oprah_winfrey">Oprah Winfrey</option>
+                            </select>
+                            <span>styled as a</span>
+                            <select id="py2_char" class="select-modern" aria-label="Style">
+                                <option value="none">None</option>
+                                <option value="alien">Alien</option>
+                                <option value="robot">Robot</option>
+                            </select>
+                            <span>performing</span>
+                            <select id="py2_action" class="select-modern" aria-label="Action">
+                                <option value="none">None</option>
+                                <option value="playing_the_guitar">Playing the Guitar</option>
+                                <option value="holding_the_sword">Holding the Sword</option>
+                            </select>
+                            <span>.</span>
+                        </div>
+                        <p class="descent-best py2-hint">rumor: one combination is legendary ⚔️</p>
+                        <div class="tag-row">
+                            <span class="tag tag-accent">Interactive</span>
+                            <span class="tag">VAR</span>
+                            <span class="tag">Autoregressive T2I</span>
+                        </div>
+                    </div>
+                </article>
+
             </div>
         </div>
     </section>
@@ -2669,7 +2692,7 @@ footer {
         <div class="container">
             <div class="section-head">
                 <div>
-                    <span class="section-num" data-num="05">Reading list</span>
+                    <span class="section-num" data-num="06">Reading list</span>
                     <h2>Recent papers</h2>
                     <p class="head-sub">Auto-synced from my Zotero library — papers I'm currently working through.</p>
                 </div>
@@ -2684,7 +2707,7 @@ footer {
         <div class="container">
             <div class="section-head">
                 <div>
-                    <span class="section-num" data-num="06">Contact</span>
+                    <span class="section-num" data-num="07">Contact</span>
                     <h2>Get in touch</h2>
                     <p class="head-sub">Open to research collaborations, side projects, and interesting problems.</p>
                 </div>
@@ -2941,33 +2964,7 @@ footer {
     })();
 </script>
 
-<!-- PopYou2 builder -->
-<script>
-    (function () {
-        const nameSel = document.getElementById('py2_name');
-        const charSel = document.getElementById('py2_char');
-        const actSel = document.getElementById('py2_action');
-        const img = document.getElementById('py2_image');
-        if (!(nameSel && charSel && actSel && img)) return;
-        function update() {
-            const filename = `${nameSel.value}_${charSel.value}_${actSel.value}.png`;
-            const path = `assets/projects_assets/PopYou2/generated_images/${filename}`;
-            img.classList.remove('swap');
-            requestAnimationFrame(() => {
-                img.src = path;
-                img.classList.add('swap');
-            });
-            if (typeof gtag === 'function') {
-                gtag('event', 'funko_pop_selection', {
-                    event_category: 'PopYou2',
-                    event_label: `${nameSel.value}_${charSel.value}_${actSel.value}`,
-                    value: 1
-                });
-            }
-        }
-        [nameSel, charSel, actSel].forEach(el => el.addEventListener('change', update));
-    })();
-</script>
+<!-- PopYou2 builder lives in assets/playground.js (Funko Forge card, #playground) -->
 
 <!-- Tom & Jerry checkpoint switcher -->
 <script>
