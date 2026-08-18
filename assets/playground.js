@@ -132,7 +132,9 @@ const PG = (() => {
 
     /* ---- achievements ---- */
     const ACHIEVEMENTS = {
-        heroPulse:   { icon: '⚡', name: 'First Spark',       desc: 'Ran a forward pass through the hero network.',      hint: 'The network in the hero is not a screenshot.' },
+        heroPulse:   { icon: '⚡', name: 'First Spark',       desc: 'Sampled fresh digits from the hero VAE.',            hint: 'The network in the hero is really training.' },
+        heroConverge:{ icon: '✍️', name: 'Convergence',       desc: 'Watched the hero VAE train to convergence on MNIST.', hint: 'Good things come to those who watch the loss.' },
+        slmTalk:     { icon: '🗨️', name: 'Small Talk',        desc: 'Chatted with the 230M-parameter resident model.',   hint: 'Someone tiny lives in the Playground. Wake them.' },
         gdConverge:  { icon: '🎯', name: 'Converged!',         desc: 'Guided the optimizer to the global minimum.',       hint: 'Descend all the way, in the Playground cards.' },
         gdDiverge:   { icon: '💥', name: 'Diverged',           desc: 'Sent the loss to NaN. Beautiful.',                  hint: 'What happens at learning rate ≈ 2?' },
         rgDone:      { icon: '🧪', name: 'Turing Tested',      desc: 'Finished a full round of Real or Generated.',       hint: 'Judge twelve paper titles.' },
@@ -334,9 +336,14 @@ const PG = (() => {
 })();
 
 /* ===================================================================
-   FEATURE: HERO NEURAL PLAYGROUND
-   A small MLP that lives behind glass in the hero. Cursor excites
-   nodes, click/Enter fires a forward pass; epochs tick the loss down.
+   FEATURE: HERO MNIST LAB
+   The hero panel is a real training run: a conditional VAE
+   (196 → 64 → z8 → 64 → 196) learns to generate MNIST digits in a
+   Web Worker, live, with hand-written backprop (assets/mnist-worker.js).
+   Everything drawn here is real: the loss curve, the activations, the
+   edge weights, the reconstruction pair, and the ten digits being
+   sampled from z ~ N(0,1) at the bottom. Weights persist in
+   localStorage, so the network remembers its training between visits.
    ==================================================================*/
 (() => {
     const host = document.getElementById('heroNet');
@@ -347,63 +354,104 @@ const PG = (() => {
     const ctx = canvas.getContext('2d');
     const heroSection = host.closest('.hero') || host;
 
-    const LAYERS = [4, 6, 7, 6, 3];
-    let nodes = [], edges = [], byLayer = [];
+    const IMG = 14, PIX = 196, ZDIM = 8, NSHOW = 10;
+    const SPRITE = 'assets/mnist/mnist14.png';
+    const SPRITE_COLS = 80, SPRITE_N = 4000;
+    const STORE_KEY = 'mnist';
+
     let W = 0, H = 0, dpr = 1;
+    let C = PG.colors(), ink = { r: 233, g: 236, b: 244 };
     const pointer = { x: -9e3, y: -9e3 };
     let pulses = [], rings = [];
-    let epochs = 0, shownLoss = 2.3026, targetLoss = 2.3026;
-    let nextAmbientT = 0, lastHud = 0, hinted = false;
-    let C = PG.colors();
-    let live = false;
+    let live = false, loop = null;
+
+    /* worker + data state */
+    let worker = null, workerReady = false, workerRunning = false, failed = false;
+    let snap = null;              // latest worker snapshot
+    let vizMax = { enc: 1, lat: 1, dec: 1, wEnc: 1, wE2L: 1, wL2D: 1, wDec: 1 };
+    let resumed = false, hinted = false, lastStepSeen = -1, lastEpochSeen = -1;
+    let nextAmbientT = 0;
+
+    /* ---- geometry ---- */
+    let encNodes = [], latNodes = [], decNodes = [], allNodes = [];
+    let imgIn = { x: 0, y: 0, s: 48 }, imgOut = { x: 0, y: 0, s: 48 };
+    let tiles = [];               // sample-strip hit rects
+    let spark = { x: 14, y: 30, w: 92, h: 20 };
+
+    /* ---- offscreen 14×14 bitmaps ---- */
+    function mkBmp() {
+        const c = document.createElement('canvas');
+        c.width = IMG; c.height = IMG;
+        return { c, ctx: c.getContext('2d'), img: null };
+    }
+    const bmpIn = mkBmp(), bmpOut = mkBmp();
+    const bmpSamples = Array.from({ length: 10 }, mkBmp);
+
+    function parseInk() {
+        ctx.save();
+        ctx.fillStyle = C.txt || '#e9ecf4';
+        const s = ctx.fillStyle;                      // normalized to #rrggbb / rgba()
+        ctx.restore();
+        let m = /^#([0-9a-f]{6})/i.exec(s);
+        if (m) {
+            const v = parseInt(m[1], 16);
+            ink = { r: v >> 16 & 255, g: v >> 8 & 255, b: v & 255 };
+        } else if ((m = /rgba?\((\d+)[,\s]+(\d+)[,\s]+(\d+)/.exec(s))) {
+            ink = { r: +m[1], g: +m[2], b: +m[3] };
+        }
+    }
+
+    function tint(bmp, pix) {                          // pixels 0..255 → inked ImageData
+        const id = bmp.ctx.createImageData(IMG, IMG);
+        for (let i = 0; i < PIX; i++) {
+            id.data[i * 4] = ink.r;
+            id.data[i * 4 + 1] = ink.g;
+            id.data[i * 4 + 2] = ink.b;
+            id.data[i * 4 + 3] = pix[i];
+        }
+        bmp.ctx.putImageData(id, 0, 0);
+        bmp.img = true;
+    }
+
+    function mkNode(x, y) {
+        return {
+            hx: x, hy: y, dx: 0, dy: 0, a: 0, base: 0,
+            phase: Math.random() * Math.PI * 2,
+            speed: .0004 + Math.random() * .0005,
+            amp: 1.6 + Math.random() * 2
+        };
+    }
 
     function build() {
-        nodes = []; edges = []; byLayer = [];
-        const mx = W * .09, my = H * .12;
-        LAYERS.forEach((count, li) => {
-            const layer = [];
-            const x = mx + (W - 2 * mx) * (li / (LAYERS.length - 1));
-            for (let i = 0; i < count; i++) {
-                const y = my + (H - 2 * my) * (count === 1 ? .5 : i / (count - 1));
-                const node = {
-                    hx: x + (Math.random() - .5) * 10,
-                    hy: y + (Math.random() - .5) * 12,
-                    dx: 0, dy: 0,            // spring displacement
-                    a: 0,                     // activation 0..1
-                    phase: Math.random() * Math.PI * 2,
-                    speed: .0004 + Math.random() * .0005,
-                    amp: 2.5 + Math.random() * 3,
-                    layer: li, out: []
-                };
-                layer.push(node);
-                nodes.push(node);
-            }
-            byLayer.push(layer);
-        });
-        // connect each node to its 2-3 nearest in the next layer
-        for (let li = 0; li < byLayer.length - 1; li++) {
-            const next = byLayer[li + 1];
-            byLayer[li].forEach(a => {
-                const sorted = [...next].sort((p, q) =>
-                    Math.abs(p.hy - a.hy) - Math.abs(q.hy - a.hy));
-                // small output layers get fewer incoming edges — keeps the head untangled
-                const k = next.length <= 3 ? 1 : 2 + ((Math.random() * 2) | 0);
-                sorted.slice(0, k).forEach(b => {
-                    const e = { a, b };
-                    a.out.push(e);
-                    edges.push(e);
-                });
-            });
-            // ensure every next-layer node has at least one incoming edge
-            next.forEach(b => {
-                if (!edges.some(e => e.b === b)) {
-                    const a = byLayer[li][(Math.random() * byLayer[li].length) | 0];
-                    const e = { a, b };
-                    a.out.push(e);
-                    edges.push(e);
-                }
-            });
+        const stripTile = Math.max(20, Math.min(36, (W - 28 - 9 * 6) / 10));
+        const stripH = stripTile + 26;
+        const vizTop = 56, vizBot = H - stripH - 18;
+        const midY = (vizTop + vizBot) / 2;
+        const span = vizBot - vizTop;
+
+        imgIn = { x: W * .10, y: midY, s: Math.max(36, Math.min(56, span * .34)) };
+        imgOut = { x: W * .90, y: midY, s: imgIn.s };
+
+        const col = (x, n, squeeze) => {
+            const h = span * squeeze;
+            return Array.from({ length: n }, (_, i) =>
+                mkNode(x + (Math.random() - .5) * 8,
+                    midY - h / 2 + h * (n === 1 ? .5 : i / (n - 1)) + (Math.random() - .5) * 6));
+        };
+        encNodes = col(W * .30, NSHOW, .96);
+        latNodes = col(W * .50, ZDIM, .62);
+        decNodes = col(W * .70, NSHOW, .96);
+        allNodes = [...encNodes, ...latNodes, ...decNodes];
+
+        tiles = [];
+        const total = stripTile * 10 + 6 * 9;
+        let tx = (W - total) / 2;
+        const ty = H - stripH - 4;
+        for (let c = 0; c < 10; c++) {
+            tiles.push({ x: tx, y: ty, s: stripTile, c });
+            tx += stripTile + 6;
         }
+        spark = { x: 14, y: 28, w: Math.min(96, W * .2), h: 18 };
     }
 
     function resize() {
@@ -414,86 +462,321 @@ const PG = (() => {
         canvas.width = Math.round(W * dpr);
         canvas.height = Math.round(H * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.imageSmoothingEnabled = false;
         build();
         if (!live) drawFrame(performance.now());
     }
 
-    function computePositions(t) {
-        nodes.forEach(n => {
-            n.px = n.hx + Math.cos(t * n.speed + n.phase) * n.amp + n.dx;
-            n.py = n.hy + Math.sin(t * n.speed * 1.3 + n.phase) * n.amp + n.dy;
-        });
+    /* ---- localStorage persistence (weights survive between visits) ---- */
+    const b64FromBuf = buf => {
+        const u8 = new Uint8Array(buf);
+        let s = '';
+        for (let i = 0; i < u8.length; i += 8192)
+            s += String.fromCharCode.apply(null, u8.subarray(i, i + 8192));
+        return btoa(s);
+    };
+    const bufFromB64 = b64 => {
+        const s = atob(b64);
+        const u8 = new Uint8Array(s.length);
+        for (let i = 0; i < s.length; i++) u8[i] = s.charCodeAt(i);
+        return u8.buffer;
+    };
+
+    function loadSaved() {
+        const v = PG.store.get(STORE_KEY, null);
+        if (!v || v.v !== 2 || typeof v.w !== 'string') return null;
+        try {
+            const weights = bufFromB64(v.w);
+            return { step: v.step | 0, weights, loss: v.loss, hist: v.hist || [] };
+        } catch (e) { return null; }
     }
 
-    function firePulse(originNode, gain, countEpoch) {
-        const origin = originNode ||
-            byLayer[0][(Math.random() * byLayer[0].length) | 0];
-        origin.a = Math.max(origin.a, gain);
-        origin.out.forEach(e => pulses.push({ e, t0: performance.now(), dur: 260, gain }));
-        if (countEpoch) {
-            epochs++;
-            targetLoss = 2.3026 * Math.exp(-epochs / 7) + .0231;
-            if (!hinted && hintEl) { hintEl.style.opacity = '0'; hinted = true; }
-            PG.award('heroPulse');
-            if (epochs === 1) PG.track('hero_net_first_pulse');
+    /* ---- worker snapshot intake ---- */
+    function onSnapshot(m) {
+        const trained = snap && m.step > snap.step;
+        snap = m;
+        const mx = arr => { let v = 1e-6; for (let i = 0; i < arr.length; i++) { const a = Math.abs(arr[i]); if (a > v) v = a; } return v; };
+        vizMax = {
+            enc: mx(m.viz.encA), lat: mx(m.viz.latA), dec: mx(m.viz.decA),
+            wEnc: mx(m.viz.wEnc), wE2L: mx(m.viz.wE2L), wL2D: mx(m.viz.wL2D), wDec: mx(m.viz.wDec)
+        };
+        tint(bmpIn, m.recon.x);
+        tint(bmpOut, m.recon.p);
+        for (let c = 0; c < 10; c++) tint(bmpSamples[c], m.samples.subarray(c * PIX, (c + 1) * PIX));
+
+        encNodes.forEach((n, k) => { n.base = Math.min(1, Math.abs(m.viz.encA[k]) / vizMax.enc); });
+        latNodes.forEach((n, j) => { n.base = Math.min(1, Math.abs(m.viz.latA[j]) / vizMax.lat); });
+        decNodes.forEach((n, k) => { n.base = Math.min(1, Math.abs(m.viz.decA[k]) / vizMax.dec); });
+
+        if (statEl) {
+            statEl.textContent =
+                `epoch ${String(m.epoch).padStart(3, '0')} · loss ${m.loss.toFixed(4)}` +
+                (!m.done && m.beta < 1 ? ` · β ${m.beta.toFixed(2)}` : '') +
+                (m.done ? ' · converged' : (PG.reduced() ? ' · paused' : ''));
         }
+        if (hintEl && !hinted) {
+            hintEl.textContent = m.done
+                ? 'converged — click a digit to resample its z'
+                : PG.reduced() ? 'paused — Enter runs 40 real steps'
+                    : (resumed ? 'resumed training from your last visit'
+                        : 'live — a VAE is training in your browser');
+        }
+        // training heartbeat: pulses ride actual optimizer steps
+        if (trained && !m.done && live && m.step !== lastStepSeen) {
+            lastStepSeen = m.step;
+            spawnPulse(true);
+            if (Math.random() < .4) spawnPulse(true);
+        }
+        // one ripple from the bottleneck per finished epoch
+        if (m.epoch > lastEpochSeen) {
+            if (lastEpochSeen >= 0 && live && latNodes.length) {
+                const midY = (latNodes[0].hy + latNodes[latNodes.length - 1].hy) / 2;
+                rings.push({ x: W * .5, y: midY, t0: performance.now() });
+            }
+            lastEpochSeen = m.epoch;
+        }
+        if (!live) drawFrame(performance.now());
+    }
+
+    function startWorker(pixels, saved) {
+        worker = new Worker('assets/mnist-worker.js');
+        worker.onerror = () => { failed = true; setOffline(); };
+        worker.onmessage = e => {
+            const m = e.data;
+            if (m.type === 'ready') {
+                workerReady = true;
+                resumed = !!saved && m.step > 0;
+                if (m.done) PG.award('heroConverge');
+                syncRunState();
+            } else if (m.type === 'snapshot') {
+                if (m.done && snap && !snap.done) PG.award('heroConverge');
+                onSnapshot(m);
+            } else if (m.type === 'weights') {
+                PG.store.set(STORE_KEY, {
+                    v: 2, step: m.step,
+                    loss: snap ? +snap.loss.toFixed(4) : undefined,
+                    hist: snap ? Array.from(snap.hist, v => +v.toFixed(4)) : [],
+                    w: b64FromBuf(m.buf)
+                });
+            }
+        };
+        const transfers = [pixels.buffer];
+        if (saved) transfers.push(saved.weights);
+        worker.postMessage({ type: 'init', pixels, saved }, transfers);
+    }
+
+    function loadData() {
+        const im = new Image();
+        im.onload = () => {
+            try {
+                const c = document.createElement('canvas');
+                c.width = im.width; c.height = im.height;
+                const cx = c.getContext('2d', { willReadFrequently: true });
+                cx.drawImage(im, 0, 0);
+                const d = cx.getImageData(0, 0, im.width, im.height).data;
+                const pixels = new Float32Array(SPRITE_N * PIX);
+                for (let t = 0; t < SPRITE_N; t++) {
+                    const row = (t / SPRITE_COLS) | 0, colI = t % SPRITE_COLS;
+                    for (let y = 0; y < IMG; y++) {
+                        const sy = (row * IMG + y) * im.width;
+                        for (let x = 0; x < IMG; x++)
+                            pixels[t * PIX + y * IMG + x] = d[(sy + colI * IMG + x) * 4] / 255;
+                    }
+                }
+                startWorker(pixels, loadSaved());
+            } catch (e) { failed = true; setOffline(); }
+        };
+        im.onerror = () => { failed = true; setOffline(); };
+        im.src = SPRITE;
+    }
+
+    function setOffline() {
+        if (statEl) statEl.textContent = 'mnist unavailable · decorative mode';
+        if (hintEl) hintEl.textContent = 'the pixels stayed home';
+    }
+
+    /* ---- visibility drives the worker: train only when watched ---- */
+    let panelVisible = false;
+    function syncRunState() {
+        if (!worker || !workerReady) return;
+        const should = panelVisible && !document.hidden && !PG.reduced();
+        if (should && !workerRunning) { workerRunning = true; worker.postMessage({ type: 'run' }); }
+        else if (!should && workerRunning) { workerRunning = false; worker.postMessage({ type: 'pause' }); }
+    }
+    new IntersectionObserver(en => {
+        panelVisible = en.some(x => x.isIntersecting);
+        syncRunState();
+    }, { rootMargin: '60px' }).observe(host);
+    document.addEventListener('visibilitychange', syncRunState);
+
+    /* ---- pulses: training = x→x̂ full pass; sampling = z→x̂ only ---- */
+    function pick(weights, max) {
+        // weight-biased random index
+        for (let tries = 0; tries < 8; tries++) {
+            const i = (Math.random() * weights.length) | 0;
+            if (Math.random() < Math.abs(weights[i]) / max) return i;
+        }
+        return (Math.random() * weights.length) | 0;
+    }
+    function spawnPulse(full) {
+        if (!snap) return;
+        const j = pick(snap.viz.latA, vizMax.lat);
+        const kd = pick(snap.viz.wL2D.subarray(j * NSHOW, (j + 1) * NSHOW), vizMax.wL2D);
+        const lat = latNodes[j], dec = decNodes[kd];
+        const pts = [];
+        if (full) {
+            const ke = pick(snap.viz.encA, vizMax.enc);
+            pts.push({ x: imgIn.x + imgIn.s / 2 + 2, y: imgIn.y },
+                { n: encNodes[ke] });
+        }
+        pts.push({ n: lat }, { n: dec }, { x: imgOut.x - imgOut.s / 2 - 2, y: imgOut.y });
+        pulses.push({ pts, t0: performance.now(), dur: 190 * (pts.length - 1), gain: .5 + Math.random() * .5 });
+        if (pulses.length > 26) pulses.splice(0, pulses.length - 26);
+    }
+
+    /* ---- drawing ---- */
+    function px(p) { return p.n ? { x: p.n.px, y: p.n.py } : p; }
+
+    function drawEdgeGroup(fromPts, toPts, wArr, wMax, stride) {
+        const base = C.light ? .13 : .06;
+        for (let a = 0; a < fromPts.length; a++) {
+            for (let b = 0; b < toPts.length; b++) {
+                const w = Math.abs(wArr[a * stride + b]) / wMax;
+                if (w < .07) continue;
+                const A = fromPts[a], B = toPts[b];
+                const heat = (A.a || 0) * (B.a || 0);
+                ctx.globalAlpha = Math.min(.85, base + w * .34 + heat * .5);
+                ctx.strokeStyle = heat > .3 ? C.accent2 : C.accent;
+                ctx.beginPath();
+                ctx.moveTo(A.px ?? A.x, A.py ?? A.y);
+                ctx.lineTo(B.px ?? B.x, B.py ?? B.y);
+                ctx.stroke();
+            }
+        }
+    }
+
+    function drawBitmap(bmp, cx, cy, s, faded) {
+        if (!bmp.img) return;
+        ctx.globalAlpha = faded ? .5 : .92;
+        ctx.drawImage(bmp.c, cx - s / 2, cy - s / 2, s, s);
+    }
+
+    function label(txt, x, y, align) {
+        ctx.globalAlpha = .55;
+        ctx.fillStyle = C.muted;
+        ctx.font = `500 9px ${C.mono || 'monospace'}`;
+        ctx.textAlign = align || 'center';
+        ctx.fillText(txt, x, y);
+        ctx.textAlign = 'start';
     }
 
     function drawFrame(t) {
         ctx.clearRect(0, 0, W, H);
-        const lightTheme = C.light;
-        const baseEdgeAlpha = lightTheme ? .18 : .10;
-        computePositions(t);
-
-        // edges
-        ctx.lineWidth = 1;
-        edges.forEach(e => {
-            const heat = Math.min(1, e.a.a * e.b.a * 3 + Math.max(e.a.a, e.b.a) * .25);
-            ctx.globalAlpha = baseEdgeAlpha + heat * .55;
-            ctx.strokeStyle = heat > .45 ? C.accent2 : C.accent;
-            ctx.beginPath();
-            ctx.moveTo(e.a.px, e.a.py);
-            ctx.lineTo(e.b.px, e.b.py);
-            ctx.stroke();
+        allNodes.forEach(n => {
+            n.px = n.hx + Math.cos(t * n.speed + n.phase) * n.amp + n.dx;
+            n.py = n.hy + Math.sin(t * n.speed * 1.3 + n.phase) * n.amp + n.dy;
         });
 
-        // traveling pulses
+        ctx.lineWidth = 1;
+        if (snap) {
+            // input → encoder (fan from the input bitmap)
+            const inAnchor = [{ x: imgIn.x + imgIn.s / 2 + 2, y: imgIn.y, a: .3 }];
+            drawEdgeGroup(inAnchor, encNodes, snap.viz.wEnc, vizMax.wEnc, 1);
+            drawEdgeGroup(encNodes, latNodes, snap.viz.wE2L, vizMax.wE2L, ZDIM);
+            // latent → decoder (stored [j*NSHOW + k])
+            const outAnchor = [{ x: imgOut.x - imgOut.s / 2 - 2, y: imgOut.y, a: .3 }];
+            drawEdgeGroup(latNodes, decNodes, snap.viz.wL2D, vizMax.wL2D, NSHOW);
+            drawEdgeGroup(decNodes, outAnchor, snap.viz.wDec, vizMax.wDec, 1);
+        } else {
+            // no data yet: faint scaffold
+            ctx.globalAlpha = C.light ? .12 : .06;
+            ctx.strokeStyle = C.accent;
+            encNodes.forEach(a => latNodes.forEach(b => {
+                ctx.beginPath(); ctx.moveTo(a.px, a.py); ctx.lineTo(b.px, b.py); ctx.stroke();
+            }));
+            latNodes.forEach(a => decNodes.forEach(b => {
+                ctx.beginPath(); ctx.moveTo(a.px, a.py); ctx.lineTo(b.px, b.py); ctx.stroke();
+            }));
+        }
+
+        // traveling pulses along real weight paths
         const now = t;
         pulses = pulses.filter(p => {
             const k = (now - p.t0) / p.dur;
-            if (k >= 1) {
-                p.e.b.a = Math.max(p.e.b.a, p.gain);
-                if (p.gain > .12) {
-                    p.e.b.out.forEach(out =>
-                        pulses.push({ e: out, t0: now, dur: 260, gain: p.gain * .82 }));
-                }
-                return false;
-            }
-            const x = p.e.a.px + (p.e.b.px - p.e.a.px) * k;
-            const y = p.e.a.py + (p.e.b.py - p.e.a.py) * k;
+            if (k >= 1) return false;
+            const segs = p.pts.length - 1;
+            const f = k * segs, si = Math.min(segs - 1, f | 0), sk = f - si;
+            const A = px(p.pts[si]), B = px(p.pts[si + 1]);
+            const x = A.x + (B.x - A.x) * sk, y = A.y + (B.y - A.y) * sk;
+            if (p.pts[si + 1].n) p.pts[si + 1].n.a = Math.max(p.pts[si + 1].n.a, sk * p.gain * .7);
             ctx.globalAlpha = .9 * p.gain;
             ctx.fillStyle = C.accent2;
             ctx.beginPath();
-            ctx.arc(x, y, 2.6, 0, Math.PI * 2);
+            ctx.arc(x, y, 2.4, 0, Math.PI * 2);
             ctx.fill();
             return true;
         });
 
-        // nodes
-        nodes.forEach(n => {
-            const r = 2.4 + n.a * 3;
-            ctx.globalAlpha = (lightTheme ? .5 : .45) + n.a * .55;
-            ctx.fillStyle = n.a > .35 ? C.accent2 : C.accent;
+        // nodes (latent column slightly larger — that's the bottleneck)
+        const drawCol = (col, rBase) => col.forEach(n => {
+            const act = Math.max(n.base * .85, n.a);
+            const r = rBase + act * 3;
+            ctx.globalAlpha = (C.light ? .5 : .45) + act * .5;
+            ctx.fillStyle = act > .5 ? C.accent2 : C.accent;
             ctx.beginPath();
             ctx.arc(n.px, n.py, r, 0, Math.PI * 2);
             ctx.fill();
-            if (n.a > .5) {
-                ctx.globalAlpha = n.a * .25;
+            if (act > .55) {
+                ctx.globalAlpha = act * .22;
                 ctx.beginPath();
-                ctx.arc(n.px, n.py, r * 2.4, 0, Math.PI * 2);
+                ctx.arc(n.px, n.py, r * 2.3, 0, Math.PI * 2);
                 ctx.fill();
             }
         });
+        drawCol(encNodes, 2.5);
+        drawCol(latNodes, 3.3);
+        drawCol(decNodes, 2.5);
+
+        // bitmaps: training pair + generated strip
+        if (snap) {
+            drawBitmap(bmpIn, imgIn.x, imgIn.y, imgIn.s);
+            drawBitmap(bmpOut, imgOut.x, imgOut.y, imgOut.s);
+            label('input', imgIn.x, imgIn.y + imgIn.s / 2 + 12);
+            label('recon', imgOut.x, imgOut.y + imgOut.s / 2 + 12);
+            label('z', W * .50, latNodes[ZDIM - 1].hy + 18);
+
+            tiles.forEach(tl => {
+                ctx.globalAlpha = C.light ? .5 : .35;
+                ctx.fillStyle = C.light ? 'rgba(20,30,60,.06)' : 'rgba(255,255,255,.045)';
+                ctx.beginPath();
+                if (ctx.roundRect) ctx.roundRect(tl.x, tl.y, tl.s, tl.s, 5);
+                else ctx.rect(tl.x, tl.y, tl.s, tl.s);
+                ctx.fill();
+                drawBitmap(bmpSamples[tl.c], tl.x + tl.s / 2, tl.y + tl.s / 2, tl.s - 4);
+                label(String(tl.c), tl.x + tl.s / 2, tl.y + tl.s + 11);
+            });
+            label('sampling z ~ N(0,1) — generated live', tiles[0].x, tiles[0].y - 6, 'left');
+
+            // real loss sparkline (skipped on narrow panels — the HUD wraps there)
+            const h = snap.hist;
+            if (h.length > 1 && W >= 460) {
+                let mn = Infinity, mx = -Infinity;
+                for (let i = 0; i < h.length; i++) { if (h[i] < mn) mn = h[i]; if (h[i] > mx) mx = h[i]; }
+                const rng = Math.max(1e-4, mx - mn);
+                ctx.globalAlpha = .8;
+                ctx.strokeStyle = C.accent2;
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                for (let i = 0; i < h.length; i++) {
+                    const x = spark.x + spark.w * i / (h.length - 1);
+                    const y = spark.y + spark.h * (1 - (h[i] - mn) / rng);
+                    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+                }
+                ctx.stroke();
+                ctx.lineWidth = 1;
+                label('loss', spark.x + spark.w + 6, spark.y + spark.h, 'left');
+            }
+        }
 
         // click ripples
         rings = rings.filter(rg => {
@@ -505,110 +788,115 @@ const PG = (() => {
             ctx.beginPath();
             ctx.arc(rg.x, rg.y, 6 + k * 46, 0, Math.PI * 2);
             ctx.stroke();
+            ctx.lineWidth = 1;
             return true;
         });
         ctx.globalAlpha = 1;
     }
 
     function tick(t) {
-        // physics
-        nodes.forEach(n => {
-            const px = n.hx + n.dx, py = n.hy + n.dy;
-            const ddx = pointer.x - px, ddy = pointer.y - py;
+        allNodes.forEach(n => {
+            const pxx = n.hx + n.dx, pyy = n.hy + n.dy;
+            const ddx = pointer.x - pxx, ddy = pointer.y - pyy;
             const d = Math.hypot(ddx, ddy);
             let tx = 0, ty = 0;
             if (d < 130 && d > 0.001) {
-                const f = (1 - d / 130) ** 2 * 22;
+                const f = (1 - d / 130) ** 2 * 20;
                 tx = ddx / d * f;
                 ty = ddy / d * f;
                 n.a = Math.max(n.a, (1 - d / 130) * .9);
             }
             n.dx += (tx - n.dx) * .085;
             n.dy += (ty - n.dy) * .085;
-            n.a *= .955;
+            n.a *= .95;
         });
 
-        // ambient forward pass: the model "thinks" on its own, gently
+        // ambient: once converged (or offline), the panel keeps living
         if (t >= nextAmbientT) {
-            nextAmbientT = t + 4200 + Math.random() * 1500;
-            firePulse(null, .3, false);
+            nextAmbientT = t + 4200 + Math.random() * 1600;
+            if (snap && snap.done && worker) {
+                worker.postMessage({ type: 'sample', digit: (Math.random() * 10) | 0 });
+                spawnPulse(false);
+            } else if (failed) {
+                allNodes[(Math.random() * allNodes.length) | 0].a = 1;
+            }
         }
-
-        // HUD
-        if (t - lastHud > 180 && statEl) {
-            lastHud = t;
-            shownLoss += (targetLoss - shownLoss) * .2;
-            const noisy = shownLoss + (Math.random() - .5) * shownLoss * .02;
-            statEl.textContent =
-                `epoch ${String(epochs).padStart(3, '0')} · loss ${noisy.toFixed(4)}`;
-        }
-
         drawFrame(t);
     }
 
+    /* ---- interaction ---- */
     function pointerToLocal(e) {
         const r = canvas.getBoundingClientRect();
         return { x: e.clientX - r.left, y: e.clientY - r.top };
     }
 
+    function resample(digit, x, y) {
+        if (!worker || !workerReady) return;
+        rings.push({ x, y, t0: performance.now() });
+        worker.postMessage({ type: 'sample', digit });
+        if (!PG.reduced()) {
+            spawnPulse(false);
+            if (digit < 0) { spawnPulse(false); spawnPulse(false); }
+        }
+        if (!hinted && hintEl) { hintEl.style.opacity = '0'; hinted = true; }
+        PG.award('heroPulse');
+        PG.track('hero_mnist_sample', { digit });
+        if (PG.reduced()) worker.postMessage({ type: 'burst', steps: 40 });
+    }
+
     function startLive() {
         if (live) return;
         live = true;
-        nextAmbientT = performance.now() + 3000;
-        heroSection.addEventListener('pointermove', e => {
-            const p = pointerToLocal(e);
-            pointer.x = p.x; pointer.y = p.y;
-        }, { passive: true });
-        heroSection.addEventListener('pointerleave', () => {
-            pointer.x = -9e3; pointer.y = -9e3;
-        });
-        canvas.addEventListener('pointerdown', e => {
-            const p = pointerToLocal(e);
-            rings.push({ x: p.x, y: p.y, t0: performance.now() });
-            // fire from the input node nearest the press
-            let best = byLayer[0][0], bd = 1e9;
-            byLayer[0].forEach(n => {
-                const d = Math.abs(n.hy - p.y);
-                if (d < bd) { bd = d; best = n; }
-            });
-            firePulse(best, 1, true);
-        });
-        host.addEventListener('keydown', e => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                rings.push({ x: W / 2, y: H / 2, t0: performance.now() });
-                firePulse(null, 1, true);
-            }
-        });
+        nextAmbientT = performance.now() + 4000;
         loop = PG.makeLoop(host, tick);
         loop.start();
     }
 
+    heroSection.addEventListener('pointermove', e => {
+        const p = pointerToLocal(e);
+        pointer.x = p.x; pointer.y = p.y;
+    }, { passive: true });
+    heroSection.addEventListener('pointerleave', () => {
+        pointer.x = -9e3; pointer.y = -9e3;
+    });
+    canvas.addEventListener('pointerdown', e => {
+        const p = pointerToLocal(e);
+        const tl = tiles.find(q => p.x >= q.x - 3 && p.x <= q.x + q.s + 3 &&
+            p.y >= q.y - 3 && p.y <= q.y + q.s + 14);
+        resample(tl ? tl.c : -1, p.x, p.y);
+    });
+    host.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            resample(-1, W / 2, H / 2);
+        }
+    });
+
     function staticFrame() {
-        // reduced motion: a single calm render, no loop
-        const amps = nodes.map(n => n.amp);
-        nodes.forEach(n => { n.amp = 0; n.a = 0; });
-        byLayer[2]?.forEach(n => { n.a = .4; });
+        allNodes.forEach(n => { n.a = 0; n.dx = 0; n.dy = 0; });
         drawFrame(0);
-        nodes.forEach((n, i) => { n.amp = amps[i]; n.a = 0; });
-        if (statEl) statEl.textContent = 'epoch 000 · loss 2.3026 · paused';
-        if (hintEl) hintEl.style.opacity = '0';
     }
 
-    let loop = null;
     PG.onTheme(c => {
         C = c;
+        parseInk();
+        if (snap) onSnapshot(snap);          // re-tint the bitmaps
         if (PG.reduced() || !live) staticFrame();
     });
 
     new ResizeObserver(() => resize()).observe(host);
+    parseInk();
     resize();
+    if (statEl) statEl.textContent = 'epoch — · loss —';
+    if (hintEl) hintEl.textContent = 'loading 4,000 real MNIST digits…';
+    loadData();
 
-    if (PG.reduced()) staticFrame();
-    else startLive();
+    // reduced motion: no auto-training, no loop — Enter runs real 40-step
+    // bursts and each worker snapshot triggers a single static redraw
+    if (!PG.reduced()) startLive();
 
-    // live prefers-reduced-motion flips, both directions
     PG.onMotionChange(reducedNow => {
+        syncRunState();
         if (reducedNow) {
             if (loop) loop.setEnabled(false);
             staticFrame();
@@ -617,6 +905,10 @@ const PG = (() => {
         } else {
             startLive();
         }
+    });
+
+    window.addEventListener('pagehide', () => {
+        if (worker && workerReady) worker.postMessage({ type: 'pause' });
     });
 })();
 /* ===================================================================
@@ -1005,7 +1297,19 @@ const PG = (() => {
         { t: 'The Hardware Lottery', src: 'CACM 2021' },
         { t: 'Pay Attention to MLPs', src: 'NeurIPS 2021' },
         { t: 'Intriguing Properties of Neural Networks', src: 'ICLR 2014' },
-        { t: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale', src: 'ICLR 2021' }
+        { t: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale', src: 'ICLR 2021' },
+        { t: 'Attention is not Explanation', src: 'NAACL 2019' },
+        { t: 'Attention is not not Explanation', src: 'EMNLP 2019' },
+        { t: 'Do CIFAR-10 Classifiers Generalize to CIFAR-10?', src: 'arXiv 2018' },
+        { t: 'BERT Has a Mouth, and It Must Speak: BERT as a Markov Random Field Language Model', src: 'NAACL-W 2019' },
+        { t: 'One Epoch Is All You Need', src: 'arXiv 2019' },
+        { t: 'Your Classifier is Secretly an Energy Based Model and You Should Treat it Like One', src: 'ICLR 2020' },
+        { t: 'Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity', src: 'ACL 2022' },
+        { t: 'ResNet Strikes Back: An Improved Training Procedure in timm', src: 'NeurIPS-W 2021' },
+        { t: 'Are Emergent Abilities of Large Language Models a Mirage?', src: 'NeurIPS 2023' },
+        { t: 'The Era of 1-bit LLMs: All Large Language Models are in 1.58 Bits', src: 'arXiv 2024' },
+        { t: 'Vision Transformers Need Registers', src: 'ICLR 2024' },
+        { t: 'On the Dangers of Stochastic Parrots: Can Language Models Be Too Big? 🦜', src: 'FAccT 2021' }
     ];
     // Hallucinated by a language model, on purpose, for this game.
     const GEN = [
@@ -1020,7 +1324,17 @@ const PG = (() => {
         { t: 'Backpropagation Through Vibes: Mood Embeddings at Scale' },
         { t: 'BERT, but Louder: Volume as an Inductive Bias' },
         { t: 'Stochastic Parrots Can Tango: Choreographic Alignment of Language Models' },
-        { t: 'The Bitter Lesson 2: Sweetened Variants for Small Compute' }
+        { t: 'The Bitter Lesson 2: Sweetened Variants for Small Compute' },
+        { t: 'We Have No Idea Why This Works: A Rigorous Empirical Study' },
+        { t: 'Chain-of-Thought Is Just Talking to Yourself: Clinical Implications for Language Models' },
+        { t: 'GPU-Poor but Loss-Rich: Foundation Models on Vibes and a MacBook' },
+        { t: 'Batch Size 1: A Meditation' },
+        { t: 'Early Stopping as Self-Care: Wellness-Aware Optimization' },
+        { t: 'Emergent Abilities of Small Language Models Under Peer Pressure' },
+        { t: 'The Unreasonable Effectiveness of Copy-Paste in Deep Learning Research' },
+        { t: 'Is Water Wet? A Multimodal Benchmark Nobody Asked For' },
+        { t: 'Reward Hacking Yourself Before the Model Does: Introspective RLHF' },
+        { t: 'MNIST at 3AM: Confessions of a Conditional VAE' }
     ];
 
     const $ = sel => root.querySelector(sel);
@@ -1903,4 +2217,241 @@ const PG = (() => {
     }
 
     [nameSel, charSel, actSel].forEach(el => el.addEventListener('change', update));
+})();
+
+/* ===================================================================
+   FEATURE: TINY AMIT — an SLM living in the browser
+   LiquidAI LFM2.5-230M (ONNX, q4) via transformers.js, WebGPU with
+   WASM fallback. Weights stream from the HF hub once (~210 MB), cache
+   in the browser, then every token is generated on the visitor's own
+   hardware. The model gets a short system note about Amit.
+   ==================================================================*/
+(() => {
+    const root = document.querySelector('[data-slm-root]');
+    if (!root) return;
+    const chatEl = root.querySelector('[data-slm-chat]');
+    const overlay = root.querySelector('[data-slm-overlay]');
+    const loadBtn = root.querySelector('[data-slm-load]');
+    const progWrap = root.querySelector('[data-slm-progress]');
+    const progBar = root.querySelector('[data-slm-bar]');
+    const progText = root.querySelector('[data-slm-ptext]');
+    const form = root.querySelector('[data-slm-form]');
+    const input = root.querySelector('[data-slm-input]');
+    const sendBtn = root.querySelector('[data-slm-send]');
+    const statusEl = root.querySelector('[data-slm-status]');
+
+    const TJS = 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0';
+    const MODEL = 'LiquidAI/LFM2.5-230M-ONNX';
+
+    /* kept deliberately short — a 230M model drowns in long system prompts */
+    const SYSTEM = [
+        'You are Tiny Amit, a 230M-parameter model (LiquidAI LFM2.5) running inside the',
+        'browser on Amit Israeli\'s portfolio site.',
+        'About Amit: AI Research Scientist at Wix (Tel Aviv), working on generative AI —',
+        'diffusion models, text-to-image and text-to-video, multimodal systems. Past jobs:',
+        'Reality Defender (deepfake detection), NLPearl (compact LLMs, audio),',
+        'Pashoot Robotics (robot vision), LuckyLab (edge CV). Projects: ES-EGGROLL,',
+        'PopYou2 (VAR Funko Pop generator), SANA-Video LoRA, Kokoro TTS, KoalaReadingAI.',
+        'This site\'s hero trains a VAE on MNIST live in the browser.',
+        'Contact: amit1541541@gmail.com.',
+        'Rules: plain text only, 1-3 short sentences, friendly and playful. Only discuss',
+        'Amit, this site, or machine learning. Never invent facts; if unsure, say you are',
+        'only 230M parameters and suggest emailing the real Amit.'
+    ].join('\n');
+
+    /* one-shot example — anchors tiny models far better than instructions do */
+    const SEED = [
+        { role: 'user', content: 'What does Amit do?' },
+        {
+            role: 'assistant',
+            content: 'Amit is an AI Research Scientist at Wix, working on diffusion models ' +
+                'and multimodal generative AI. Before Wix he was at Reality Defender, NLPearl, ' +
+                'and Pashoot Robotics. Want details on any of those?'
+        }
+    ];
+
+    let generator = null, TextStreamer = null;
+    let device = null;
+    let history = [];            // [{role, content}] — system prepended at call time
+    let busy = false, loading = false, talked = false;
+
+    function addMsg(cls, text) {
+        const el = document.createElement('div');
+        el.className = 'slm-msg ' + cls;
+        el.textContent = text;
+        chatEl.appendChild(el);
+        chatEl.scrollTop = chatEl.scrollHeight;
+        return el;
+    }
+
+    function setStatus(text) { if (statusEl) statusEl.textContent = text; }
+
+    /* ---- model loading with aggregate download progress ---- */
+    async function load() {
+        if (loading || generator) return;
+        loading = true;
+        loadBtn.disabled = true;
+        progWrap.hidden = false;
+        overlay.classList.add('hidden');
+        PG.track('slm_load_start');
+
+        const files = new Map();     // file -> {loaded, total}
+        const onProgress = p => {
+            if (p.status === 'progress' && p.total) {
+                files.set(p.file, { loaded: p.loaded, total: p.total });
+                let loaded = 0, total = 0;
+                files.forEach(f => { loaded += f.loaded; total += f.total; });
+                const pct = total ? Math.min(100, 100 * loaded / total) : 0;
+                progBar.style.width = pct.toFixed(1) + '%';
+                progText.textContent =
+                    `downloading weights — ${(loaded / 1e6).toFixed(0)} / ${(total / 1e6).toFixed(0)} MB`;
+            } else if (p.status === 'ready') {
+                progText.textContent = 'compiling the graph…';
+            }
+        };
+
+        try {
+            progText.textContent = 'fetching transformers.js…';
+            const tjs = await import(TJS);
+            TextStreamer = tjs.TextStreamer;
+            device = ('gpu' in navigator) ? 'webgpu' : 'wasm';
+            try {
+                generator = await tjs.pipeline('text-generation', MODEL,
+                    { device, dtype: 'q4', progress_callback: onProgress });
+            } catch (err) {
+                if (device !== 'webgpu') throw err;
+                // WebGPU exists but failed (driver/adapter) — fall back to CPU
+                device = 'wasm';
+                progText.textContent = 'WebGPU refused — retrying on CPU…';
+                generator = await tjs.pipeline('text-generation', MODEL,
+                    { device, dtype: 'q4', progress_callback: onProgress });
+            }
+            progWrap.hidden = true;
+            input.disabled = false;
+            sendBtn.disabled = false;
+            input.placeholder = 'ask about Amit, this site, or ML…';
+            setStatus(`LFM2.5-230M · ${device} · on-device` +
+                (device === 'wasm' ? ' · CPU mode, expect a thoughtful pace' : ''));
+            addMsg('sys', `model awake on ${device} — 230M parameters at your service`);
+            addMsg('bot', 'Hi! I\'m Tiny Amit — a very small model with a very short note about the real Amit. Ask me anything.');
+            input.focus();
+            PG.track('slm_load_done', { device });
+        } catch (err) {
+            console.error('SLM load failed:', err);
+            progWrap.hidden = true;
+            overlay.classList.remove('hidden');
+            loadBtn.disabled = false;
+            loadBtn.textContent = '↻ Retry · ~210 MB';
+            setStatus('load failed — network or browser support; try Chrome/Edge');
+            loading = false;
+        }
+    }
+
+    /* ---- chat ---- */
+    async function send(text) {
+        busy = true;
+        input.disabled = true;
+        sendBtn.disabled = true;
+        addMsg('user', text);
+        history.push({ role: 'user', content: text });
+        if (history.length > 8) history = history.slice(-8);
+
+        const bubble = addMsg('bot thinking', '');
+        let streamed = '';
+        const tidy = s => s.replace(/\*\*/g, '').replace(/^#+\s*/gm, '');
+        const streamer = new TextStreamer(generator.tokenizer, {
+            skip_prompt: true,
+            skip_special_tokens: true,
+            callback_function: t => {
+                streamed += t;
+                bubble.textContent = tidy(streamed);
+                chatEl.scrollTop = chatEl.scrollHeight;
+            }
+        });
+
+        try {
+            // LFM2.5's Jinja chat template uses {% generation %} tags that
+            // transformers.js can't parse yet — build the ChatML prompt by
+            // hand instead. The tokenizer adds <|startoftext|> on its own.
+            const prompt = `<|im_start|>system\n${SYSTEM}<|im_end|>\n` +
+                [...SEED, ...history].map(m => `<|im_start|>${m.role}\n${m.content}<|im_end|>\n`).join('') +
+                '<|im_start|>assistant\n';
+            const out = await generator(prompt, {
+                max_new_tokens: 120,
+                do_sample: true,
+                temperature: 0.2,
+                top_p: 0.9,
+                repetition_penalty: 1.3,
+                return_full_text: false,
+                streamer
+            });
+            const gen = out[0].generated_text;
+            const reply = tidy(streamed || (typeof gen === 'string' ? gen : '')).trim();
+            bubble.textContent = reply || '…I generated pure silence. Impressive, honestly.';
+            history.push({ role: 'assistant', content: bubble.textContent });
+            if (!talked) {
+                talked = true;
+                PG.award('slmTalk');
+                PG.track('slm_first_reply');
+            }
+        } catch (err) {
+            console.error('SLM generate failed:', err);
+            bubble.textContent = '⚠ generation failed — my 230M parameters need a moment. Try again?';
+        }
+        bubble.classList.remove('thinking');
+        busy = false;
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.focus();
+    }
+
+    loadBtn.addEventListener('click', load);
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text || busy || !generator) return;
+        input.value = '';
+        send(text);
+    });
+})();
+
+/* ===================================================================
+   FEATURE: MAPLE LLM GAMEPLAY CLIP
+   Lazy, polite video: loads nothing up front (preload=none + poster),
+   plays only while on screen, pauses off-screen. Reduced motion gets
+   manual controls instead of autoplay.
+   ==================================================================*/
+(() => {
+    const video = document.querySelector('[data-maple-video]');
+    if (!video) return;
+
+    if (PG.reduced()) {
+        video.controls = true;
+        return;
+    }
+
+    let played = false;
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+            if (en.isIntersecting && !document.hidden) {
+                video.play().then(() => {
+                    if (!played) { played = true; PG.track('maple_video_play'); }
+                }).catch(() => { video.controls = true; io.disconnect(); });
+            } else {
+                video.pause();
+            }
+        });
+    }, { threshold: 0.3 });
+    io.observe(video);
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) video.pause();
+    });
+
+    PG.onMotionChange(reducedNow => {
+        if (reducedNow) {
+            video.pause();
+            video.controls = true;
+            io.disconnect();
+        }
+    });
 })();

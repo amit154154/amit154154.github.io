@@ -394,14 +394,14 @@ a:hover { color: var(--txt); }
     touch-action: pan-y;
 }
 .hero-net-hud {
-    position: absolute; left: 14px; right: 14px; bottom: 11px;
+    position: absolute; left: 14px; right: 14px; top: 10px;
     display: flex; justify-content: space-between; gap: 12px;
     pointer-events: none;
     font: 500 10.5px/1.4 var(--f-mono);
-    letter-spacing: .1em;
-    text-transform: uppercase;
+    letter-spacing: .08em;
     color: var(--muted);
 }
+.hero-net-hud #heroNetStat { white-space: nowrap; }
 .hero-net-hud #heroNetHint { opacity: .75; transition: opacity .5s ease; text-align: right; }
 @media (max-width: 960px) {
     .hero-art { aspect-ratio: 16/10; min-height: 220px; }
@@ -1742,6 +1742,134 @@ footer {
 }
 @media (prefers-reduced-motion: reduce) { .pg-term { transition: none; } }
 
+/* Maple LLM featured card */
+.maple-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 440px) 1fr;
+    gap: 18px;
+    margin-top: 18px;
+    align-items: stretch;
+}
+@media (max-width: 860px) { .maple-stage { grid-template-columns: 1fr; } }
+.maple-video { margin: 0; min-width: 0; }
+.maple-video video {
+    width: 100%;
+    display: block;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--border-2);
+    background: #000;
+}
+.maple-video figcaption {
+    font: 500 11px/1.6 var(--f-mono);
+    color: var(--muted);
+    letter-spacing: .03em;
+    margin-top: 8px;
+}
+.maple-pipe {
+    padding: 16px;
+    border-radius: var(--r-lg);
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    min-width: 0;
+    display: flex; flex-direction: column; justify-content: center;
+}
+.maple-steps {
+    margin: 10px 0 0;
+    padding-left: 20px;
+    display: flex; flex-direction: column; gap: 8px;
+    color: var(--txt-2);
+    font-size: 13.5px;
+    line-height: 1.55;
+}
+.maple-steps strong { color: var(--txt); }
+.maple-steps li::marker { color: var(--accent); font-weight: 600; }
+.maple-note {
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+    font-size: 12.5px;
+    color: var(--muted);
+}
+.maple-note strong { color: var(--txt-2); }
+
+/* Tiny Amit — in-browser SLM chat (Playground card) */
+.project-card .media-frame.slm-frame { background: var(--bg-2); }
+.slm-chat {
+    position: absolute; inset: 0;
+    padding: 12px 12px 10px;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 8px;
+    scrollbar-width: thin;
+    font: 500 12.5px/1.55 var(--f-mono);
+}
+.slm-msg {
+    max-width: 88%;
+    padding: 7px 11px;
+    border-radius: 10px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+.slm-msg.user {
+    align-self: flex-end;
+    background: color-mix(in oklab, var(--accent) 20%, transparent);
+    border: 1px solid color-mix(in oklab, var(--accent) 34%, transparent);
+    color: var(--txt);
+}
+.slm-msg.bot {
+    align-self: flex-start;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--txt-2);
+}
+.slm-msg.sys {
+    align-self: center;
+    background: none; border: none;
+    color: var(--muted);
+    font-size: 11px; letter-spacing: .05em;
+    text-align: center;
+}
+.slm-msg.thinking::after {
+    content: '▍';
+    color: var(--accent-2);
+    animation: slmBlink 1s steps(2) infinite;
+}
+@keyframes slmBlink { 50% { opacity: 0; } }
+.slm-progress {
+    position: absolute; left: 14px; right: 14px; bottom: 12px;
+    display: flex; flex-direction: column; gap: 6px;
+    z-index: 2;
+}
+.slm-progress-track {
+    height: 6px; border-radius: 4px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+.slm-progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width .25s ease;
+}
+.slm-progress-text { font: 500 10.5px/1.2 var(--f-mono); color: var(--muted); letter-spacing: .06em; }
+.slm-inputrow { display: flex; gap: 8px; }
+.slm-input {
+    flex: 1; min-width: 0;
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-2);
+    background: var(--surface-2);
+    color: var(--txt);
+    font: 500 13px/1.2 var(--f-mono);
+    outline: none;
+    transition: border-color .2s ease;
+}
+.slm-input:focus { border-color: var(--accent-ring); }
+.slm-input:disabled { opacity: .55; cursor: not-allowed; }
+.slm-send:disabled { opacity: .5; cursor: not-allowed; }
+@media (prefers-reduced-motion: reduce) {
+    .slm-msg.thinking::after { animation: none; }
+}
+
 /* Attention map over the hero headline */
 .hero h1 .attn-tok {
     display: inline-block;
@@ -1839,11 +1967,11 @@ footer {
             </div>
 
             <div class="hero-art hero-net" id="heroNet" tabindex="0" role="button"
-                 aria-label="Neural network playground — press Enter to fire a forward pass">
+                 aria-label="MNIST lab — a small VAE really training in your browser. Press Enter to sample fresh digits.">
                 <canvas id="heroNetCanvas" aria-hidden="true"></canvas>
                 <div class="hero-net-hud" aria-hidden="true">
-                    <span id="heroNetStat">epoch 000 · loss 2.3026</span>
-                    <span id="heroNetHint">click — run a forward pass</span>
+                    <span id="heroNetStat">epoch — · loss —</span>
+                    <span id="heroNetHint">warming up the tensors…</span>
                 </div>
             </div>
         </div>
@@ -2066,7 +2194,8 @@ footer {
                 <div>
                     <span class="section-num" data-num="03">Featured</span>
                     <h2>Latest research</h2>
-                    <p class="head-sub">A current project — drag the slider to compare base output to the ES-trained LoRA.</p>
+                    <p class="head-sub">Current projects — drag the slider to compare base output to the ES-trained LoRA,
+                        and watch an agent play MapleStory on its own.</p>
                 </div>
                 <span class="section-head-side">In progress</span>
             </div>
@@ -2162,6 +2291,55 @@ footer {
                     </div>
 
                     <div class="ba-footnote">Drag horizontally (or use the slider) to reveal more of the ES-trained LoRA result.</div>
+                </div>
+            </article>
+
+            <!-- Featured #2: Maple LLM -->
+            <article class="featured-card reveal" style="margin-top: 24px;">
+                <div class="featured-head">
+                    <span class="tag tag-accent">Agents</span>
+                    <span class="tag">Behavior cloning</span>
+                    <span class="tag">Vision encoder</span>
+                    <span class="tag">LLM policy</span>
+                </div>
+
+                <h3>Maple LLM — An Agent That Plays MapleStory</h3>
+
+                <p>
+                    Teaching a small LLM to play MapleStory (on a private server) by
+                    <strong>behavior cloning my own gameplay</strong>. At play time the screen is the only input:
+                    a <strong>DINOv3</strong>-based encoder compresses every frame into a
+                    <strong>single 512-d token</strong>, and an <strong>LFM2.5-230M</strong> policy — the same tiny
+                    model that chats in the Playground below — reads the token stream plus action history and
+                    predicts the <strong>next held-key combo</strong> at 10 fps.
+                </p>
+
+                <div class="maple-stage">
+                    <figure class="maple-video">
+                        <video src="assets/projects_assets/maple_llm/gameplay_agentv1_clip.mp4"
+                               poster="assets/projects_assets/maple_llm/gameplay_poster.jpg"
+                               muted loop playsinline preload="none" data-maple-video
+                               aria-label="Maple LLM agent v1 playing MapleStory with its live prediction overlay"></video>
+                        <figcaption>
+                            agent v1, live inference on my Mac — the overlay is the agent's own view:
+                            what the frame token "sees", the keys it is holding, and its next-action distribution.
+                        </figcaption>
+                    </figure>
+                    <div class="maple-pipe">
+                        <div class="mini-title">Bootstrapped supervision</div>
+                        <ol class="maple-steps">
+                            <li><strong>Record</strong> my own play — 18 sessions · 5.6 h · 301k frames, with a synced keyboard log.</li>
+                            <li><strong>Label</strong> just 267 frames with a SAM-2.1-assisted tool (3.9k boxes, 7 classes).</li>
+                            <li><strong>Detect</strong> — a YOLO11m trained on those labels pseudo-labels <em>every</em> frame.</li>
+                            <li><strong>Compress</strong> — the encoder distills each frame into one 512-d token, forced to carry game state by aux losses on the pseudo-labels.</li>
+                            <li><strong>Act</strong> — LFM2.5-230M SFT over 28 held-key combos.</li>
+                        </ol>
+                        <p class="maple-note">
+                            Hardest part: <strong>copycat</strong>. Held keys persist, so ~83% of targets just repeat
+                            the previous action — the model happily ignores the screen. Countermeasures: action-history
+                            dropout and transition-weighted loss; the metric that matters is <strong>transition accuracy</strong>.
+                        </p>
+                    </div>
                 </div>
             </article>
         </div>
@@ -2553,8 +2731,9 @@ footer {
                     <span class="section-num" data-num="05">Playground</span>
                     <h2>Toys that learn</h2>
                     <p class="head-sub">
-                        Hands-on ML — drive an optimizer, out-judge a generator, and compose Funko Pops
-                        with my VAR model. Rumor has it not everything here is listed.
+                        Hands-on ML — drive an optimizer, out-judge a generator, compose Funko Pops
+                        with my VAR model, and chat with a tiny LLM that lives in your browser.
+                        Rumor has it not everything here is listed.
                     </p>
                 </div>
                 <span class="section-head-side">Fully playable</span>
@@ -2679,6 +2858,41 @@ footer {
                             <span class="tag tag-accent">Interactive</span>
                             <span class="tag">VAR</span>
                             <span class="tag">Autoregressive T2I</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Playground: Tiny Amit (LFM2.5-230M chat, fully in-browser) -->
+                <article class="project-card reveal play-card" data-slm-root>
+                    <div class="media-frame slm-frame">
+                        <div class="slm-chat" data-slm-chat role="log" aria-live="polite" aria-label="Chat with Tiny Amit"></div>
+                        <div class="slm-progress" data-slm-progress hidden>
+                            <div class="slm-progress-track"><div class="slm-progress-bar" data-slm-bar></div></div>
+                            <span class="slm-progress-text" data-slm-ptext>contacting the hub…</span>
+                        </div>
+                        <div class="descent-overlay" data-slm-overlay>
+                            <button class="btn btn-primary" data-slm-load type="button">⬇ Wake it up · ~210 MB</button>
+                            <p class="descent-overlay-sub">the weights download once, cache in your browser,
+                                and every token is generated on your device</p>
+                        </div>
+                    </div>
+                    <div class="project-body">
+                        <h3>Tiny Amit — a 230M-parameter me</h3>
+                        <p>
+                            <strong>LiquidAI LFM2.5-230M</strong>, quantized and running <strong>entirely in your
+                            browser</strong> — no server, no API. It has read a short note about me, so ask it
+                            anything. At 230M parameters it is fast, charming, and confidently wrong on schedule.
+                        </p>
+                        <form class="slm-inputrow" data-slm-form>
+                            <input class="slm-input" data-slm-input type="text" maxlength="280"
+                                   placeholder="wake the model to chat…" aria-label="Message Tiny Amit" disabled/>
+                            <button class="btn-mini slm-send" data-slm-send type="submit" disabled>Send</button>
+                        </form>
+                        <p class="descent-best" data-slm-status>WebGPU preferred · WASM fallback · answers ≠ facts</p>
+                        <div class="tag-row">
+                            <span class="tag tag-accent">Interactive</span>
+                            <span class="tag">LFM2.5-230M</span>
+                            <span class="tag">On-device inference</span>
                         </div>
                     </div>
                 </article>
