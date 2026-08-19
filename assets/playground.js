@@ -188,7 +188,7 @@ const PG = (() => {
             `<div class="pg-hub-backdrop" data-hub-close></div>
              <div class="pg-hub-panel">
                 <div class="pg-hub-head">
-                    <img class="pg-hub-koala" src="assets/cursor_192.png" alt="" width="56" height="56"/>
+                    <img class="pg-hub-koala" src="assets/cursor_192.webp" alt="" width="56" height="56"/>
                     <div>
                         <h3 class="pg-hub-title">Easter-egg hub</h3>
                         <p class="pg-hub-sub" id="pgHubCount"></p>
@@ -355,7 +355,7 @@ const PG = (() => {
     const heroSection = host.closest('.hero') || host;
 
     const IMG = 14, PIX = 196, ZDIM = 8, NSHOW = 10;
-    const SPRITE = 'assets/mnist/mnist14.png';
+    const SPRITE = 'assets/mnist/mnist14.webp';
     const SPRITE_COLS = 80, SPRITE_N = 4000;
     const STORE_KEY = 'mnist';
 
@@ -889,7 +889,13 @@ const PG = (() => {
     resize();
     if (statEl) statEl.textContent = 'epoch — · loss —';
     if (hintEl) hintEl.textContent = 'loading 4,000 real MNIST digits…';
-    loadData();
+    // hold the sprite fetch until the page has painted — the scaffold is
+    // already on screen, so this buys first paint without costing the show
+    const kick = () => (window.requestIdleCallback
+        ? requestIdleCallback(loadData, { timeout: 1200 })
+        : setTimeout(loadData, 200));
+    if (document.readyState === 'complete') kick();
+    else window.addEventListener('load', kick, { once: true });
 
     // reduced motion: no auto-training, no loop — Enter runs real 40-step
     // bursts and each worker snapshot triggers a single static redraw
@@ -1486,7 +1492,7 @@ const PG = (() => {
         pal.className = 'koala-pal' + (PG.reduced() ? '' : ' breathe');
         pal.innerHTML =
             `<button class="koala-btn" type="button" aria-label="Koala companion — it reacts to things. Click it.">
-                 <img src="assets/koala_192.png" alt="" width="64" height="64"/>
+                 <img src="assets/koala_192.webp" alt="" width="64" height="64"/>
              </button>
              <span class="koala-bubble" aria-hidden="true"></span>
              <button class="koala-dismiss" type="button" aria-label="Dismiss the koala">✕</button>`;
@@ -1520,8 +1526,8 @@ const PG = (() => {
 
     function excitedFace(ms) {
         if (!img) return;
-        img.src = 'assets/cursor_192.png';
-        setTimeout(() => { img.src = 'assets/koala_192.png'; }, ms || 4500);
+        img.src = 'assets/cursor_192.webp';
+        setTimeout(() => { img.src = 'assets/koala_192.webp'; }, ms || 4500);
     }
 
     function onClick() {
@@ -2416,42 +2422,49 @@ const PG = (() => {
 })();
 
 /* ===================================================================
-   FEATURE: MAPLE LLM GAMEPLAY CLIP
-   Lazy, polite video: loads nothing up front (preload=none + poster),
-   plays only while on screen, pauses off-screen. Reduced motion gets
-   manual controls instead of autoplay.
+   FEATURE: LAZY VIDEOS
+   Every [data-lazy-video] ships as poster + preload="none", so nothing
+   downloads until it scrolls into view. Plays while visible, pauses off
+   screen and on hidden tabs. Reduced motion gets manual controls and
+   never auto-downloads. Covers the Maple LLM clip, CelebrityLook, and
+   the koala reader.
    ==================================================================*/
 (() => {
-    const video = document.querySelector('[data-maple-video]');
-    if (!video) return;
+    const videos = document.querySelectorAll('[data-lazy-video]');
+    if (!videos.length) return;
+
+    const tracked = el => el.hasAttribute('data-maple-video') ? 'maple_video_play' : null;
 
     if (PG.reduced()) {
-        video.controls = true;
+        videos.forEach(v => { v.controls = true; });
         return;
     }
 
-    let played = false;
     const io = new IntersectionObserver(entries => {
         entries.forEach(en => {
+            const v = en.target;
             if (en.isIntersecting && !document.hidden) {
-                video.play().then(() => {
-                    if (!played) { played = true; PG.track('maple_video_play'); }
-                }).catch(() => { video.controls = true; io.disconnect(); });
+                v.play().then(() => {
+                    if (!v.dataset.played) {
+                        v.dataset.played = '1';
+                        const ev = tracked(v);
+                        if (ev) PG.track(ev);
+                    }
+                }).catch(() => { v.controls = true; io.unobserve(v); });
             } else {
-                video.pause();
+                v.pause();
             }
         });
-    }, { threshold: 0.3 });
-    io.observe(video);
+    }, { threshold: 0.25 });
+    videos.forEach(v => io.observe(v));
+
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden) video.pause();
+        if (document.hidden) videos.forEach(v => v.pause());
     });
 
     PG.onMotionChange(reducedNow => {
         if (reducedNow) {
-            video.pause();
-            video.controls = true;
-            io.disconnect();
+            videos.forEach(v => { v.pause(); v.controls = true; io.unobserve(v); });
         }
     });
 })();

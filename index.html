@@ -26,6 +26,7 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 
@@ -1002,7 +1003,12 @@ table.mini-table tbody tr:hover { background: var(--surface-2); }
 
 /* Project links (badge style) */
 .project-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.badge-link { padding: 0; border: none; background: none; display: inline-flex; }
+.badge-link {
+    padding: 0; border: none; background: none; display: inline-flex;
+    /* reserve the narrowest badge footprint so lazy-loaded badges
+       cannot reflow the row as they arrive */
+    min-width: 105px; min-height: 24px;
+}
 .badge-link img { height: 24px; display: block; transition: transform .15s ease; }
 .badge-link:hover img { transform: translateY(-1px); }
 
@@ -1913,7 +1919,7 @@ footer {
 <nav class="nav">
     <div class="container nav-inner">
         <a class="brand" href="#top">
-            <span class="brand-mark"><img src="assets/koala_192.png" alt=""/></span>
+            <span class="brand-mark"><img src="assets/koala_192.webp" alt=""/></span>
             <span class="brand-text">
                 <span class="brand-name">Amit Israeli</span>
                 <span class="brand-role">AI Research Scientist</span>
@@ -1960,7 +1966,7 @@ footer {
                 <div class="cta-row">
                     <a class="btn btn-primary" href="#featured">Latest research</a>
                     <a class="cv-btn" id="cvBtn" href="assets/AmitIsraeliCV_15_20_2025.pdf" download>
-                        <img src="assets/download_cv_image.png" alt="Download CV"/>
+                        <img src="assets/download_cv_image.webp" alt="Download CV"/>
                     </a>
                     <a class="btn btn-ghost" href="#contact">Get in touch</a>
                 </div>
@@ -1991,7 +1997,7 @@ footer {
             </div>
             <div class="about-card reveal">
                 <div class="avatar-wrap">
-                    <img src="assets/linkdin_profile_image_ghibli.png" alt="Amit Israeli"/>
+                    <img src="assets/linkdin_profile_image_ghibli.webp" alt="Amit Israeli" loading="lazy" decoding="async"/>
                 </div>
                 <div>
                     <p>
@@ -2051,7 +2057,7 @@ footer {
                     <article class="xp-card">
                         <div class="xp-meta-col">
                             <a class="xp-logo" href="https://www.wix.com" target="_blank" rel="noopener" aria-label="Wix">
-                                <img src="assets/experience/wix_logo.png" alt=""/>
+                                <img src="assets/experience/wix_logo.webp" alt="" loading="lazy" decoding="async"/>
                             </a>
                             <span class="xp-status">Current</span>
                             <span class="xp-when">Mar 2026 — Present</span>
@@ -2076,7 +2082,7 @@ footer {
                     <article class="xp-card">
                         <div class="xp-meta-col">
                             <a class="xp-logo" href="https://realitydefender.com/" target="_blank" rel="noopener" aria-label="Reality Defender">
-                                <img src="assets/experience/reality_defender_logo.png" alt=""/>
+                                <img src="assets/experience/reality_defender_logo.webp" alt="" loading="lazy" decoding="async"/>
                             </a>
                             <span class="xp-when">Jan 2025 — Jan 2026</span>
                         </div>
@@ -2103,7 +2109,7 @@ footer {
                     <article class="xp-card">
                         <div class="xp-meta-col">
                             <span class="xp-logo">
-                                <img src="assets/experience/luckylab_logo.jpeg" alt=""/>
+                                <img src="assets/experience/luckylab_logo.webp" alt="" loading="lazy" decoding="async"/>
                             </span>
                             <span class="xp-when">Dec 2024 — Apr 2025</span>
                         </div>
@@ -2130,7 +2136,7 @@ footer {
                     <article class="xp-card">
                         <div class="xp-meta-col">
                             <span class="xp-logo">
-                                <img src="assets/experience/nlpearl_logo.jpeg" alt=""/>
+                                <img src="assets/experience/nlpearl_logo.webp" alt="" loading="lazy" decoding="async"/>
                             </span>
                             <span class="xp-when">Jun 2024 — Jan 2025</span>
                             <span class="xp-loc">Tel Aviv</span>
@@ -2158,7 +2164,7 @@ footer {
                     <article class="xp-card">
                         <div class="xp-meta-col">
                             <span class="xp-logo">
-                                <img src="assets/experience/pashoot_robotics_logo.jpeg" alt=""/>
+                                <img src="assets/experience/pashoot_robotics_logo.webp" alt="" loading="lazy" decoding="async"/>
                             </span>
                             <span class="xp-when">May 2023 — Jun 2024</span>
                             <span class="xp-loc">Rehovot</span>
@@ -2223,7 +2229,7 @@ footer {
 
                 <div class="project-links">
                     <a class="badge-link" target="_blank" rel="noopener" href="https://amit154154.github.io/HyperscaleES_T2I/">
-                        <img src="https://img.shields.io/badge/Project_Site-HyperscaleES__T2I-7c8cff?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Project site"/>
+                        <img src="https://img.shields.io/badge/Project_Site-HyperscaleES__T2I-7c8cff?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Project site" loading="lazy" decoding="async"/>
                     </a>
                 </div>
 
@@ -2279,8 +2285,8 @@ footer {
                     <div class="ba-dots" data-ba-dots aria-label="Example selector"></div>
 
                     <div class="ba-wrap" data-ba>
-                        <img class="ba-img" data-ba-base src="assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_base.jpg" alt="Base example" loading="lazy" decoding="async"/>
-                        <img class="ba-img ba-overlay" data-ba-overlay src="assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_lora.jpg" alt="ES-LoRA example" loading="lazy" decoding="async"/>
+                        <img class="ba-img" data-ba-base src="assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_base.webp" alt="Base example" loading="lazy" decoding="async"/>
+                        <img class="ba-img ba-overlay" data-ba-overlay src="assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_lora.webp" alt="ES-LoRA example" loading="lazy" decoding="async"/>
                         <div class="ba-badges">
                             <div class="ba-badge">← <strong>Base</strong></div>
                             <div class="ba-badge"><strong>ES-LoRA</strong> →</div>
@@ -2317,8 +2323,8 @@ footer {
                 <div class="maple-stage">
                     <figure class="maple-video">
                         <video src="assets/projects_assets/maple_llm/gameplay_agentv1_clip.mp4"
-                               poster="assets/projects_assets/maple_llm/gameplay_poster.jpg"
-                               muted loop playsinline preload="none" data-maple-video
+                               poster="assets/projects_assets/maple_llm/gameplay_poster.webp"
+                               muted loop playsinline preload="none" data-lazy-video data-maple-video
                                aria-label="Maple LLM agent v1 playing MapleStory with its live prediction overlay"></video>
                         <figcaption>
                             agent v1, live inference on my Mac — the overlay is the agent's own view:
@@ -2370,7 +2376,7 @@ footer {
                 <!-- Sana-Video Tom & Jerry -->
                 <article class="project-card reveal" data-tags="img,cv" data-fit="contain">
                     <div class="media-frame">
-                        <img src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_lora_step010000_seed69420.gif" alt="SANA-Video Tom & Jerry LoRA sample"/>
+                        <img src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_lora_step010000_seed69420.webp" alt="SANA-Video Tom & Jerry LoRA sample" loading="lazy" decoding="async"/>
                     </div>
                     <div class="project-body">
                         <h3>Tom &amp; Jerry — SANA-Video LoRA</h3>
@@ -2385,16 +2391,16 @@ footer {
                         </div>
                         <div class="project-links">
                             <a class="badge-link" target="_blank" rel="noopener" href="https://amit154154.github.io/Sana-Simplified/">
-                                <img src="https://img.shields.io/badge/Project_Site-Research_Log-7c8cff?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Project site"/>
+                                <img src="https://img.shields.io/badge/Project_Site-Research_Log-7c8cff?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Project site" loading="lazy" decoding="async"/>
                             </a>
                             <a class="badge-link" target="_blank" rel="noopener" href="https://github.com/amit154154/Sana-Simplified">
-                                <img src="https://img.shields.io/badge/GitHub-Sana_Simplified-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub"/>
+                                <img src="https://img.shields.io/badge/GitHub-Sana_Simplified-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub" loading="lazy" decoding="async"/>
                             </a>
                             <a class="badge-link" target="_blank" rel="noopener" href="https://huggingface.co/AmitIsraeli/sanavideo-tomjerry-lora-r16-v1">
-                                <img src="https://img.shields.io/badge/HF-tomjerry--lora--r16-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=000000" alt="HF"/>
+                                <img src="https://img.shields.io/badge/HF-tomjerry--lora--r16-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=000000" alt="HF" loading="lazy" decoding="async"/>
                             </a>
                             <a class="badge-link" target="_blank" rel="noopener" href="https://wandb.ai/amit154154/sana-video-tomjerry">
-                                <img src="https://img.shields.io/badge/W&B-Tom_%26_Jerry-2c8ebb?style=for-the-badge&logo=weightsandbiases&logoColor=white" alt="W&B"/>
+                                <img src="https://img.shields.io/badge/W&B-Tom_%26_Jerry-2c8ebb?style=for-the-badge&logo=weightsandbiases&logoColor=white" alt="W&B" loading="lazy" decoding="async"/>
                             </a>
                         </div>
                         <details class="more">
@@ -2419,7 +2425,7 @@ footer {
                                         <button class="tj-step" data-step="010000">10k</button>
                                     </div>
                                     <div class="tj-display">
-                                        <img data-tj-image src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_base_seed69420.gif" alt="Tom & Jerry checkpoint preview"/>
+                                        <img data-tj-image src="assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/tomjerry_base_seed69420.webp" alt="Tom & Jerry checkpoint preview" loading="lazy" decoding="async"/>
                                     </div>
                                     <p class="tj-caption" data-tj-caption>Base model: off-style 224×224 sample before LoRA fine-tuning.</p>
                                 </div>
@@ -2434,7 +2440,7 @@ footer {
                 <!-- Sana Simplified Zoom -->
                 <article class="project-card reveal" data-tags="img,cv" data-fit="contain">
                     <div class="media-frame">
-                        <img src="assets/projects_assets/siglip_zoom_sana/method_overview_nanobanana.png" alt="SigLIP–zoom method overview"/>
+                        <img src="assets/projects_assets/siglip_zoom_sana/method_overview_nanobanana.webp" alt="SigLIP–zoom method overview" loading="lazy" decoding="async"/>
                     </div>
                     <div class="project-body">
                         <h3>Sana Simplified — Image &amp; Zoom Control</h3>
@@ -2451,10 +2457,10 @@ footer {
                         </div>
                         <div class="project-links">
                             <a class="badge-link" target="_blank" rel="noopener" href="https://github.com/amit154154/Sana-Simplified">
-                                <img src="https://img.shields.io/badge/GitHub-Sana_Simplified-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub"/>
+                                <img src="https://img.shields.io/badge/GitHub-Sana_Simplified-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub" loading="lazy" decoding="async"/>
                             </a>
                             <a class="badge-link" target="_blank" rel="noopener" href="https://huggingface.co/AmitIsraeli/sana1.5_siglipzoom_glb_step30000">
-                                <img src="https://img.shields.io/badge/HF-sana1.5__siglipzoom-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=000000" alt="HF"/>
+                                <img src="https://img.shields.io/badge/HF-sana1.5__siglipzoom-ffcc4d?style=for-the-badge&logo=huggingface&logoColor=000000" alt="HF" loading="lazy" decoding="async"/>
                             </a>
                         </div>
                         <details class="more">
@@ -2465,14 +2471,14 @@ footer {
                                 <h4>Reference &amp; zoom sweep</h4>
                                 <div class="zoom-gallery">
                                     <figure class="zoom-item">
-                                        <a href="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.jpeg" target="_blank" rel="noopener">
-                                            <img src="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.jpeg" alt="Reference zero-zoom" loading="lazy" decoding="async"/>
+                                        <a href="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.webp" target="_blank" rel="noopener">
+                                            <img src="assets/projects_assets/siglip_zoom_sana/referance_zero_zoom_example.webp" alt="Reference zero-zoom" loading="lazy" decoding="async"/>
                                         </a>
                                         <figcaption>Reference zero-zoom render (zoom_0)</figcaption>
                                     </figure>
                                     <figure class="zoom-item">
-                                        <a href="assets/projects_assets/siglip_zoom_sana/video_example_zoom.gif" target="_blank" rel="noopener">
-                                            <img src="assets/projects_assets/siglip_zoom_sana/video_example_zoom.gif" alt="Zoom sweep" loading="lazy" decoding="async"/>
+                                        <a href="assets/projects_assets/siglip_zoom_sana/video_example_zoom.webp" target="_blank" rel="noopener">
+                                            <img src="assets/projects_assets/siglip_zoom_sana/video_example_zoom.webp" alt="Zoom sweep" loading="lazy" decoding="async"/>
                                         </a>
                                         <figcaption>Generated zoom sweep as zoom token moves 0 → 1</figcaption>
                                     </figure>
@@ -2485,7 +2491,7 @@ footer {
                 <!-- Kokoro -->
                 <article class="project-card reveal" data-tags="aud,nlp" data-fit="contain">
                     <div class="media-frame">
-                        <img src="assets/projects_assets/Kokoro%20research/coeff_viz.gif" alt="Kokoro coefficient trajectory"/>
+                        <img src="assets/projects_assets/Kokoro%20research/coeff_viz.webp" alt="Kokoro coefficient trajectory" loading="lazy" decoding="async"/>
                     </div>
                     <div class="project-body">
                         <h3>Kokoro — Tiny TTS, Big Voices</h3>
@@ -2500,10 +2506,10 @@ footer {
                         </div>
                         <div class="project-links">
                             <a class="badge-link" target="_blank" rel="noopener" href="https://github.com/amit154154/kokoro_jarvis">
-                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub"/>
+                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub" loading="lazy" decoding="async"/>
                             </a>
                             <a class="badge-link" target="_blank" rel="noopener" href="https://wandb.ai/amit154154/kokoro_opt">
-                                <img src="https://img.shields.io/badge/W&B-kokoro__opt-FFBE0B?style=for-the-badge&logo=weightsandbiases&logoColor=000000" alt="W&B"/>
+                                <img src="https://img.shields.io/badge/W&B-kokoro__opt-FFBE0B?style=for-the-badge&logo=weightsandbiases&logoColor=000000" alt="W&B" loading="lazy" decoding="async"/>
                             </a>
                         </div>
                         <details class="more">
@@ -2523,7 +2529,7 @@ footer {
                 <!-- Token-Budget VLM -->
                 <article class="project-card reveal" data-tags="nlp" data-fit="contain">
                     <div class="media-frame">
-                        <img src="assets/projects_assets/token_budget_cot/token_budget_example.png" alt="Token Budget example"/>
+                        <img src="assets/projects_assets/token_budget_cot/token_budget_example.webp" alt="Token Budget example" loading="lazy" decoding="async"/>
                     </div>
                     <div class="project-body">
                         <h3>Token-Budget-Aware Reasoning for VLMs</h3>
@@ -2539,7 +2545,7 @@ footer {
                         </div>
                         <div class="project-links">
                             <a class="badge-link" target="_blank" rel="noopener" href="https://github.com/amit154154/Token_Budget_cot_VLM">
-                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub"/>
+                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub" loading="lazy" decoding="async"/>
                             </a>
                         </div>
                         <details class="more">
@@ -2554,7 +2560,7 @@ footer {
                                     <li><strong>Evaluation:</strong> accuracy vs. average tokens; ablations on freezing / head depth.</li>
                                 </ul>
                                 <div class="media-strip">
-                                    <img src="assets/projects_assets/token_budget_cot/token_budget_predictor.png" alt="Token budget predictor diagram" loading="lazy" decoding="async"/>
+                                    <img src="assets/projects_assets/token_budget_cot/token_budget_predictor.webp" alt="Token budget predictor diagram" loading="lazy" decoding="async"/>
                                 </div>
                             </div>
                         </details>
@@ -2564,7 +2570,7 @@ footer {
                 <!-- PopYou2 VAR -->
                 <article class="project-card reveal" data-tags="img,cv" data-fit="contain">
                     <div class="media-frame">
-                        <img src="assets/projects_assets/PopYou2/VAR_explained.png" alt="VAR Explained"/>
+                        <img src="assets/projects_assets/PopYou2/VAR_explained.webp" alt="VAR Explained" loading="lazy" decoding="async"/>
                     </div>
                     <div class="project-body">
                         <h3>PopYou2 — VAR Text-to-Image</h3>
@@ -2579,10 +2585,10 @@ footer {
                         </div>
                         <div class="project-links">
                             <a class="badge-link" target="_blank" rel="noopener" href="https://github.com/amit154154/VAR_clip">
-                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub"/>
+                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub" loading="lazy" decoding="async"/>
                             </a>
                             <a class="badge-link" target="_blank" rel="noopener" href="https://huggingface.co/spaces/AmitIsraeli/PopYou">
-                                <img src="https://img.shields.io/badge/HF-Space-FFCC4D?style=for-the-badge&logo=huggingface&logoColor=000000" alt="HF Space"/>
+                                <img src="https://img.shields.io/badge/HF-Space-FFCC4D?style=for-the-badge&logo=huggingface&logoColor=000000" alt="HF Space" loading="lazy" decoding="async"/>
                             </a>
                         </div>
                         <a class="btn-mini" href="#playground">▶ Try the live builder — in the Playground</a>
@@ -2592,7 +2598,7 @@ footer {
                 <!-- Few-shot SAM + LoRA -->
                 <article class="project-card reveal" data-tags="cv,mobile" data-fit="contain">
                     <div class="media-frame">
-                        <img src="assets/projects_assets/few_shot_sam_lora/sam_lora_figure.png" alt="SAM LoRA figure"/>
+                        <img src="assets/projects_assets/few_shot_sam_lora/sam_lora_figure.webp" alt="SAM LoRA figure" loading="lazy" decoding="async"/>
                     </div>
                     <div class="project-body">
                         <h3>Few-Shot SAM + LoRA</h3>
@@ -2609,7 +2615,7 @@ footer {
                         </div>
                         <div class="project-links">
                             <a class="badge-link" target="_blank" rel="noopener" href="https://github.com/amit154154/SAM_LORA">
-                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub"/>
+                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub" loading="lazy" decoding="async"/>
                             </a>
                         </div>
                         <details class="more">
@@ -2618,9 +2624,9 @@ footer {
                                 <h4>Deep dive</h4>
                                 <p>LoRA-adapted SAM variants with compression for edge deployment, with experimentation in extreme few-shot scenarios.</p>
                                 <div class="media-strip">
-                                    <img src="assets/projects_assets/few_shot_sam_lora/coco.png" alt="COCO" loading="lazy" decoding="async"/>
-                                    <img src="assets/projects_assets/few_shot_sam_lora/cityscapes.png" alt="Cityscapes" loading="lazy" decoding="async"/>
-                                    <img src="assets/projects_assets/few_shot_sam_lora/soccer.png" alt="Soccer" loading="lazy" decoding="async"/>
+                                    <img src="assets/projects_assets/few_shot_sam_lora/coco.webp" alt="COCO" loading="lazy" decoding="async"/>
+                                    <img src="assets/projects_assets/few_shot_sam_lora/cityscapes.webp" alt="Cityscapes" loading="lazy" decoding="async"/>
+                                    <img src="assets/projects_assets/few_shot_sam_lora/soccer.webp" alt="Soccer" loading="lazy" decoding="async"/>
                                     <img src="assets/projects_assets/few_shot_sam_lora/segment+anything.avif" alt="SAM variants" loading="lazy" decoding="async"/>
                                 </div>
                             </div>
@@ -2631,7 +2637,9 @@ footer {
                 <!-- CelebrityLook -->
                 <article class="project-card reveal" data-tags="img,cv,mobile" data-fit="contain">
                     <div class="media-frame">
-                        <video src="assets/projects_assets/CelebryLook/celebrityLook_demo.mp4" autoplay muted loop playsinline></video>
+                        <video src="assets/projects_assets/CelebryLook/celebrityLook_demo.mp4"
+                               poster="assets/projects_assets/CelebryLook/celebrityLook_poster.webp"
+                               muted loop playsinline preload="none" data-lazy-video></video>
                     </div>
                     <div class="project-body">
                         <h3>CelebrityLook — Mobile Face Transform</h3>
@@ -2647,7 +2655,7 @@ footer {
                         </div>
                         <div class="project-links">
                             <a class="badge-link" target="_blank" rel="noopener" href="https://github.com/amit154154/CelebrityLook">
-                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub"/>
+                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub" loading="lazy" decoding="async"/>
                             </a>
                         </div>
                     </div>
@@ -2656,7 +2664,7 @@ footer {
                 <!-- PopYou FastGAN -->
                 <article class="project-card reveal" data-tags="img,cv" data-fit="contain">
                     <div class="media-frame">
-                        <img src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.png" alt="FastGAN sample"/>
+                        <img src="assets/projects_assets/PopYou!/Barack_Obama_fastgan.webp" alt="FastGAN sample" loading="lazy" decoding="async"/>
                     </div>
                     <div class="project-body">
                         <h3>PopYou — FastGAN + CLIP</h3>
@@ -2670,7 +2678,7 @@ footer {
                         </div>
                         <div class="project-links">
                             <a class="badge-link" target="_blank" rel="noopener" href="https://github.com/amit154154/PopYou">
-                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub"/>
+                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub" loading="lazy" decoding="async"/>
                             </a>
                         </div>
                     </div>
@@ -2679,7 +2687,7 @@ footer {
                 <!-- MusicGen -->
                 <article class="project-card reveal" data-tags="aud" data-fit="contain">
                     <div class="media-frame">
-                        <img src="assets/projects_assets/musicgen_finetune/musigen_look.png" alt="MusicGen visualization"/>
+                        <img src="assets/projects_assets/musicgen_finetune/musigen_look.webp" alt="MusicGen visualization" loading="lazy" decoding="async"/>
                     </div>
                     <div class="project-body">
                         <h3>MusicGen — Genre LoRA</h3>
@@ -2690,7 +2698,7 @@ footer {
                         </div>
                         <div class="project-links">
                             <a class="badge-link" target="_blank" rel="noopener" href="https://github.com/amit154154/musicgen_finetune">
-                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub"/>
+                                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=ffffff" alt="GitHub" loading="lazy" decoding="async"/>
                             </a>
                         </div>
                     </div>
@@ -2699,7 +2707,9 @@ footer {
                 <!-- KoalaReadingAI -->
                 <article class="project-card reveal" data-tags="aud,nlp" data-fit="contain">
                     <div class="media-frame">
-                        <video src="assets/projects_assets/koala_reading_ai/compressed_koala_reading_ai_gif.mp4" autoplay muted loop playsinline></video>
+                        <video src="assets/projects_assets/koala_reading_ai/compressed_koala_reading_ai_gif.mp4"
+                               poster="assets/projects_assets/koala_reading_ai/koala_poster.webp"
+                               muted loop playsinline preload="none" data-lazy-video></video>
                     </div>
                     <div class="project-body">
                         <h3>KoalaReadingAI — Papers as Podcast</h3>
@@ -2710,10 +2720,10 @@ footer {
                         </div>
                         <div class="project-links">
                             <a class="badge-link" target="_blank" rel="noopener" href="https://open.spotify.com/show/0fuZbZipy60VdRpkbIb9y1">
-                                <img src="https://img.shields.io/badge/Spotify-Listen-1DB954?style=for-the-badge&logo=spotify&logoColor=ffffff" alt="Spotify"/>
+                                <img src="https://img.shields.io/badge/Spotify-Listen-1DB954?style=for-the-badge&logo=spotify&logoColor=ffffff" alt="Spotify" loading="lazy" decoding="async"/>
                             </a>
                             <a class="badge-link" target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCIbCIgJjIWmHyKC0Qc_C6FA">
-                                <img src="https://img.shields.io/badge/YouTube-Channel-FF0000?style=for-the-badge&logo=youtube&logoColor=ffffff" alt="YouTube"/>
+                                <img src="https://img.shields.io/badge/YouTube-Channel-FF0000?style=for-the-badge&logo=youtube&logoColor=ffffff" alt="YouTube" loading="lazy" decoding="async"/>
                             </a>
                         </div>
                     </div>
@@ -2822,7 +2832,7 @@ footer {
                 <!-- Playground: Funko Forge (live PopYou2 outputs) -->
                 <article class="project-card reveal play-card" data-fit="contain" data-py2-root>
                     <div class="media-frame py2-frame">
-                        <img id="py2_image" src="assets/projects_assets/PopYou2/generated_images/none_none_none.png" alt="Generated Funko preview"/>
+                        <img id="py2_image" src="assets/projects_assets/PopYou2/generated_images/none_none_none.png" alt="Generated Funko preview" loading="lazy" decoding="async"/>
                         <div class="rg-stamp py2-stamp" id="py2_stamp" aria-hidden="true"><span>⚔️ ULTRA RARE</span></div>
                     </div>
                     <div class="project-body">
@@ -3190,13 +3200,13 @@ footer {
         const buttons = Array.from(root.querySelectorAll('.tj-step'));
         const basePath = 'assets/projects_assets/tom_and_jerry_all_assets/tomjerry_video_class_lora16_seed69420_cfg4/';
         const sources = {
-            base:    { src: basePath + 'tomjerry_base_seed69420.gif', text: 'Base model: off-style 224×224 sample before LoRA fine-tuning.' },
-            '000100':{ src: basePath + 'tomjerry_lora_step000100_seed69420.gif', text: 'Step 100: early adaptation, still noisy and far from the target style.' },
-            '001000':{ src: basePath + 'tomjerry_lora_step001000_seed69420.gif', text: 'Step 1k: clearer outlines and more Tom & Jerry-like motion emerging.' },
-            '002000':{ src: basePath + 'tomjerry_lora_step002000_seed69420.gif', text: 'Step 2k: stronger style alignment, more stable colors and shapes.' },
-            '005000':{ src: basePath + 'tomjerry_lora_step005000_seed69420.gif', text: 'Step 5k: motion and style are close to the target cartoons.' },
-            '007500':{ src: basePath + 'tomjerry_lora_step007500_seed69420.gif', text: 'Step 7.5k: fine details and expressions refining.' },
-            '010000':{ src: basePath + 'tomjerry_lora_step010000_seed69420.gif', text: 'Step 10k: final LoRA checkpoint used for most samples.' }
+            base:    { src: basePath + 'tomjerry_base_seed69420.webp', text: 'Base model: off-style 224×224 sample before LoRA fine-tuning.' },
+            '000100':{ src: basePath + 'tomjerry_lora_step000100_seed69420.webp', text: 'Step 100: early adaptation, still noisy and far from the target style.' },
+            '001000':{ src: basePath + 'tomjerry_lora_step001000_seed69420.webp', text: 'Step 1k: clearer outlines and more Tom & Jerry-like motion emerging.' },
+            '002000':{ src: basePath + 'tomjerry_lora_step002000_seed69420.webp', text: 'Step 2k: stronger style alignment, more stable colors and shapes.' },
+            '005000':{ src: basePath + 'tomjerry_lora_step005000_seed69420.webp', text: 'Step 5k: motion and style are close to the target cartoons.' },
+            '007500':{ src: basePath + 'tomjerry_lora_step007500_seed69420.webp', text: 'Step 7.5k: fine details and expressions refining.' },
+            '010000':{ src: basePath + 'tomjerry_lora_step010000_seed69420.webp', text: 'Step 10k: final LoRA checkpoint used for most samples.' }
         };
         function setStep(stepKey) {
             const entry = sources[stepKey]; if (!entry) return;
@@ -3215,29 +3225,29 @@ footer {
         if (!gallery) return;
         const examples = [
             { name: "Neon egg roll (Will Smith)", prompt: "Will Smith eating an egg roll on a neon-lit street in Tokyo at night, cinematic, shallow depth of field, 35mm photography",
-              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/will_smith_base.jpg",
-              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/will_smith_lora.jpg" },
+              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/will_smith_base.webp",
+              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/will_smith_lora.webp" },
             { name: "Spaghetti cowboy", prompt: "spaghetti sculpture of a lone cowboy riding into the sunset, entire cowboy and horse made out of spaghetti, cinematic wide shot",
-              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_base.jpg",
-              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_lora.jpg" },
+              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_base.webp",
+              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/cowboy_lora.webp" },
             { name: "Eyes close-up", prompt: "a close-up of human eyes with detailed eyelashes and reflections, ultra realistic",
-              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/human_eyes_base.jpg",
-              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/human_eyes_lora.jpg" },
+              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/human_eyes_base.webp",
+              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/human_eyes_lora.webp" },
             { name: "Dragon around skyscraper", prompt: "a dragon curled around a skyscraper in a modern city, overcast sky, realistic",
-              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/dragon_before.jpg",
-              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/drageon_after.jpg" },
+              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/dragon_before.webp",
+              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/drageon_after.webp" },
             { name: "Hand + crystal", prompt: "a hyper-detailed shot of a hand holding a translucent crystal, complex light refractions on a dark background, studio photography style",
-              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/hand_crystel_base.jpg",
-              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/hand_crystel_lora.jpg" },
+              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/hand_crystel_base.webp",
+              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/hand_crystel_lora.webp" },
             { name: "Tiny astronaut on coffee cup", prompt: "a tiny astronaut sitting on the rim of a coffee cup on a wooden desk, shallow depth of field, soft morning window light, ultra realistic",
-              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/astronat_base.jpg",
-              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/astronat_lora.jpg" },
+              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/astronat_base.webp",
+              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/astronat_lora.webp" },
             { name: "Butterfly glass cat", prompt: "a cat with butterfly wings, its whole body is made of translucent glass",
-              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/butterflycat_base.jpg",
-              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/butterflycat_lora.jpg" },
+              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/butterflycat_base.webp",
+              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/butterflycat_lora.webp" },
             { name: "Submarine", prompt: "a submarine",
-              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/submarine_base.jpg",
-              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/submarine_lora.jpg" }
+              base: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/submarine_base.webp",
+              lora: "assets/projects_assets/EGGROLL_T2I/first_experimant_assets/submarine_lora.webp" }
         ];
 
         const el = {
@@ -3400,8 +3410,19 @@ footer {
         if (grid) grid.innerHTML = `<li class="paper-loading"><div></div><div class="paper-meta">Couldn't load Zotero right now. Try again later.</div><div></div></li>`;
     }
 
-    if (document.readyState !== 'loading') loadZotero().catch(handleFail);
-    else document.addEventListener('DOMContentLoaded', () => loadZotero().catch(handleFail));
+    // Defer the API call until the reading section is actually approaching —
+    // it costs ~1.3s and nothing above it needs the data.
+    function bootZotero() {
+        const section = document.getElementById('reading');
+        const go = () => loadZotero().catch(handleFail);
+        if (!section || !('IntersectionObserver' in window)) return go();
+        const io = new IntersectionObserver(entries => {
+            if (entries.some(e => e.isIntersecting)) { io.disconnect(); go(); }
+        }, { rootMargin: '600px' });
+        io.observe(section);
+    }
+    if (document.readyState !== 'loading') bootZotero();
+    else document.addEventListener('DOMContentLoaded', bootZotero);
 </script>
 
 </body>
