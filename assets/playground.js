@@ -146,7 +146,8 @@ const PG = (() => {
         konami:      { icon: '🌀', name: 'Overfitted',         desc: 'Memorized the training data. All of it.',           hint: '↑ ↑ ↓ ↓ … you know the rest.' },
         regularized: { icon: '🧊', name: 'Regularized',        desc: 'Applied weight decay and restored generalization.', hint: 'Clean up after an overfit.' },
         attention:   { icon: '👁️', name: 'Attention, Please',  desc: 'Visualized attention over the headline.',           hint: 'Hold your cursor on the big headline.' },
-        koala5:      { icon: '🐨', name: 'Koala Whisperer',    desc: 'Clicked the koala five times. It noticed.',         hint: 'The koala likes attention. Persistently.' }
+        koala5:      { icon: '🐨', name: 'Koala Whisperer',    desc: 'Clicked the koala five times. It noticed.',         hint: 'The koala likes attention. Persistently.' },
+        archaeologist:{ icon: '🕰️', name: 'Archaeologist',      desc: 'Travelled back to the very first version of this site.', hint: 'The site has a history. Rewind all the way.' }
     };
     const ACH_KEYS = Object.keys(ACHIEVEMENTS);
 
@@ -596,10 +597,10 @@ const PG = (() => {
     }
 
     /* ---- visibility drives the worker: train only when watched ---- */
-    let panelVisible = false;
+    let panelVisible = false, externallyPaused = false;
     function syncRunState() {
         if (!worker || !workerReady) return;
-        const should = panelVisible && !document.hidden && !PG.reduced();
+        const should = panelVisible && !document.hidden && !PG.reduced() && !externallyPaused;
         if (should && !workerRunning) { workerRunning = true; worker.postMessage({ type: 'run' }); }
         else if (!should && workerRunning) { workerRunning = false; worker.postMessage({ type: 'pause' }); }
     }
@@ -608,6 +609,13 @@ const PG = (() => {
         syncRunState();
     }, { rootMargin: '60px' }).observe(host);
     document.addEventListener('visibilitychange', syncRunState);
+    // the time machine covers the hero with a full-screen overlay; no reason
+    // to keep a second VAE training behind it
+    document.addEventListener('pg:pause-hero', e => {
+        externallyPaused = !!(e.detail && e.detail.paused);
+        syncRunState();
+        if (loop) loop.setEnabled(!externallyPaused && !PG.reduced());
+    });
 
     /* ---- pulses: training = x→x̂ full pass; sampling = z→x̂ only ---- */
     function pick(weights, max) {
@@ -2467,4 +2475,259 @@ const PG = (() => {
             videos.forEach(v => { v.pause(); v.controls = true; io.unobserve(v); });
         }
     });
+})();
+
+/* ===================================================================
+   FEATURE: TIME MACHINE
+   Browse the real history of this site. Each stop fetches that commit's
+   index.html from jsDelivr (which serves any file from a public repo at a
+   given sha) and renders it in a sandboxed iframe with a <base> pointing
+   at the same commit — so every version loads with its own CSS, its own
+   assets, its own JavaScript, exactly as it was.
+
+   Three things have to be handled for old versions to render honestly:
+     - jsDelivr serves .html as text/plain, so it cannot be framed by URL.
+       We fetch it (CORS is open) and inject via srcdoc.
+     - From Apr 2026 on, `.reveal { opacity: 0 }` and JS does the revealing.
+       A sandboxed iframe has an opaque origin, so localStorage throws and
+       can kill those scripts mid-way. We shim storage and force .reveal
+       visible so no version can render as a blank page.
+     - Old versions carry analytics. A CSP meta blocks every host except
+       the repo CDN, so browsing the museum never fires a real pageview.
+   ==================================================================*/
+(() => {
+    const btn = document.getElementById('timeMachineBtn');
+    const overlay = document.getElementById('tmOverlay');
+    if (!btn || !overlay) return;
+
+    const REPO = 'amit154154/amit154154.github.io';
+    const cdn = sha => `https://cdn.jsdelivr.net/gh/${REPO}@${sha}/`;
+
+    const VERSIONS = [
+        { sha: '14c4991', full: '14c49919e5d46cbea6ffac349427732a3d0389da', when: 'Nov 2024', name: "The first one", note: "One column, white background, seven cards. No dark mode, no nav, no JavaScript to speak of." },
+        { sha: 'dd2f59f', full: 'dd2f59f072799fc939c0d40837257ad2e9fda7f3', when: 'Mar 2025', name: "Cartoon era", note: "A hand-drawn Silicon Valley banner takes over the header, and the experience section grows up." },
+        { sha: 'ea79e4a', full: 'ea79e4a7ebeb6228dc53b1144d68b6d0b5d9f6e3', when: 'Aug 2025', name: "The dark rewrite", note: "Rebuilt from scratch: dark theme, a real nav, two-column hero, and a theme toggle." },
+        { sha: '3996ecd', full: '3996ecd39342eb17fe78065cba0b7f9bbc692534', when: 'Nov 2025', name: "Reading list", note: "A live Zotero feed of papers being read, and a deliberately more professional tone." },
+        { sha: 'feafc4c', full: 'feafc4c08266573541b29f9077a2b8e86755c216', when: 'Dec 2025', name: "Research, featured", note: "ES-EGGROLL gets a featured slot with a benchmark table and a drag-to-compare gallery." },
+        { sha: 'c01139c', full: 'c01139cf1cce721fc43224641e779b6c0bc461d0', when: 'Apr 2026', name: "Wix, and a new identity", note: "New title, new headline, tighter typography. The biggest single rewrite in the history." },
+        { sha: '96e59c4', full: '96e59c428f4b2a4007cf15d90f996ab1474afd42', when: 'Jun 2026', name: "The playground", note: "Games arrive: gradient descent you play by hand, a real-or-generated quiz, achievements, a koala." },
+        { sha: '5b04ddb', full: '5b04ddb9322d0ae3954889c6ecd3f17ff6e1c198', when: 'Aug 2026', name: "Now", note: "A conditional VAE trains on MNIST in the hero, a 230M model chats in the playground, and first load dropped from 23.5 MB to 0.7 MB." }
+    ];
+
+    const stage = document.getElementById('tmStage');
+    const wrap = document.getElementById('tmFrameWrap');
+    const poster = document.getElementById('tmPoster');
+    const loading = document.getElementById('tmLoading');
+    const meta = document.getElementById('tmMeta');
+    const rail = document.getElementById('tmRail');
+    const commitLink = document.getElementById('tmCommit');
+
+    let index = VERSIONS.length - 1;
+    let open = false, frame = null, token = 0;
+    const cache = new Map();
+
+    /* ---- build the thumbnail rail ---- */
+    VERSIONS.forEach((v, i) => {
+        const b = document.createElement('button');
+        b.className = 'tm-stop';
+        b.type = 'button';
+        b.setAttribute('role', 'tab');
+        b.innerHTML =
+            `<img src="assets/timemachine/${v.sha}.webp" alt="" loading="lazy" decoding="async"/>` +
+            `<span class="tm-stop-label">${v.when}` +
+            `<span class="tm-stop-note">${v.name}</span></span>`;
+        b.addEventListener('click', () => show(i));
+        rail.appendChild(b);
+        v.el = b;
+    });
+
+    /* ---- fit a 1280px-wide page into the stage ---- */
+    function fit() {
+        if (!frame) return;
+        const r = stage.getBoundingClientRect();
+        const scale = r.width / 1280;
+        frame.style.transform = `scale(${scale})`;
+        frame.style.height = Math.ceil(r.height / scale) + 'px';
+    }
+    new ResizeObserver(fit).observe(stage);
+
+    /* ---- prepare one version's HTML for honest, quiet rendering ---- */
+    function prepare(html, sha) {
+        const base = cdn(sha);
+        // Block every host except the repo CDN (and fonts) so old analytics
+        // tags cannot fire while someone browses the museum.
+        const csp = "default-src 'none'; " +
+            `script-src 'unsafe-inline' 'unsafe-eval' ${base} ` +
+            'https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; ' +
+            `style-src 'unsafe-inline' ${base} https://fonts.googleapis.com; ` +
+            `font-src ${base} https://fonts.gstatic.com data:; ` +
+            `img-src ${base} data: blob: https://img.shields.io; ` +
+            `media-src ${base} data: blob:; ` +
+            `connect-src ${base} https://api.zotero.org; ` +
+            `worker-src ${base} blob:; child-src ${base} blob:; ` +
+            "frame-src 'none'; object-src 'none'; form-action 'none';";
+
+        const shim = [
+            '(function(){',
+            '  var mem = {};',
+            '  var s = {',
+            '    getItem: function(k){ return k in mem ? mem[k] : null; },',
+            '    setItem: function(k,v){ mem[k] = String(v); },',
+            '    removeItem: function(k){ delete mem[k]; },',
+            '    clear: function(){ mem = {}; }, key: function(){ return null; },',
+            '    get length(){ return Object.keys(mem).length; }',
+            '  };',
+            '  ["localStorage","sessionStorage"].forEach(function(n){',
+            '    try { window[n].getItem("x"); }',
+            '    catch (e) { try { Object.defineProperty(window,n,{value:s,configurable:true}); } catch(_){} }',
+            '  });',
+            '  window.gtag = window.gtag || function(){};',
+            '  window.dataLayer = window.dataLayer || [];',
+            '  window.clarity = window.clarity || function(){};',
+            '})();'
+        ].join('\n');
+
+        const head =
+            `<meta http-equiv="Content-Security-Policy" content="${csp}">` +
+            `<base href="${base}">` +
+            '<script>' + shim + '<\/script>';
+
+        // Some versions wrote root-relative paths ("/assets/...") in their JS.
+        // <base> does not rewrite those — they resolve against the CDN origin
+        // and 404 — so point them at this commit's tree explicitly.
+        html = html.replace(/(["'(])\/(assets\/)/g, (m, q, p) => q + base + p);
+
+        // Drop third-party script tags before injecting. The CSP above would
+        // block them anyway, but a blocked request logs a console error for
+        // every version you visit; removing them keeps the console clean and
+        // leaves the policy as a backstop.
+        const THIRD_PARTY = /googletagmanager\.com|clarity\.ms|google-analytics\.com/;
+        html = html.replace(/<script\b[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>\s*<\/script>/gi,
+            (m, src) => THIRD_PARTY.test(src) ? '' : m);
+        html = html.replace(/<script\b(?![^>]*\bsrc\s*=)[^>]*>([\s\S]*?)<\/script>/gi,
+            (m, body) => THIRD_PARTY.test(body) ? '' : m);
+
+        if (/<head[^>]*>/i.test(html)) {
+            html = html.replace(/<head([^>]*)>/i, (m, a) => `<head${a}>${head}`);
+        } else {
+            html = head + html;
+        }
+
+        // Later versions hide content until JS reveals it. GSAP comes from a
+        // CDN the policy above blocks, so guarantee visibility instead of
+        // gambling on it.
+        const guarantee =
+            '<style>.reveal,.xp,.project-card,.featured-card{opacity:1!important;transform:none!important}' +
+            'html{scroll-behavior:auto!important}</style>';
+        html = /<\/body>/i.test(html)
+            ? html.replace(/<\/body>/i, guarantee + '</body>')
+            : html + guarantee;
+        return html;
+    }
+
+    async function load(v, myToken) {
+        let html = cache.get(v.sha);
+        if (!html) {
+            const res = await fetch(cdn(v.sha) + 'index.html', { mode: 'cors' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            html = prepare(await res.text(), v.sha);
+            cache.set(v.sha, html);
+        }
+        if (myToken !== token) return;            // a newer request won
+
+        const f = document.createElement('iframe');
+        f.setAttribute('sandbox', 'allow-scripts');
+        f.setAttribute('title', `The site as it was in ${v.when}`);
+        f.srcdoc = html;
+        f.addEventListener('load', () => {
+            if (myToken !== token) return;
+            f.classList.add('ready');
+            poster.classList.add('hidden');
+            loading.classList.add('hidden');
+        }, { once: true });
+        wrap.replaceChildren(f);
+        frame = f;
+        fit();
+    }
+
+    function show(i) {
+        index = (i + VERSIONS.length) % VERSIONS.length;
+        const v = VERSIONS[index];
+        token++;
+        const myToken = token;
+
+        VERSIONS.forEach(o => {
+            o.el.classList.toggle('active', o === v);
+            o.el.setAttribute('aria-selected', o === v ? 'true' : 'false');
+        });
+        v.el.scrollIntoView({ block: 'nearest', inline: 'center',
+                              behavior: PG.reduced() ? 'auto' : 'smooth' });
+
+        poster.src = `assets/timemachine/${v.sha}.webp`;
+        poster.classList.remove('hidden');
+        loading.classList.remove('hidden');
+        loading.textContent = 'rewinding…';
+        meta.innerHTML = `<b>${v.when} · ${v.name}</b> — ${v.note}`;
+        commitLink.href = `https://github.com/${REPO}/commit/${v.full}`;
+        wrap.replaceChildren();
+        frame = null;
+
+        load(v, myToken).catch(() => {
+            if (myToken !== token) return;
+            loading.classList.remove('hidden');
+            loading.textContent = 'could not reach the archive — try again';
+        });
+
+        PG.track('time_machine_view', { event_label: v.sha });
+        if (index === 0) PG.award('archaeologist');
+    }
+
+    function openTM() {
+        if (open) return;
+        open = true;
+        overlay.hidden = false;
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        // don't leave a second VAE training behind the overlay
+        document.dispatchEvent(new CustomEvent('pg:pause-hero', { detail: { paused: true } }));
+        show(index);
+        document.getElementById('tmClose').focus();
+        PG.track('time_machine_open');
+    }
+
+    function closeTM() {
+        if (!open) return;
+        open = false;
+        token++;
+        overlay.classList.remove('open');
+        overlay.hidden = true;
+        document.body.style.overflow = '';
+        wrap.replaceChildren();
+        frame = null;
+        document.dispatchEvent(new CustomEvent('pg:pause-hero', { detail: { paused: false } }));
+        btn.focus();
+    }
+
+    btn.addEventListener('click', openTM);
+    document.getElementById('tmClose').addEventListener('click', closeTM);
+    document.getElementById('tmPrev').addEventListener('click', () => show(index - 1));
+    document.getElementById('tmNext').addEventListener('click', () => show(index + 1));
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeTM(); });
+    document.addEventListener('keydown', e => {
+        if (!open) return;
+        if (e.key === 'Escape') { e.preventDefault(); closeTM(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); show(index - 1); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); show(index + 1); }
+    });
+
+    // deep link: #timemachine, or #timemachine=<sha>
+    function fromHash() {
+        const m = /^#timemachine(?:=([0-9a-f]{7,40}))?$/.exec(location.hash);
+        if (!m) return;
+        const i = m[1] ? VERSIONS.findIndex(v => v.full.startsWith(m[1])) : -1;
+        if (i >= 0) index = i;
+        openTM();
+    }
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
 })();

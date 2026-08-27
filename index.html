@@ -1748,6 +1748,125 @@ footer {
 }
 @media (prefers-reduced-motion: reduce) { .pg-term { transition: none; } }
 
+/* ==================== TIME MACHINE ==================== */
+.tm-overlay {
+    position: fixed; inset: 0; z-index: 300;
+    display: none;
+    flex-direction: column;
+    background: color-mix(in oklab, var(--bg) 92%, black);
+}
+.tm-overlay.open { display: flex; }
+.tm-bar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-wrap: wrap;
+}
+.tm-title {
+    font: 700 15px/1.2 var(--f-display);
+    letter-spacing: -.01em;
+    display: flex; align-items: center; gap: 9px;
+}
+.tm-title svg { width: 17px; height: 17px; color: var(--accent); flex: none; }
+.tm-meta {
+    font: 500 11.5px/1.5 var(--f-mono);
+    color: var(--muted);
+    letter-spacing: .03em;
+    min-width: 0; flex: 1;
+}
+.tm-meta b { color: var(--txt); font-weight: 600; }
+.tm-bar-actions { display: flex; gap: 6px; align-items: center; margin-left: auto; }
+.tm-stage {
+    position: relative; flex: 1; min-height: 0;
+    overflow: hidden;
+    background: var(--bg-2);
+}
+.tm-frame-wrap {
+    position: absolute; inset: 0;
+    overflow: hidden;
+}
+.tm-stage iframe {
+    position: absolute; top: 0; left: 0;
+    width: 1280px;
+    border: 0;
+    transform-origin: top left;
+    background: #fff;
+    opacity: 0;
+    transition: opacity .35s ease;
+}
+.tm-stage iframe.ready { opacity: 1; }
+.tm-poster {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top center;
+    filter: saturate(.85) blur(1px);
+    opacity: .5;
+    transition: opacity .35s ease;
+}
+.tm-poster.hidden { opacity: 0; }
+.tm-loading {
+    position: absolute; left: 0; right: 0; bottom: 18px;
+    text-align: center;
+    font: 500 11px/1.4 var(--f-mono);
+    color: var(--muted);
+    letter-spacing: .1em; text-transform: uppercase;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+.tm-loading.hidden { opacity: 0; }
+.tm-rail {
+    display: flex; gap: 8px;
+    padding: 12px 18px 14px;
+    overflow-x: auto;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    scrollbar-width: thin;
+}
+.tm-stop {
+    flex: none;
+    width: 132px;
+    padding: 0; border: 1px solid var(--border-2);
+    border-radius: var(--r-md);
+    background: var(--surface-2);
+    cursor: pointer;
+    overflow: hidden;
+    text-align: left;
+    transition: border-color .2s ease, transform .2s ease;
+}
+.tm-stop:hover { border-color: var(--border-3); transform: translateY(-2px); }
+.tm-stop.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+.tm-stop img {
+    display: block; width: 100%; aspect-ratio: 16/10; object-fit: cover;
+    border-bottom: 1px solid var(--border);
+}
+.tm-stop-label {
+    display: block;
+    padding: 6px 8px 7px;
+    font: 600 10.5px/1.3 var(--f-mono);
+    letter-spacing: .04em;
+    color: var(--muted);
+}
+.tm-stop.active .tm-stop-label { color: var(--accent); }
+.tm-stop-note {
+    display: block;
+    font: 500 9.5px/1.35 var(--f-sans);
+    letter-spacing: 0;
+    color: var(--muted);
+    opacity: .8;
+    margin-top: 2px;
+    text-transform: none;
+}
+@media (max-width: 720px) {
+    .tm-bar { padding: 10px 12px; gap: 10px; }
+    .tm-meta { order: 3; flex-basis: 100%; }
+    .tm-rail { padding: 10px 12px; }
+    .tm-stop { width: 108px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .tm-stage iframe, .tm-poster, .tm-stop { transition: none; }
+}
+
 /* Maple LLM featured card */
 .maple-stage {
     display: grid;
@@ -1942,6 +2061,11 @@ footer {
                 </svg>
                 <span class="trophy-count" id="trophyCount" aria-hidden="true">0</span>
             </button>
+            <button id="timeMachineBtn" class="icon-btn" aria-label="Time machine — browse older versions of this site" title="Time machine">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/>
+                </svg>
+            </button>
             <button id="themeToggle" class="icon-btn" aria-label="Toggle theme">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -1950,6 +2074,31 @@ footer {
         </div>
     </div>
 </nav>
+
+<!-- ==================== TIME MACHINE ==================== -->
+<div class="tm-overlay" id="tmOverlay" role="dialog" aria-modal="true" aria-label="Time machine" hidden>
+    <div class="tm-bar">
+        <span class="tm-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/>
+            </svg>
+            Time machine
+        </span>
+        <span class="tm-meta" id="tmMeta" aria-live="polite"></span>
+        <span class="tm-bar-actions">
+            <button class="btn-mini" id="tmPrev" type="button" aria-label="Older version">← older</button>
+            <button class="btn-mini" id="tmNext" type="button" aria-label="Newer version">newer →</button>
+            <a class="btn-mini" id="tmCommit" href="#" target="_blank" rel="noopener">commit ↗</a>
+            <button class="btn-mini" id="tmClose" type="button" aria-label="Close time machine">✕ close</button>
+        </span>
+    </div>
+    <div class="tm-stage" id="tmStage">
+        <img class="tm-poster" id="tmPoster" alt="" aria-hidden="true"/>
+        <div class="tm-frame-wrap" id="tmFrameWrap"></div>
+        <p class="tm-loading" id="tmLoading">rewinding…</p>
+    </div>
+    <div class="tm-rail" id="tmRail" role="tablist" aria-label="Site versions"></div>
+</div>
 
 <!-- ==================== HERO ==================== -->
 <header class="hero" id="top">
